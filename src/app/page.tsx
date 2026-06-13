@@ -6,7 +6,7 @@ import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import HeroSection from '@/components/home/HeroSection';
 import ReplicaHero from '@/components/ReplicaHero';
 import AboutSection from '@/components/home/AboutSection';
-import ServicesSection from '@/components/home/ServicesSection';
+import ReviewsSection from '@/components/home/ReviewsSection';
 import SeoTextSection from '@/components/home/SeoTextSection';
 import MissionSection from '@/components/home/MissionSection';
 import HowWeWorkSection from '@/components/home/HowWeWorkSection';
@@ -68,7 +68,7 @@ export default async function HomePage() {
         <ReplicaHero />
         <CinematicSection parallax={-80}>
           <ScrollReveal>
-            <ServicesSection adminValues={servicesValues} />
+            <ReviewsSection />
           </ScrollReveal>
         </CinematicSection>
         <CinematicSection parallax={-60}>

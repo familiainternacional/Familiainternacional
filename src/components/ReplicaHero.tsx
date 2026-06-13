@@ -1,62 +1,87 @@
 import Image from 'next/image';
-import { ArrowDown } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowUpRight, ArrowDown, Shield } from 'lucide-react';
 
 export default function ReplicaHero() {
   return (
     <div
       id="home"
-      className="fi-hero-offset flex min-h-screen flex-col gap-3 bg-white p-2 font-sans text-neutral-900 md:p-3 lg:flex-row"
+      className="relative flex min-h-screen flex-col items-center pt-32 pb-10 px-4 overflow-hidden bg-gradient-to-b from-[#fbf8f1] to-[#f3ebd5] font-sans"
     >
-      
-      {/* Left Column (35%) */}
-      <div className="flex w-full flex-col justify-between rounded-[1.5rem] bg-white p-6 md:rounded-[2.5rem] md:p-10 lg:w-[35%]">
-        {/* Middle: Description */}
-        <div className="mb-20 mt-8 max-w-[320px] lg:mb-32 lg:mt-auto">
-          <h2 className="text-sm font-bold tracking-widest uppercase text-neutral-500 mb-6">
-            Derecho Internacional de Familia
-          </h2>
-          <p className="text-[17px] leading-[1.65] text-neutral-700 font-medium">
-            Somos el primer y único Estudio Jurídico en Chile dedicado exclusivamente a la protección de familias y menores a nivel global.
-          </p>
-        </div>
+      {/* Decorative Blur Elements (Optional, to enhance the warmth) */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-orange-100/40 rounded-full blur-3xl -translate-y-1/2" />
+      <div className="absolute top-1/2 right-1/4 w-[600px] h-[600px] bg-yellow-50/40 rounded-full blur-3xl -translate-y-1/2" />
 
-        {/* Bottom: CTA */}
-        <div>
-          <button className="group flex items-center justify-between w-full sm:w-[260px] bg-[#07234c] text-white rounded-full p-2 pr-6 transition-all hover:bg-[#0a3066] shadow-lg shadow-[#07234c]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c] focus-visible:ring-offset-2">
-            <span className="bg-white/15 text-white p-3 rounded-full flex items-center justify-center transition-transform group-hover:scale-105">
-              <ArrowDown className="w-5 h-5" strokeWidth={2.5} />
-            </span>
-            <span className="text-[12px] font-bold tracking-widest uppercase">
-              Descubrir más
-            </span>
-            <span className="w-4" /> {/* Spacer for balance */}
-          </button>
-        </div>
+      {/* Main Content Wrapper */}
+      <div className="relative z-10 flex flex-col items-center justify-center flex-1 w-full max-w-7xl mx-auto mt-10 lg:mt-0">
         
+        {/* Giant Headline */}
+        <h1 className="text-[4rem] sm:text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] font-black text-[#1c1c1c] leading-[0.95] tracking-tight text-center flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-4 lg:gap-x-6">
+          <span className="mb-2 sm:mb-0">Familias</span>
+          
+          {/* Pill Image embedded in text */}
+          <div className="relative inline-block w-[120px] h-[50px] sm:w-[180px] sm:h-[70px] md:w-[240px] md:h-[90px] lg:w-[280px] lg:h-[110px] rounded-full overflow-hidden shrink-0 align-middle shadow-xl shadow-black/10 mt-2 sm:mt-0">
+            <Image
+              src="/hero-santiago.png"
+              alt="Familia Internacional"
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
+          
+          <span className="w-full text-center mt-2 lg:mt-6">Sin Fronteras</span>
+        </h1>
+
+        {/* Subtitle - Kept from original content */}
+        <p className="mt-8 max-w-2xl text-center text-base sm:text-lg lg:text-[19px] text-neutral-700 font-medium leading-[1.6]">
+          Somos el primer y único Estudio Jurídico en Chile dedicado exclusivamente a la protección de familias y menores a nivel global.
+        </p>
+
+        {/* Action Buttons */}
+        <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <Link
+            href="/evalua-tu-caso"
+            className="flex items-center justify-center bg-[#25d366] hover:bg-[#20bd5a] text-white font-bold text-[13px] tracking-widest uppercase rounded-full px-8 py-4 transition-all hover:scale-105 shadow-lg shadow-[#25d366]/20"
+          >
+            Evaluar mi caso
+          </Link>
+          
+          <Link
+            href="#services"
+            className="group flex items-center gap-3 bg-transparent hover:bg-black/5 text-[#1c1c1c] border border-black/10 font-bold text-[13px] tracking-widest uppercase rounded-full px-6 py-3.5 transition-all"
+          >
+            Necesito Ayuda
+            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-black/5 group-hover:bg-black/10 transition-colors">
+              <ArrowUpRight className="w-4 h-4 text-[#1c1c1c]" />
+            </span>
+          </Link>
+        </div>
       </div>
 
-      {/* Right Column (65%) */}
-      <div className="relative w-full lg:w-[65%] min-h-[60vh] lg:min-h-0 bg-neutral-100 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden">
+      {/* Bottom Strip (Logos & Scroll) */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto mt-20 pt-8 border-t border-black/5 flex flex-col sm:flex-row items-center justify-between gap-6 px-4">
         
-        {/* Background Image */}
-        <Image
-          src="/hero-santiago.png"
-          alt="Derecho Internacional de Familia"
-          fill
-          priority
-          className="object-cover"
-        />
-        
-        {/* Subtle Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-black/10" />
+        {/* Left/Center Partners or Features */}
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 lg:gap-16 opacity-70">
+          <div className="flex items-center gap-2 font-bold text-sm tracking-widest uppercase text-[#1c1c1c]">
+            <Shield className="w-5 h-5" />
+            <span>Atención Global</span>
+          </div>
+          <div className="font-bold text-[1.1rem] tracking-tight text-[#1c1c1c]">
+            Derecho Corporativo
+          </div>
+          <div className="font-bold text-[1.1rem] tracking-tight text-[#1c1c1c]">
+            Asesoría Migratoria
+          </div>
+        </div>
 
-        {/* Bottom Right Title */}
-        <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 lg:left-auto lg:right-12 text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-[4.5rem] leading-[1.05] font-medium tracking-tight lg:text-right">
-            Familias
-            <br />
-            Sin Fronteras.
-          </h1>
+        {/* Scroll Down Indicator */}
+        <div className="flex items-center gap-3 font-bold text-[11px] tracking-widest uppercase text-[#1c1c1c] opacity-60">
+          Scroll Down
+          <span className="flex items-center justify-center w-8 h-8 rounded-full border border-black/20">
+            <ArrowDown className="w-4 h-4" />
+          </span>
         </div>
       </div>
 

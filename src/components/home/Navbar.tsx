@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -321,22 +321,24 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
     <>
       {!mobileMenuOpen ? (
         <header
-          className={`fi-nav fi-nav--floating${isScrolled ? ' is-scrolled' : ''}${isMobileOnly ? ' fi-nav--mobile-only' : ''}`}
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'} ${isMobileOnly ? 'block lg:hidden' : 'block'}`}
         >
-          <div className="fi-nav-shell">
-            <div className="fi-nav-brand">
-              <Link href="/#home" className="fi-logo-link" aria-label={siteConfig.name}>
+          <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            {/* Left: Brand */}
+            <div className="flex-shrink-0">
+              <Link href="/#home" className="inline-flex items-center" aria-label={siteConfig.name}>
                 <FiLogo compact={isScrolled} />
               </Link>
             </div>
 
-            <nav className="fi-nav-center" aria-label={isEnglish ? 'Primary navigation' : 'Navegación principal'}>
+            {/* Center: Nav Links */}
+            <nav className="hidden lg:flex items-center justify-center gap-8" aria-label={isEnglish ? 'Primary navigation' : 'Navegación principal'}>
               {mainNavItems.map((item) =>
                 item.type === 'link' ? (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`fi-nav-link${isNavPathActive(pathname, item.href, activeSectionForNav) ? ' is-active' : ''}`}
+                    className={`text-[12px] font-bold tracking-[0.15em] uppercase transition-colors hover:text-black/60 ${isNavPathActive(pathname, item.href, activeSectionForNav) ? 'text-black' : 'text-black/80'}`}
                   >
                     {item.label}
                   </Link>
@@ -356,30 +358,30 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
               )}
             </nav>
 
-            <div className="fi-nav-actions">
+            {/* Right: Actions */}
+            <div className="flex items-center gap-4">
               <a
                 href={primaryPhoneHref}
-                className="fi-nav-action fi-nav-action--mobile-call"
+                className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-black/20 text-black hover:bg-black/5 transition-colors"
                 aria-label={isEnglish ? `Call ${primaryPhone}` : `Llamar al ${primaryPhone}`}
               >
-                <Phone size={18} aria-hidden />
+                <Phone size={16} aria-hidden />
               </a>
-              <a
-                href={`mailto:${primaryEmail}`}
-                className="fi-nav-action fi-nav-action--icon"
-                aria-label={isEnglish ? `Email ${primaryEmail}` : `Enviar correo a ${primaryEmail}`}
+              <Link
+                href="/evalua-tu-caso"
+                className="hidden lg:flex items-center justify-center border border-black/10 bg-white text-black font-bold text-[12px] tracking-[0.1em] uppercase rounded-full px-6 py-2.5 transition-all hover:bg-black/5"
               >
-                <Mail size={18} aria-hidden />
-              </a>
+                Evaluar Caso
+              </Link>
               <LocaleSelector />
               <button
                 type="button"
-                className="fi-nav-action fi-nav-action--menu"
+                className="lg:hidden flex items-center justify-center w-10 h-10 text-black"
                 aria-label={mobileMenuOpen ? (isEnglish ? 'Close menu' : 'Cerrar menú') : isEnglish ? 'Open menu' : 'Abrir menú'}
                 aria-expanded={mobileMenuOpen}
                 onClick={() => setMobileMenuOpen(true)}
               >
-                <Menu size={22} />
+                <Menu size={24} />
               </button>
             </div>
           </div>
