@@ -6,10 +6,10 @@ export default function ReplicaHero() {
   return (
     <div
       id="home"
-      className="relative flex min-h-screen flex-col items-center pt-32 pb-10 px-4 overflow-hidden bg-[#07234c] font-sans"
+      className="relative flex min-h-screen flex-col items-center pt-40 lg:pt-48 pb-10 px-4 overflow-hidden bg-[#07234c] font-sans"
     >
       {/* Main Content Wrapper */}
-      <div className="relative z-10 flex flex-col items-center justify-center flex-1 w-full max-w-7xl mx-auto mt-10 lg:mt-0">
+      <div className="relative z-10 flex flex-col items-center justify-center flex-1 w-full max-w-7xl mx-auto mt-16 lg:mt-8">
         
         {/* Giant Headline */}
         <h1 className="text-[4rem] sm:text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] font-black text-white leading-[0.95] tracking-tight text-center flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-4 lg:gap-x-6">
