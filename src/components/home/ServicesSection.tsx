@@ -6,97 +6,26 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import type { ServicesPageSettingsAdminValues } from '@/app/admin/servicios/actions';
+import { familyServices } from '@/config/family-services';
+import type { Locale } from '@/lib/i18n/config';
 
-const servicesEsBase = [
-  {
-    num: '01',
-    slug: 'divorcios-internacionales',
-    title: 'Divorcios Internacionales',
-    desc: 'Patrocinamos divorcios unilaterales, por culpa o mutuo acuerdo con cónyuges en el exterior, sin requerir domicilio conocido. Además, asesoramos respecto a divorcios realizados en el extranjero y sus efectos en Chile.',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '02',
-    slug: 'cuidado-sustraccion',
-    title: 'Cuidado y Visitas',
-    desc: 'Asesoría experta en Sustracción Internacional de Niños (Convenio de La Haya), defensas y demandas de visitas internacionales, además de autorizaciones judiciales para salir del país o relocalización.',
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '03',
-    slug: 'filiacion-alimentos',
-    title: 'Filiación y Alimentos',
-    desc: 'Representación en demandas de paternidad internacional para reconocimiento en Chile. Asesoramos en la obtención y cobro de pensión de alimentos bajo el Convenio de Nueva York.',
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '04',
-    slug: 'exequatur',
-    title: 'Exequátur (Validación)',
-    desc: 'Tramitamos directamente ante la Corte Suprema la validación legal en Chile de sentencias extranjeras de toda índole: divorcios, nulidades, adopciones y cuidado personal.',
-    image: 'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '05',
-    slug: 'herencias-internacionales',
-    title: 'Herencias y Posesiones',
-    desc: 'Gestión experta para tramitar de manera eficiente la posesión efectiva y la adjudicación de bienes hereditarios, tanto para causantes en Chile como ubicados en el extranjero.',
-    image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '06',
-    slug: 'tramites-consulares',
-    title: 'Trámites Consulares',
-    desc: 'Confección de escrituras, mandatos y poderes para firmar ante consulados chilenos. Representación integral en tribunales de familia para personas que residen fuera del país.',
-    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop',
-  },
-] as const;
+const adminPayloadKeys = ['divorcios', 'cuidado', 'filiacion', 'exequatur', 'herencias', 'consulares'] as const;
 
-// Fallback for EN just in case, translating the same concepts
-const servicesEnBase = [
-  {
-    num: '01',
-    slug: 'divorcios-internacionales',
-    title: 'International Divorces',
-    desc: 'We sponsor unilateral, fault-based, or mutual agreement divorces with spouses abroad. We also advise on foreign divorces and their property effects in Chile.',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '02',
-    slug: 'cuidado-sustraccion',
-    title: 'Custody & Access',
-    desc: 'Expert advice on International Child Abduction (Hague Convention), international access lawsuits, and judicial authorizations for children leaving the country.',
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '03',
-    slug: 'filiacion-alimentos',
-    title: 'Paternity & Support',
-    desc: 'Representation in international paternity lawsuits in Chile. We advise on obtaining and collecting child support under the New York Convention.',
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '04',
-    slug: 'exequatur',
-    title: 'Exequatur (Validation)',
-    desc: 'We process directly before the Supreme Court the legal validation in Chile of foreign judgments: divorces, annulments, adoptions, and personal care.',
-    image: 'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '05',
-    slug: 'herencias-internacionales',
-    title: 'International Estates',
-    desc: 'Expert management to efficiently process the effective possession and adjudication of inherited assets, both in Chile and abroad.',
-    image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    num: '06',
-    slug: 'tramites-consulares',
-    title: 'Consular Procedures',
-    desc: 'Drafting of deeds, mandates, and powers of attorney to be signed before Chilean consulates. Full representation for residents abroad.',
-    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop',
-  },
-] as const;
+function mapServiceValues(
+  locale: Locale,
+  parsedPayload: Record<string, string>,
+) {
+  return familyServices.map((service, index) => {
+    const key = adminPayloadKeys[index];
+    return {
+      num: service.num,
+      slug: service.slug,
+      title: parsedPayload[`${key}Title`] || (locale === 'es' ? service.title.es : service.title.en),
+      desc: parsedPayload[`${key}Desc`] || (locale === 'es' ? service.desc.es : service.desc.en),
+      image: service.image,
+    };
+  });
+}
 
 export default function ServicesSection({ adminValues }: { adminValues?: ServicesPageSettingsAdminValues | null }) {
   const { locale } = useI18n();
@@ -111,19 +40,7 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
     }
   }
 
-  const mapServiceValues = (servicesBase: ReadonlyArray<{ num: string; slug: string; title: string; desc: string; image: string }>) => {
-    return servicesBase.map((s, index) => {
-      const keys = ['divorcios', 'cuidado', 'filiacion', 'exequatur', 'herencias', 'consulares'];
-      const key = keys[index];
-      return {
-        ...s,
-        title: parsedPayload[`${key}Title`] || s.title,
-        desc: parsedPayload[`${key}Desc`] || s.desc,
-      };
-    });
-  };
-
-  const services = locale === 'es' ? mapServiceValues(servicesEsBase) : mapServiceValues(servicesEnBase);
+  const services = mapServiceValues(locale, parsedPayload);
 
   return (
     <section
@@ -191,7 +108,7 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
                           </p>
                           
                           <Link 
-                            href={`/servicios/${service.slug}`} 
+                            href="/evalua-tu-caso" 
                             className="mt-8 inline-block text-[11px] font-bold tracking-widest uppercase text-[#0f172a] hover:text-slate-500 transition-colors underline decoration-slate-300 underline-offset-4 hover:decoration-slate-400"
                           >
                             {locale === 'es' ? 'LEER MÁS' : 'READ MORE'}

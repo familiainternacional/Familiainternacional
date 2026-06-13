@@ -1,5 +1,5 @@
 import type { Locale } from '@/lib/i18n/config';
-import { serviceLandings } from '@/config/service-landings';
+import { familyServices } from '@/config/family-services';
 
 export type NavSection = 'home' | 'about' | 'services' | 'metodologia' | 'process' | 'contact';
 
@@ -23,16 +23,16 @@ export type NavMenuItem = NavMenuLink | NavMenuDropdown;
 export function getMainNavItems(locale: Locale): NavMenuItem[] {
   const isSpanish = locale === 'es';
 
-  const serviceEntries = serviceLandings.slice(0, 6).map((service) => ({
-    label: service.shortTitle,
-    href: `/servicios/${service.slug}`,
+  const serviceEntries = familyServices.map((service) => ({
+    label: isSpanish ? service.shortTitle.es : service.shortTitle.en,
+    href: '/servicios',
   }));
 
   return [
     {
       type: 'link',
       label: isSpanish ? 'Inicio' : 'Home',
-      href: '/#home',
+      href: '/',
       section: 'home',
     },
     {
@@ -47,14 +47,19 @@ export function getMainNavItems(locale: Locale): NavMenuItem[] {
     {
       type: 'link',
       label: isSpanish ? 'Metodología' : 'Methodology',
-      href: '/#metodologia',
+      href: '/metodologia',
       section: 'metodologia',
     },
     {
       type: 'link',
       label: isSpanish ? 'Nosotros' : 'About',
-      href: '/#about',
+      href: '/nosotros',
       section: 'about',
+    },
+    {
+      type: 'link',
+      label: isSpanish ? 'Prensa' : 'Press',
+      href: '/prensa',
     },
     {
       type: 'link',
@@ -64,7 +69,7 @@ export function getMainNavItems(locale: Locale): NavMenuItem[] {
     {
       type: 'link',
       label: isSpanish ? 'Contacto' : 'Contact',
-      href: '/#contact',
+      href: '/contacto',
       section: 'contact',
     },
   ];

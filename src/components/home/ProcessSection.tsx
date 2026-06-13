@@ -96,15 +96,15 @@ export default function ProcessSection() {
       className="border-t border-[#07234c]/5 bg-[#f4f5f6] px-5 py-16 text-[#07234c] md:px-12 md:py-24 lg:px-24 lg:py-28"
     >
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 max-w-[65ch] md:mb-14">
-          <span className="mb-4 block text-small font-bold uppercase tracking-widest text-[var(--color-primary)]">
+        <div className="fi-section-header">
+          <span className="fi-eyebrow block text-[var(--color-primary)]">
             {t('diferencial.label')}
           </span>
-          <h2 id="process-title" className="mb-6 max-w-[18ch] font-serif text-h2 leading-snug tracking-tight text-[#07234c]">
+          <h2 id="process-title" className="fi-section-heading max-w-[18ch] text-[#07234c]">
             {t('diferencial.title1')}
             <span>{t('diferencial.title2')}</span>
           </h2>
-          <p className="max-w-[65ch] text-body text-[#555555]">
+          <p className="fi-section-intro">
             {t('diferencial.body')}
           </p>
         </div>
@@ -137,11 +137,11 @@ export default function ProcessSection() {
 
                   <div className="flex flex-1 flex-col pt-3 md:px-5 md:pb-5 md:pt-7">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-[1rem] font-semibold tracking-tight text-[#0d3566] md:mb-4 md:text-h3 md:font-bold md:text-brand">
+                      <h3 className="fi-card-title text-[#0d3566] md:mb-4 md:text-brand">
                         {item.title}
                       </h3>
                     </div>
-                    <p className="mt-2 max-w-[65ch] text-[15px] leading-[1.6] text-slate-600 md:mb-8 md:mt-0 md:text-[16px] md:text-[#333333]">
+                    <p className="fi-card-desc mt-2 max-w-[65ch] md:mb-8 md:mt-0">
                       {item.desc}
                     </p>
                   </div>

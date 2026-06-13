@@ -5,20 +5,22 @@ import { getPrismaClient } from '@/lib/db/prisma';
 import Navbar from '@/components/home/Navbar';
 import Footer from '@/components/home/Footer';
 import { fallbackBlogPosts } from '@/config/blog-fallback-posts';
+import { siteConfig } from '@/config/site';
+import { perspectivasHubSeo } from '@/config/perspectivas-seo';
 
 export const metadata: Metadata = {
-  title: 'Perspectivas legales',
-  description:
-    'Analisis juridico y perspectivas legales de Ruiz Leiva Abogados para empresas, empresarios y conflictos complejos en Chile.',
+  title: perspectivasHubSeo.title,
+  description: perspectivasHubSeo.description,
+  keywords: perspectivasHubSeo.keywords,
   alternates: {
     canonical: '/perspectivas',
   },
   openGraph: {
-    title: 'Perspectivas legales | Ruiz Leiva Abogados',
-    description:
-      'Articulos y analisis juridico sobre litigios, compliance, derecho corporativo y estrategia legal empresarial.',
+    title: perspectivasHubSeo.title,
+    description: perspectivasHubSeo.description,
     url: '/perspectivas',
     type: 'website',
+    siteName: siteConfig.name,
   },
 };
 

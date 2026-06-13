@@ -2,18 +2,19 @@ import { siteConfig } from '@/config/site';
 import { teamContacts } from '@/config/contact';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import type { ServiceLanding } from '@/config/service-landings';
+import { googleBusinessProfile, googleReviews } from '@/config/google-reviews';
 import { getSiteLogoSrc, resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 
 const OFFICE_LAT = -33.41628375;
 const OFFICE_LNG = -70.5920947147805;
 
 const practiceAreas = [
-  'Litigación Civil',
-  'Derecho Corporativo',
-  'Derecho Administrativo',
-  'Compliance',
-  'Resolución de Conflictos',
-  'Asesoría Empresarial',
+  'Divorcios Internacionales',
+  'Sustracción Internacional de Menores',
+  'Exequátur de Sentencias Extranjeras',
+  'Visitas Internacionales',
+  'Alimentos Internacionales',
+  'Autorizaciones para Salir del País',
 ];
 
 function absoluteUrl(path = '/') {
@@ -39,21 +40,30 @@ function baseLegalService() {
     '@type': 'LegalService',
     '@id': organizationId(),
     name: siteConfig.name,
-    legalName: 'Ruiz Leiva Abogados Limitada',
+    legalName: siteConfig.name,
     url: absoluteUrl('/'),
     logo: absoluteUrl(getSiteLogoSrc()),
     image: absoluteUrl(resolveSiteAssetSrc('/images/santiago-skyline.jpg')),
     description: siteConfig.metadata.description,
     email: teamContacts.map((contact) => contact.email),
     priceRange: '$$',
+    employee: teamContacts.map((contact) => ({
+      '@type': 'Person',
+      name: contact.name,
+      jobTitle: 'Abogado especialista en derecho de familia internacional',
+      worksFor: {
+        '@id': organizationId(),
+      },
+      email: contact.email,
+    })),
     areaServed: siteConfig.serviceAreas.map((area) => ({
       '@type': 'AdministrativeArea',
       name: area,
     })),
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Av. Apoquindo 3669',
-      addressLocality: 'Las Condes',
+      streetAddress: 'Av. San Josemaría Escrivá de Balaguer N°13.105, Of. 303',
+      addressLocality: 'Lo Barnechea',
       addressRegion: 'Región Metropolitana',
       addressCountry: 'CL',
     },
@@ -71,7 +81,7 @@ function baseLegalService() {
     })),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Servicios jurídicos Ruiz Leiva Abogados',
+      name: 'Servicios de Familia Internacional',
       itemListElement: practiceAreas.map((name) => ({
         '@type': 'Offer',
         itemOffered: {
@@ -84,6 +94,29 @@ function baseLegalService() {
         },
       })),
     },
+    sameAs: [googleBusinessProfile.profileUrl],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: googleBusinessProfile.aggregateRating.ratingValue,
+      reviewCount: googleBusinessProfile.aggregateRating.reviewCount,
+      bestRating: googleBusinessProfile.aggregateRating.bestRating,
+      worstRating: googleBusinessProfile.aggregateRating.worstRating,
+    },
+    review: googleReviews.map((review) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: review.author,
+      },
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: review.rating,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      reviewBody: review.text.es,
+      ...(review.datePublished ? { datePublished: review.datePublished } : {}),
+    })),
   };
 }
 
@@ -150,9 +183,9 @@ export function buildEvaluaTuCasoStructuredData() {
         '@type': 'ContactPage',
         '@id': `${absoluteUrl('/evalua-tu-caso')}#webpage`,
         url: absoluteUrl('/evalua-tu-caso'),
-        name: 'Evalúa tu caso | Ruiz Leiva Abogados',
+        name: `Evalúa tu caso | ${siteConfig.name}`,
         description:
-          'Formulario para solicitar una evaluación inicial de un caso jurídico con Ruiz Leiva Abogados.',
+          'Formulario para solicitar una evaluación inicial en derecho de familia nacional e internacional con Familia Internacional.',
         inLanguage: 'es-CL',
         isPartOf: {
           '@id': websiteId(),

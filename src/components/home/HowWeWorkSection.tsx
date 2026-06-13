@@ -93,9 +93,10 @@ export default function HowWeWorkSection() {
       }}
     >
       <div className="mx-auto w-full max-w-7xl">
-        <div className="mb-12 md:mb-16">
-          <h2 id="metodologia-title" className="text-2xl font-medium tracking-tight text-[#0f172a] md:text-[2rem]">
-            Metodología.
+        <div className="fi-section-header">
+          <p className="fi-eyebrow text-[var(--color-primary)]">Cómo trabajamos</p>
+          <h2 id="metodologia-title" className="fi-section-heading text-[#0f172a]">
+            Metodología
           </h2>
         </div>
 
@@ -128,7 +129,7 @@ export default function HowWeWorkSection() {
             </AnimatePresence>
 
             <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
-              <p className="max-w-[18ch] text-lg font-light leading-tight text-white md:text-2xl">
+              <p className="max-w-[18ch] text-h4 font-semibold leading-tight text-white">
                 {steps[activeIndex].title}
               </p>
               <div className="flex shrink-0 items-center gap-2" aria-hidden="true">
@@ -167,22 +168,22 @@ export default function HowWeWorkSection() {
                   }`}
                 >
                   <span
-                    className={`mb-3 block text-[11px] font-bold uppercase tracking-[0.2em] transition-colors duration-500 ${
+                    className={`fi-eyebrow mb-3 block transition-colors duration-500 ${
                       isActive ? 'text-white/60' : 'text-slate-400'
                     }`}
                   >
                     Paso {String(step.id).padStart(2, '0')}
                   </span>
                   <h3
-                    className={`mb-3 text-xl font-light leading-[1.15] tracking-tight transition-colors duration-500 lg:text-[1.75rem] ${
+                    className={`fi-card-title mb-3 transition-colors duration-500 ${
                       isActive ? 'text-white' : 'text-[#0f172a]'
                     }`}
                   >
                     {step.title}
                   </h3>
                   <p
-                    className={`text-[14px] leading-relaxed transition-colors duration-500 lg:text-[15px] ${
-                      isActive ? 'text-white/80' : 'text-slate-500'
+                    className={`fi-card-desc transition-colors duration-500 ${
+                      isActive ? 'text-white/82' : 'text-slate-600'
                     }`}
                   >
                     {step.description}

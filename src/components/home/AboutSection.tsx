@@ -6,6 +6,8 @@ import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import type { AboutPageSettingsAdminValues } from '@/app/admin/nosotros/actions';
 import ReactMarkdown from 'react-markdown';
+import { primaryContact } from '@/config/contact';
+import { siteConfig } from '@/config/site';
 
 type TabKey = 'bio' | 'formacion' | 'experiencia' | 'contacto';
 
@@ -17,14 +19,12 @@ const tabs: { key: TabKey; label: string }[] = [
 ];
 
 export default function AboutSection({ adminValues }: { adminValues?: AboutPageSettingsAdminValues | null }) {
-  const { t } = useI18n();
-  const [activeDesktopLawyer, setActiveDesktopLawyer] = useState<0 | 1>(0);
+  const { t, locale } = useI18n();
   const [activeDesktopTab, setActiveDesktopTab] = useState<TabKey>('bio');
   
   const [expandedMobileLawyer, setExpandedMobileLawyer] = useState<number | null>(null);
   const [activeMobileTabs, setActiveMobileTabs] = useState<Record<number, TabKey>>({
     0: 'bio',
-    1: 'bio',
   });
   
   const mobileCardRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -41,53 +41,30 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
   const lawyers = [
     {
       id: 0,
-      initials: 'CR',
-      name: parsedPayload.lawyer1Name || t('team.christian.name'),
-      role: t('team.christian.role'),
-      bio1: parsedPayload.lawyer1Bio1 || t('team.christian.bio1'),
-      bio2: parsedPayload.lawyer1Bio2 || t('team.christian.bio2'),
+      initials: 'JS',
+      name: parsedPayload.lawyer1Name || t('team.jaime.name'),
+      role: t('team.jaime.role'),
+      bio1: parsedPayload.lawyer1Bio1 || t('team.jaime.bio1'),
+      bio2: parsedPayload.lawyer1Bio2 || t('team.jaime.bio2'),
       formacion: [
-        'Abogado, Licenciado en Ciencias Jurídicas y Sociales.',
-        'Diplomado en Reforma Procesal Penal.',
-        'Extensa preparación en litigación oral y estratégica.'
+        'Abogado, Magíster en Derecho de Familia.',
+        'Profesor Universitario en Derecho de Familia y Práctica Profesional.',
+        'Formación especializada en Convenio de La Haya (1980) y Convenio de Nueva York (1956).',
       ],
       experiencia: [
-        'Amplia experiencia en litigación compleja en las diversas áreas del Derecho Comercial, Civil y Regulatorio, y en materias administrativas ante la Contraloría General de la República y Tribunales de Contratación Pública.',
-        'Experiencia en Derecho Estatutario del Trabajo, con especial énfasis en Estatuto Docente, Estatuto de la Salud y Derecho Administrativo Municipal.',
-        'Consultor y asesor legal de empresas nacionales e internacionales.',
-        'Abogado litigante con sólida trayectoria ante Tribunales de Garantía, Tribunales de Juicio Oral en lo Penal, Cortes de Apelaciones y Corte Suprema.',
-        'Asesoría a empresas en prevención de delitos (Compliance).'
+        'Cientos de juicios tramitados en Derecho Internacional de Familia.',
+        'Ex abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para los Convenios de La Haya y Nueva York.',
+        'Consultado por Las Últimas Noticias y otros medios nacionales en casos de sustracción internacional y custodia transfronteriza.',
+        'Integrante de una extensa red internacional de abogados dedicados al derecho de familia.',
       ],
-      contacto: 'contacto@rluabogados.cl',
-      image: '/tribunales.jpg',
-      imageAlt: 'Tribunales de justicia',
-      tags: ['Litigación Civil', 'Derecho Comercial', 'Regulatorio', 'Contraloría'],
-    },
-    {
-      id: 1,
-      initials: 'SL',
-      name: parsedPayload.lawyer2Name || t('team.sebastian.name'),
-      role: t('team.sebastian.role'),
-      bio1: parsedPayload.lawyer2Bio1 || t('team.sebastian.bio1'),
-      bio2: parsedPayload.lawyer2Bio2 || t('team.sebastian.bio2'),
-      formacion: [
-        'Abogado, Licenciado en Ciencias Jurídicas.',
-        'Magíster en Derecho de la Empresa.',
-        'Diplomados en Derecho Corporativo y Compliance Empresarial.'
-      ],
-      experiencia: [
-        'Asesoría estratégica a directorios y gerencias de medianas y grandes empresas.',
-        'Especialista en estructuración corporativa, fusiones y adquisiciones.',
-        'Prevención de conflictos y negociación de contratos de alta complejidad.'
-      ],
-      contacto: 'contacto@rluabogados.cl',
-      image: '/camara-diputados.jpg',
-      imageAlt: 'Cámara de Diputadas y Diputados',
-      tags: ['Litigación Estratégica', 'Derecho Corporativo', 'Compliance', 'Regulación'],
+      contacto: primaryContact.email,
+      image: '/hero-familia.png',
+      imageAlt: 'Jaime Soto Silva - Familia Internacional',
+      tags: ['Convenio de La Haya', 'Sustracción Internacional', 'Exequátur', 'Alimentos Internacionales'],
     },
   ] as const;
 
-  const activeProfile = lawyers[activeDesktopLawyer];
+  const activeProfile = lawyers[0];
   
   const formatRole = (role: string) =>
     role
@@ -105,11 +82,6 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
         });
       });
     }
-  };
-
-  const handleDesktopLawyerChange = (id: 0 | 1) => {
-    setActiveDesktopLawyer(id);
-    setActiveDesktopTab('bio');
   };
 
   const setMobileTab = (lawyerId: number, tab: TabKey) => {
@@ -139,7 +111,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
         );
       case 'formacion':
         return (
-          <ul className="list-disc space-y-4 pl-5 text-[16px] text-[#333333] leading-relaxed">
+          <ul className="list-disc space-y-4 pl-5 text-body text-[#333333] leading-relaxed">
             {profile.formacion.map((item, idx) => (
               <li key={idx}>{item}</li>
             ))}
@@ -147,7 +119,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
         );
       case 'experiencia':
         return (
-          <ul className="list-disc space-y-4 pl-5 text-[16px] text-[#333333] leading-relaxed">
+          <ul className="list-disc space-y-4 pl-5 text-body text-[#333333] leading-relaxed">
             {profile.experiencia.map((item, idx) => (
               <li key={idx}>{item}</li>
             ))}
@@ -186,15 +158,41 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col">
-        <div className="mb-10 max-w-[65ch] md:mb-12">
-          <span className="mb-4 block text-small font-bold uppercase tracking-widest text-[var(--color-primary)]">
-            Quiénes Somos
+        <div className="fi-section-header max-w-[65ch]">
+          <span className="fi-eyebrow block text-[var(--color-primary)]">
+            {t('team.label')}
           </span>
-          <h2 id="about-title" className="max-w-[18ch] font-serif text-h2 font-semibold leading-snug tracking-tight text-[#07234c]">
-            Dos abogados.
+          <h2 id="about-title" className="fi-section-heading max-w-[20ch] text-[#07234c]">
+            {t('team.title1')}
             <br />
-            Una estrategia.
+            {t('team.title2')}
           </h2>
+          <p className="fi-section-intro">{t('team.intro')}</p>
+          <p className="mt-4 text-sm leading-relaxed text-[#666666]">
+            {locale === 'es' ? (
+              <>
+                Consultado por medios nacionales como Las Últimas Noticias.{' '}
+                <a href="/prensa" className="font-semibold text-[var(--color-primary)] hover:underline">
+                  Ver prensa
+                </a>
+                {' · '}
+                <a href="/equipo/jaime-soto-silva" className="font-semibold text-[var(--color-primary)] hover:underline">
+                  Conocer al equipo
+                </a>
+              </>
+            ) : (
+              <>
+                Quoted in national media including Las Últimas Noticias.{' '}
+                <a href="/prensa" className="font-semibold text-[var(--color-primary)] hover:underline">
+                  Press coverage
+                </a>
+                {' · '}
+                <a href="/equipo/jaime-soto-silva" className="font-semibold text-[var(--color-primary)] hover:underline">
+                  Meet the team
+                </a>
+              </>
+            )}
+          </p>
         </div>
 
         {/* --- DESKTOP VIEW --- */}
@@ -207,10 +205,10 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
 
             <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,0.96fr)_minmax(360px,0.74fr)] lg:items-center">
               <div className="rounded-[2rem] border border-[#07234c]/5 bg-white p-5 text-[#333333] shadow-md md:p-8 lg:translate-x-2 lg:p-10 flex flex-col h-full">
-                <h3 className="mb-2 font-serif text-3xl lg:text-4xl tracking-tight text-[#07234c]">
+                <h3 className="fi-card-title mb-2 text-[#07234c]">
                   {activeProfile.name}
                 </h3>
-                <p className="mb-6 max-w-[54ch] text-small font-bold uppercase tracking-widest text-[var(--color-primary)]">
+                <p className="fi-card-meta mb-6 max-w-[54ch] text-[var(--color-primary)]">
                   {formatRole(activeProfile.role)}
                 </p>
 
@@ -253,42 +251,6 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
               </div>
             </div>
           </article>
-
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:max-w-3xl">
-            {lawyers.map((lawyer) => {
-              const isActive = activeDesktopLawyer === lawyer.id;
-
-              return (
-                <button
-                  key={lawyer.id}
-                  type="button"
-                  onClick={() => handleDesktopLawyerChange(lawyer.id as 0 | 1)}
-                  aria-pressed={isActive}
-                  className={`flex items-center gap-4 rounded-full border px-4 py-3 text-left transition-colors ${
-                    isActive
-                      ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white'
-                      : 'border-[#07234c]/10 bg-white text-[#333333] hover:border-[#07234c]/20 hover:bg-[#f1f1f1]'
-                  }`}
-                >
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-small font-semibold ${
-                      isActive ? 'border-white/25 bg-white/10 text-white' : 'border-[#07234c]/10 bg-[#07234c] text-white'
-                    }`}
-                  >
-                    {lawyer.initials}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-small font-semibold">
-                      {lawyer.name}
-                    </span>
-                    <span className={`block truncate text-xs ${isActive ? 'text-white/75' : 'text-[#666666]'}`}>
-                      {formatRole(lawyer.role)}
-                    </span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         {/* --- MOBILE VIEW --- */}
@@ -323,7 +285,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
                     <span className="mb-2 block text-sm font-semibold text-white/90">
                       {lawyer.name}
                     </span>
-                    <h3 className="text-3xl font-bold leading-tight text-white">
+                    <h3 className="text-h3 font-bold leading-tight text-white">
                       {formatRole(lawyer.role)}
                     </h3>
                   </div>
@@ -338,7 +300,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
                 >
                   <span className="block">
                     <span className="block text-base font-semibold text-brand">
-                      Ruiz Leiva Abogados
+                      {siteConfig.name}
                     </span>
                     <span className="mt-0.5 block text-sm text-gray-500">
                       {isExpanded ? 'Ocultar perfil' : 'Ver perfil completo'}

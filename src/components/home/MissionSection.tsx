@@ -1,56 +1,47 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import { siteConfig } from '@/config/site';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 
 export default function MissionSection() {
   const { locale } = useI18n();
-  const isSpanish = locale === 'es';
+  const copy = siteConfig.copy.mission;
 
   return (
-    <section className="relative overflow-hidden bg-white px-5 py-20 text-[#0f172a] md:px-12 md:py-32 lg:px-24">
-      <div className="mx-auto max-w-7xl relative z-10">
-        
-        {/* Top Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 md:pb-12 border-b border-slate-100">
-          <h2 className="text-2xl md:text-[1.8rem] font-medium tracking-tight text-[#0f172a]">
-            {isSpanish ? 'Nuestra misión' : 'Our mission'}
-          </h2>
-          
-          <button className="group flex items-center gap-3 mt-6 md:mt-0">
-            <span className="bg-white border border-slate-200 text-[#0f172a] px-6 py-2.5 rounded-full font-bold text-[11px] tracking-widest uppercase transition-colors group-hover:bg-slate-50">
-              {isSpanish ? 'LEER MÁS' : 'READ MORE'}
+    <section className="relative overflow-hidden bg-white px-5 py-20 text-[#0f172a] md:px-12 md:py-28 lg:px-24">
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="flex flex-col justify-between border-b border-slate-100 pb-8 md:flex-row md:items-end md:pb-10">
+          <div className="fi-section-header mb-0">
+            <p className="fi-eyebrow text-[var(--color-primary)]">{locale === 'es' ? 'Propuesta' : 'Our approach'}</p>
+            <h2 className="fi-section-heading text-[#0f172a]">{copy.title[locale]}</h2>
+          </div>
+
+          <Link href="/nosotros" className="group mt-6 flex items-center gap-3 md:mt-0">
+            <span className="rounded-full border border-slate-200 bg-white px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-[#0f172a] transition-colors group-hover:bg-slate-50">
+              {locale === 'es' ? 'Conocer más' : 'Learn more'}
             </span>
-            <span className="bg-white border border-slate-200 text-[#0f172a] p-2.5 rounded-full transition-colors group-hover:bg-slate-50 flex items-center justify-center">
-              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+            <span className="flex items-center justify-center rounded-full border border-slate-200 bg-white p-2.5 text-[#0f172a] transition-colors group-hover:bg-slate-50">
+              <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} aria-hidden />
             </span>
-          </button>
+          </Link>
         </div>
 
-        {/* Body Layout: Empty left, Text right */}
-        <div className="mt-16 md:mt-24 flex flex-col md:flex-row md:justify-end">
-          <div className="w-full md:w-[70%] lg:w-[65%]">
-            <p className="text-2xl md:text-3xl lg:text-4xl leading-[1.4] md:leading-[1.5] font-medium tracking-tight">
-              <span className="text-[#0f172a]">
-                {isSpanish
-                  ? 'Hacemos que la ley sea accesible, clara y efectiva. Ruiz Leiva Abogados ayuda a empresas e individuos a resolver problemas legales de manera rápida, transparente y eficiente, '
-                  : 'We make law accessible, clear, and effective. Ruiz Leiva Abogados helps businesses and individuals resolve legal issues quickly, transparently, and efficiently, '}
-              </span>
-              <span className="text-slate-500">
-                {isSpanish
-                  ? 'utilizando tecnología, experiencia y un enfoque personalizado para proteger sus intereses y asegurar confianza en el futuro.'
-                  : 'using technology, expertise, and a personalized approach to protect their interests and ensure confidence in the future.'}
-              </span>
+        <div className="mt-10 flex flex-col md:mt-14 md:flex-row md:justify-end">
+          <div className="fi-prose w-full md:w-[72%] lg:w-[65%]">
+            <p className="fi-section-lead leading-relaxed">
+              {copy.lead[locale]}
+              <span className="text-slate-600">{copy.supporting[locale]}</span>
             </p>
           </div>
         </div>
       </div>
 
-      {/* Decorative overlapping circles at the bottom */}
-      <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[300px] pointer-events-none opacity-[0.08] flex justify-center items-end overflow-hidden z-0">
-        <div className="w-[400px] h-[400px] rounded-full border-[1.5px] border-slate-800 absolute -bottom-[200px] -ml-[250px]" />
-        <div className="w-[400px] h-[400px] rounded-full border-[1.5px] border-slate-800 absolute -bottom-[200px] ml-[250px]" />
+      <div className="pointer-events-none absolute -bottom-32 left-1/2 z-0 flex h-[300px] w-full max-w-5xl -translate-x-1/2 items-end justify-center overflow-hidden opacity-[0.08]">
+        <div className="absolute -bottom-[200px] -ml-[250px] h-[400px] w-[400px] rounded-full border-[1.5px] border-slate-800" />
+        <div className="absolute -bottom-[200px] ml-[250px] h-[400px] w-[400px] rounded-full border-[1.5px] border-slate-800" />
       </div>
     </section>
   );

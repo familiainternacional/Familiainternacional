@@ -31,12 +31,15 @@ export default function TestimonialsSection({ testimonials = [] }: { testimonial
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: premiumEase }}
-          className="mb-12 md:mb-20 text-center"
+          className="fi-section-header fi-section-header--center"
         >
-          <h2 id="testimonials-title" className="font-sans text-3xl md:text-5xl font-medium tracking-tight text-[#0f172a]">
+          <p className="fi-eyebrow text-[var(--color-primary)]">
+            {isSpanish ? 'Testimonios' : 'Testimonials'}
+          </p>
+          <h2 id="testimonials-title" className="fi-section-heading text-[#0f172a]">
             {isSpanish ? 'Testimonios de clientes verificados' : 'Verified Client Testimonials'}
           </h2>
-          <p className="mt-4 text-[1.1rem] text-[#64748b]">
+          <p className="fi-section-intro fi-section-intro--center text-[#64748b]">
             Google My Business
           </p>
         </motion.div>
@@ -62,8 +65,8 @@ export default function TestimonialsSection({ testimonials = [] }: { testimonial
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
             
             <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 z-10">
-              <h3 className="text-white font-bold text-[15px]">{isSpanish ? 'Tom R.' : 'Tom R.'}</h3>
-              <p className="text-white/80 font-medium text-[13px] mt-1">{isSpanish ? 'Fundador de StartGlobal Inc.' : 'Founder of StartGlobal Inc.'}</p>
+              <h3 className="fi-card-title text-white">{isSpanish ? 'Tom R.' : 'Tom R.'}</h3>
+              <p className="mt-1 text-sm font-medium text-white/80">{isSpanish ? 'Fundador de StartGlobal Inc.' : 'Founder of StartGlobal Inc.'}</p>
             </div>
           </motion.div>
 
@@ -82,8 +85,8 @@ export default function TestimonialsSection({ testimonials = [] }: { testimonial
                     {/* Header: Name/Role (Left) + Avatar (Right) */}
                     <div className="flex items-start justify-between mb-8">
                       <div>
-                        <h3 className="text-[14px] font-bold text-[#0f172a]">{testimonial.author}</h3>
-                        <p className="mt-1 text-[13px] font-medium text-[#64748b]">
+                        <h3 className="fi-card-title text-[#0f172a]">{testimonial.author}</h3>
+                        <p className="mt-1 text-sm font-medium text-[#64748b]">
                           {isSpanish ? testimonial.roleEs : testimonial.roleEn}
                         </p>
                       </div>
@@ -93,7 +96,7 @@ export default function TestimonialsSection({ testimonials = [] }: { testimonial
                     </div>
 
                     {/* Body: Quote */}
-                    <p className="mb-8 text-[1.15rem] md:text-[1.35rem] font-medium leading-[1.4] text-[#334155]">
+                    <p className="fi-section-lead mb-8 font-medium leading-snug text-[#334155]">
                       {isSpanish ? testimonial.quoteEs : testimonial.quoteEn}
                     </p>
                   </div>

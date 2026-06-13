@@ -5,25 +5,28 @@ import EvaluaTuCasoForm from '@/components/forms/EvaluaTuCasoForm';
 import GoogleCalendarBooking from '@/components/calendar/GoogleCalendarBooking';
 import JsonLd from '@/components/seo/JsonLd';
 import { buildEvaluaTuCasoStructuredData } from '@/lib/seo/structured-data';
+import { siteConfig } from '@/config/site';
+import { resolveSiteContact } from '@/lib/site-contact';
 import { Scale, Clock, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Evalúa tu caso',
   description:
-    'Cuéntanos tu situación legal y un abogado de Ruiz Leiva Abogados analizará el caso para definir una estrategia clara, técnica y orientada a resultados.',
+    'Cuéntanos tu situación en derecho de familia nacional o internacional. Un abogado de Familia Internacional analizará tu caso para definir la mejor estrategia.',
   alternates: {
     canonical: '/evalua-tu-caso',
   },
   openGraph: {
-    title: 'Evalúa tu caso | Ruiz Leiva Abogados',
+    title: `Evalúa tu caso | ${siteConfig.name}`,
     description:
-      'Solicita una evaluación inicial para definir una estrategia jurídica clara, técnica y orientada a resultados.',
+      'Solicita una evaluación inicial en derecho de familia internacional: divorcios, sustracción de menores, exequátur y más.',
     url: '/evalua-tu-caso',
   },
 };
 
-export default function EvaluaTuCasoPage() {
+export default async function EvaluaTuCasoPage() {
   const googleCalendarBookingUrl = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL;
+  const contact = resolveSiteContact(null);
 
   return (
     <main className="flex min-h-screen flex-col bg-[#07234c] text-white selection:bg-[var(--color-primary)] selection:text-white">
@@ -40,7 +43,7 @@ export default function EvaluaTuCasoPage() {
               Evalúa tu <span className="text-[var(--color-primary)]">Caso</span>
             </h1>
             <p className="mx-auto max-w-[65ch] text-body text-gray-400">
-              Nuestro equipo está listo para analizar tu situación legal.
+              Nuestro equipo especializado en derecho de familia internacional está listo para analizar tu situación.
               Completa el formulario y te daremos una evaluación inicial para definir la mejor estrategia.
             </p>
           </div>
@@ -55,9 +58,9 @@ export default function EvaluaTuCasoPage() {
                       <Scale className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="mb-1 text-h3">Especialistas</h3>
+                      <h3 className="mb-1 text-h3">Especialistas en familia internacional</h3>
                       <p className="max-w-[65ch] text-body text-gray-400">
-                        Contamos con profesionales capacitados en diversas ramas del derecho.
+                        Primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia y al Convenio de La Haya.
                       </p>
                     </div>
                   </div>
@@ -95,15 +98,15 @@ export default function EvaluaTuCasoPage() {
                 </p>
                 <div className="space-y-3 text-small">
                   <p>
-                    <strong className="block text-white">Sebastián Leiva</strong>
-                    <a href="mailto:sleiva@rluabogados.cl" className="break-all text-gray-300 transition-colors hover:text-white">
-                      sleiva@rluabogados.cl
+                    <strong className="block text-white">Jaime Soto Silva</strong>
+                    <span className="block text-gray-400">Abogado – Socio</span>
+                    <a href={`mailto:${contact.primaryEmail}`} className="break-all text-gray-300 transition-colors hover:text-white">
+                      {contact.primaryEmail}
                     </a>
                   </p>
                   <p>
-                    <strong className="block text-white">Christian Ruiz</strong>
-                    <a href="mailto:cruiz@rluabogados.cl" className="break-all text-gray-300 transition-colors hover:text-white">
-                      cruiz@rluabogados.cl
+                    <a href={contact.primaryPhoneHref} className="text-gray-300 transition-colors hover:text-white">
+                      {contact.primaryPhone}
                     </a>
                   </p>
                 </div>

@@ -71,14 +71,22 @@ export default function CtaSection() {
           transition={{ duration: 0.75, ease: premiumEase }}
           className="relative z-10 mx-auto flex min-h-[350px] md:min-h-[450px] flex-col items-center justify-center text-center px-6 py-16 md:py-24"
         >
-          <h2 id="vision-title" className="mb-4 font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-white">
+          <h2 id="vision-title" className="fi-section-heading mb-4 text-white">
             {isSpanish ? '¿Necesitas asesoría legal?' : 'Need legal guidance?'}
           </h2>
 
-          <p className="mb-10 max-w-2xl text-[1.05rem] font-medium text-white/80">
+          <p className="fi-section-intro fi-section-intro--center fi-section-intro--inverse mx-auto mb-8 max-w-xl font-medium">
             {isSpanish
-              ? 'Respuestas claras. Apoyo de confianza. Deja que legalpoint sea tu brújula legal.'
-              : 'Clear answers. Trusted support. Let legalpoint be your compass in law.'}
+              ? 'Asesoría experta en derecho de familia nacional e internacional. Agenda tu hora online con nuestros abogados.'
+              : 'Expert guidance in national and international family law. Book your online consultation with our attorneys.'}
+          </p>
+
+          <p className="mb-10 text-sm text-white/60">
+            {isSpanish ? 'Consultados por ' : 'Featured in '}
+            <Link href="/prensa" className="font-semibold text-white/85 underline-offset-4 hover:underline">
+              Las Últimas Noticias
+            </Link>
+            {isSpanish ? ' en casos de sustracción internacional.' : ' on international child abduction cases.'}
           </p>
 
           <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 400, damping: 25 }}>
@@ -86,10 +94,10 @@ export default function CtaSection() {
               href="/evalua-tu-caso"
               className="group flex items-center justify-center gap-3"
             >
-              <div className="bg-white text-black px-7 py-3.5 rounded-full font-bold text-xs tracking-widest uppercase transition-colors hover:bg-neutral-100">
-                {isSpanish ? 'SOLICITAR UNA CONSULTA' : 'REQUEST A CONSULTATION'}
+              <div className="rounded-full bg-white px-8 py-4 text-base font-bold uppercase tracking-wide text-black transition-colors hover:bg-neutral-100">
+                {isSpanish ? 'Solicitar una consulta' : 'Request a consultation'}
               </div>
-              <div className="bg-white text-black p-3 rounded-full transition-colors hover:bg-neutral-100 flex items-center justify-center">
+              <div className="flex items-center justify-center rounded-full bg-white p-3.5 text-black transition-colors hover:bg-neutral-100">
                 <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
               </div>
             </Link>

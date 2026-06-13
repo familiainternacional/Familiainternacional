@@ -133,6 +133,20 @@ export const siteConfig = {
         en: 'We are the first and only law firm in Chile dedicated exclusively to protecting families and minors worldwide.',
       },
     },
+    mission: {
+      title: {
+        es: 'Nuestra misión',
+        en: 'Our mission',
+      },
+      lead: {
+        es: 'Protegemos a las familias cuando sus derechos cruzan fronteras. Somos el primer y único estudio jurídico en Chile dedicado exclusivamente al Derecho Internacional de Familia, ',
+        en: 'We protect families when their rights cross borders. We are the first and only law firm in Chile dedicated exclusively to International Family Law, ',
+      },
+      supporting: {
+        es: 'con el respaldo de cientos de juicios tramitados, dominio de los Convenios de La Haya y Nueva York, y una red internacional de abogados que acompaña cada caso con experiencia, confidencialidad y cercanía.',
+        en: 'backed by hundreds of successfully handled cases, deep expertise in the Hague and New York Conventions, and an international network of attorneys who guide every matter with experience, confidentiality and personal care.',
+      },
+    },
   },
 } as const;
 

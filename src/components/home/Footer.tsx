@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
-import { serviceLandings } from '@/config/service-landings';
+import { familyServices } from '@/config/family-services';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { getSiteLogoSrc } from '@/lib/storage/site-assets';
 import { resolveSiteContact } from '@/lib/site-contact';
@@ -14,20 +14,10 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
   const { t, locale } = useI18n();
   const logoSrc = getSiteLogoSrc();
   const contact = resolveSiteContact(adminValues);
-  const serviceLinks =
-    locale === 'es'
-      ? serviceLandings.map((service) => ({
-          label: service.title,
-          href: `/servicios/${service.slug}`,
-        }))
-      : [
-          { label: 'Civil Litigation', href: '/servicios/litigacion-civil' },
-          { label: 'Corporate Law', href: '/servicios/derecho-corporativo' },
-          { label: 'Administrative Law', href: '/servicios/derecho-administrativo' },
-          { label: 'Compliance', href: '/servicios/compliance' },
-          { label: 'Dispute Resolution', href: '/servicios/resolucion-de-conflictos' },
-          { label: 'Business Advisory', href: '/servicios/asesoria-empresarial' },
-        ];
+  const serviceLinks = familyServices.map((service) => ({
+    label: locale === 'es' ? service.title.es : service.title.en,
+    href: '/servicios',
+  }));
 
   return (
     <footer
@@ -93,18 +83,28 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
           </h4>
           <ul className="grid grid-cols-2 gap-x-6 gap-y-4 text-small md:block md:space-y-6">
             <li>
-              <Link href="/#about" className="transition-colors hover:text-white">
+              <Link href="/nosotros" className="transition-colors hover:text-white">
                 {t('footer.links.aboutUs')}
               </Link>
             </li>
             <li>
-              <Link href="/#services" className="transition-colors hover:text-white">
+              <Link href="/servicios" className="transition-colors hover:text-white">
                 {t('nav.services')}
               </Link>
             </li>
             <li>
-              <Link href="/#process" className="transition-colors hover:text-white">
+              <Link href="/metodologia" className="transition-colors hover:text-white">
                 {t('nav.process')}
+              </Link>
+            </li>
+            <li>
+              <Link href="/equipo/jaime-soto-silva" className="transition-colors hover:text-white">
+                {t('footer.links.ourTeam')}
+              </Link>
+            </li>
+            <li>
+              <Link href="/prensa" className="transition-colors hover:text-white">
+                Prensa
               </Link>
             </li>
             <li>
@@ -113,7 +113,17 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
               </Link>
             </li>
             <li>
-              <Link href="/evalua-tu-caso" className="transition-colors hover:text-white">
+              <Link href="/reseñas" className="transition-colors hover:text-white">
+                Reseñas Google
+              </Link>
+            </li>
+            <li>
+              <Link href="/preguntas-frecuentes" className="transition-colors hover:text-white">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link href="/contacto" className="transition-colors hover:text-white">
                 {t('footer.links.contact')}
               </Link>
             </li>

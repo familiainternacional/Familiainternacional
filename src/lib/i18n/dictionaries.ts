@@ -72,9 +72,19 @@ export const dictionaries = {
     },
     team: {
       label: 'Quiénes Somos',
-      title1: 'Dos abogados.',
-      title2: 'Una sola estrategia.',
-      intro: 'Ruiz Leiva Abogados combina formación académica de primer nivel con experiencia práctica real — en tribunales, en la administración pública y en el mundo de los negocios. No somos un estudio genérico. Somos dos profesionales con trayectorias complementarias trabajando como un solo equipo orientado a resultados.',
+      title1: 'Verdaderos expertos en',
+      title2: 'Derecho de Familia Internacional.',
+      intro:
+        'Nuestro estudio nace de la necesidad de brindar asesoría experta en temas donde no es fácil encontrar profesionales con experiencia. Con cientos de juicios tramitados y una red internacional de abogados, acompañamos a familias en Chile y en el extranjero.',
+      jaime: {
+        name: 'Jaime Soto Silva',
+        role: 'Abogado – Socio',
+        bio1:
+          'Abogado, Magíster y Profesor Universitario en Derecho de Familia y Práctica Profesional. Ex abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para la aplicación de los Convenios de La Haya de 1980 y de Nueva York de 1956.',
+        bio2:
+          'Su trayectoria combina litigación en tribunales de familia, coordinación con autoridades centrales y asesoría a familias en conflictos transfronterizos de alta complejidad.',
+        tags: ['Convenio de La Haya', 'Sustracción Internacional', 'Exequátur', 'Alimentos Internacionales'],
+      },
       christian: {
         name: 'Christian Ruiz Varas',
         role: 'Socio Fundador — Derecho Civil, Comercial, Regulatorio y Laboral',
@@ -104,7 +114,7 @@ export const dictionaries = {
     },
     footer: {
       copyright: 'Todos los derechos reservados.',
-      address: 'Av. Apoquindo 3669, Las Condes, Santiago',
+      address: 'Av. San Josemaría Escrivá de Balaguer N°13.105, Of. 303, Lo Barnechea, Santiago',
       socialMedia: 'REDES SOCIALES',
       company: 'EMPRESA',
       servicesTitle: 'SERVICIOS',
@@ -245,9 +255,19 @@ export const dictionaries = {
     },
     team: {
       label: 'About Us',
-      title1: 'Two lawyers.',
-      title2: 'One single strategy.',
-      intro: 'Ruiz Leiva Abogados combines top-tier academic training with real practical experience — in courts, in public administration, and in the business world. We are not a generic firm. We are two professionals with complementary backgrounds working as a single results-oriented team.',
+      title1: 'True experts in',
+      title2: 'International Family Law.',
+      intro:
+        'Our firm was founded to provide expert guidance in matters where experienced professionals are hard to find. With hundreds of successfully handled cases and an international network of attorneys, we support families in Chile and abroad.',
+      jaime: {
+        name: 'Jaime Soto Silva',
+        role: 'Attorney – Partner',
+        bio1:
+          'Attorney, Master’s degree holder and University Professor in Family Law and Professional Practice. Former attorney at the International Office of Chile’s Legal Aid Corporation, Central Authority for the Hague Convention of 1980 and the New York Convention of 1956.',
+        bio2:
+          'His career combines family court litigation, coordination with central authorities, and advisory work for families facing complex cross-border disputes.',
+        tags: ['Hague Convention', 'International Child Abduction', 'Exequatur', 'International Child Support'],
+      },
       christian: {
         name: 'Christian Ruiz Varas',
         role: 'Founding Partner — Civil, Commercial, Regulatory and Labor Law',
@@ -277,7 +297,7 @@ export const dictionaries = {
     },
     footer: {
       copyright: 'All rights reserved.',
-      address: 'Apoquindo Ave 3669, Las Condes, Santiago',
+      address: 'Av. San Josemaría Escrivá de Balaguer N°13.105, Of. 303, Lo Barnechea, Santiago, Chile',
       socialMedia: 'SOCIAL MEDIA',
       company: 'COMPANY',
       servicesTitle: 'SERVICES',
@@ -380,6 +400,10 @@ export type TranslationKey =
   | 'team.title1'
   | 'team.title2'
   | 'team.intro'
+  | 'team.jaime.name'
+  | 'team.jaime.role'
+  | 'team.jaime.bio1'
+  | 'team.jaime.bio2'
   | 'team.christian.name'
   | 'team.christian.role'
   | 'team.christian.bio1'

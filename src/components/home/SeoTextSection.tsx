@@ -1,32 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { ArrowUpRight, Plus, Minus } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
+import { homeFaqItems } from '@/config/home-faq';
 
-const faqItems = [
-  {
-    question: '¿A quiénes está dirigida nuestra asesoría?',
-    answer: 'Ruiz Leiva Abogados es un estudio jurídico ubicado en Las Condes, Santiago, orientado a empresas, empresarios y personas que enfrentan conflictos civiles, comerciales, regulatorios o corporativos de alta relevancia.'
-  },
-  {
-    question: '¿Cómo abordamos cada caso legal?',
-    answer: 'Nuestro trabajo combina análisis legal técnico con criterio estratégico. No entregamos respuestas aisladas: ordenamos escenarios, riesgos, costos y próximos pasos para que cada cliente pueda decidir con información real.'
-  },
-  {
-    question: '¿Cuál es nuestra propuesta de valor?',
-    answer: 'La propuesta de Ruiz Leiva Abogados se enfoca en prevención, negociación y litigación estratégica, con una mirada especialmente útil para quienes necesitan más que representación jurídica: necesitan un socio que entienda el negocio.'
-  },
-  {
-    question: '¿Qué áreas de práctica cubrimos?',
-    answer: 'Nuestra experiencia abarca litigación civil, derecho corporativo, derecho administrativo, compliance y negociación, brindando asesoría jurídica para empresas y personas que necesitan decisiones claras y resultados.'
-  }
-];
-
-export default function SeoTextSection() {
+export default function SeoTextSection({ showPageHeader = true }: { showPageHeader?: boolean }) {
   const [expanded, setExpanded] = useState<number | null>(0);
   const { locale } = useI18n();
   const isSpanish = locale === 'es';
+  const faqItems = homeFaqItems[locale];
 
   return (
     <section
@@ -34,33 +18,36 @@ export default function SeoTextSection() {
       className="bg-white px-5 py-20 text-[#0f172a] md:px-12 md:py-32 lg:px-24"
     >
       <div className="mx-auto max-w-7xl">
-        
-        {/* Top Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 md:pb-12 border-b border-slate-100">
-          <h2 id="faq-title" className="text-2xl md:text-[2rem] font-medium tracking-tight text-[#0f172a]">
-            {isSpanish ? 'Preguntas frecuentes' : 'Frequently asked questions'}
-          </h2>
-          
-          <button className="group flex items-center gap-3 mt-6 md:mt-0">
-            <span className="bg-white border border-slate-200 text-[#0f172a] px-6 py-2.5 rounded-full font-bold text-xs tracking-widest uppercase transition-colors group-hover:bg-slate-50">
-              {isSpanish ? 'CENTRO DE AYUDA' : 'HELP CENTRE'}
-            </span>
-            <span className="bg-white border border-slate-200 text-[#0f172a] p-2.5 rounded-full transition-colors group-hover:bg-slate-50 flex items-center justify-center">
-              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
-            </span>
-          </button>
-        </div>
+        {showPageHeader ? (
+          <div className="flex flex-col justify-between border-b border-slate-100 pb-8 md:flex-row md:items-center md:pb-12">
+            <div>
+              <p className="fi-eyebrow text-[var(--color-primary)]">
+                {isSpanish ? 'Consultas frecuentes' : 'Common questions'}
+              </p>
+              <h2 id="faq-title" className="fi-section-heading text-[#0f172a]">
+                {isSpanish ? 'Preguntas frecuentes' : 'Frequently asked questions'}
+              </h2>
+            </div>
 
-        {/* Body Layout: Empty left, Accordion right */}
-        <div className="mt-12 flex flex-col md:flex-row md:justify-end">
+            <Link href="/evalua-tu-caso" className="group mt-6 flex items-center gap-3 md:mt-0">
+              <span className="rounded-full border border-slate-200 bg-white px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-[#0f172a] transition-colors group-hover:bg-slate-50">
+                {isSpanish ? 'EVALÚA TU CASO' : 'EVALUATE YOUR CASE'}
+              </span>
+              <span className="flex items-center justify-center rounded-full border border-slate-200 bg-white p-2.5 text-[#0f172a] transition-colors group-hover:bg-slate-50">
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
+              </span>
+            </Link>
+          </div>
+        ) : null}
+
+        <div className={`flex flex-col md:flex-row md:justify-end ${showPageHeader ? 'mt-12' : ''}`}>
           <div className="w-full md:w-[65%] lg:w-[55%]">
-            
             <div className="flex flex-col gap-3">
               {faqItems.map((item, idx) => {
                 const isExpanded = expanded === idx;
                 return (
                   <div
-                    key={idx}
+                    key={item.question}
                     className={`overflow-hidden rounded-[1.5rem] transition-all duration-300 ease-in-out ${
                       isExpanded
                         ? 'bg-[#111827] text-white shadow-lg'
@@ -71,17 +58,17 @@ export default function SeoTextSection() {
                       type="button"
                       onClick={() => setExpanded(isExpanded ? null : idx)}
                       aria-expanded={isExpanded}
-                      className="flex w-full items-center justify-between gap-4 px-6 py-5 md:px-8 md:py-6 text-left"
+                      className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left md:px-8 md:py-6"
                     >
                       <h3
-                        className={`text-[15px] md:text-[16px] font-medium leading-snug transition-colors duration-300 ${
+                        className={`fi-card-title transition-colors duration-300 ${
                           isExpanded ? 'text-white' : 'text-[#0f172a]'
                         }`}
                       >
                         {item.question}
                       </h3>
-                      
-                      <div className="shrink-0 flex items-center justify-center">
+
+                      <div className="flex shrink-0 items-center justify-center">
                         {isExpanded ? (
                           <Minus className="h-5 w-5 text-white/70" strokeWidth={2} />
                         ) : (
@@ -96,7 +83,7 @@ export default function SeoTextSection() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="px-6 pb-6 md:px-8 md:pb-8 pt-0 text-[14px] md:text-[15px] leading-[1.6] text-white/70 max-w-2xl">
+                        <p className="fi-card-desc max-w-2xl px-6 pb-6 pt-0 text-white/78 md:px-8 md:pb-8">
                           {item.answer}
                         </p>
                       </div>
@@ -105,7 +92,6 @@ export default function SeoTextSection() {
                 );
               })}
             </div>
-
           </div>
         </div>
       </div>

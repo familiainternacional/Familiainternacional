@@ -1,0 +1,150 @@
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import Navbar from '@/components/home/Navbar';
+import Footer from '@/components/home/Footer';
+import JsonLd from '@/components/seo/JsonLd';
+import PressCredibilityBanner from '@/components/home/PressCredibilityBanner';
+import { getTeamMemberBySlug } from '@/config/team';
+import { siteConfig } from '@/config/site';
+import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
+import { buildTeamMemberStructuredData } from '@/lib/seo/team-structured-data';
+import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { notFound } from 'next/navigation';
+
+const member = getTeamMemberBySlug('jaime-soto-silva');
+
+export const metadata: Metadata = member
+  ? {
+      title: member.seo.title,
+      description: member.seo.description,
+      keywords: member.seo.keywords,
+      alternates: { canonical: `/equipo/${member.slug}` },
+      openGraph: {
+        title: `${member.seo.title} | ${siteConfig.name}`,
+        description: member.seo.description,
+        url: `/equipo/${member.slug}`,
+        type: 'profile',
+        images: [{ url: member.image, alt: member.imageAlt }],
+      },
+    }
+  : {};
+
+export default async function TeamMemberPage() {
+  if (!member) notFound();
+
+  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
+
+  return (
+    <main className="flex min-h-screen flex-col bg-white text-[#07234c]">
+      <JsonLd data={buildTeamMemberStructuredData(member)} />
+      <Navbar adminValues={siteSettings} />
+
+      <article className="px-5 pb-24 pt-32 md:px-12 md:pb-32 md:pt-40 lg:px-24">
+        <div className="mx-auto max-w-6xl">
+          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-neutral-500">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-[#07234c]">
+                  Inicio
+                </Link>
+              </li>
+              <li aria-hidden>/</li>
+              <li>
+                <Link href="/#about" className="hover:text-[#07234c]">
+                  Nosotros
+                </Link>
+              </li>
+              <li aria-hidden>/</li>
+              <li className="font-semibold text-[#07234c]">{member.name}</li>
+            </ol>
+          </nav>
+
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#07234c]/5 lg:sticky lg:top-32">
+              <Image
+                src={resolveSiteAssetSrc(member.image)}
+                alt={member.imageAlt}
+                fill
+                className="object-cover object-center"
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                priority
+              />
+            </div>
+
+            <div>
+              <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.15em] text-[#07234c]">
+                {siteConfig.name}
+              </p>
+              <h1 className="mb-2 font-serif text-4xl font-semibold tracking-tight md:text-5xl">{member.name}</h1>
+              <p className="mb-6 text-sm font-bold uppercase tracking-widest text-[var(--color-primary-mid)]">
+                {member.role.es}
+              </p>
+
+              <div className="mb-8 space-y-4 text-base leading-relaxed text-neutral-700">
+                {member.bio.es.map((paragraph) => (
+                  <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                ))}
+              </div>
+
+              <div className="mb-8 flex flex-wrap gap-2">
+                {member.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-[#07234c]/10 bg-[#07234c]/[0.04] px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#555555]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mb-8">
+                <PressCredibilityBanner variant="light" linkToPress showQuote />
+              </div>
+
+              <section className="mb-8">
+                <h2 className="mb-4 text-xl font-bold">Formación</h2>
+                <ul className="list-disc space-y-2 pl-5 text-neutral-700">
+                  {member.formacion.es.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <section className="mb-10">
+                <h2 className="mb-4 text-xl font-bold">Experiencia</h2>
+                <ul className="list-disc space-y-2 pl-5 text-neutral-700">
+                  {member.experiencia.es.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/evalua-tu-caso"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#07234c] px-5 py-3 text-sm font-bold text-white hover:bg-[#051830]"
+                >
+                  Agendar evaluación
+                  <ArrowUpRight className="h-4 w-4" aria-hidden />
+                </Link>
+                <a
+                  href={`mailto:${member.email}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-[#07234c]/15 px-5 py-3 text-sm font-bold text-[#07234c] hover:bg-[#07234c]/5"
+                >
+                  {member.email}
+                </a>
+                <Link href="/prensa" className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-[#07234c]">
+                  Ver cobertura en prensa
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <Footer adminValues={siteSettings} />
+    </main>
+  );
+}

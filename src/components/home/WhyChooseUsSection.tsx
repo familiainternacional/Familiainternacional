@@ -17,12 +17,12 @@ export default function WhyChooseUsSection() {
         {/* Header */}
         <div className="mb-10 flex max-w-[65ch] flex-col items-start text-left md:mb-16">
           <h2 className="mb-6 font-serif text-h2 tracking-tight text-white">
-            {isSpanish ? 'Por qué elegir Ruiz Leiva Abogados' : 'Why choose Ruiz Leiva Abogados'}
+            {isSpanish ? 'Por qué elegir Familia Internacional' : 'Why choose Familia Internacional'}
           </h2>
           <p className="text-body text-gray-400">
             {isSpanish
-              ? 'Un abogado que piensa como empresario. Combinamos experiencia jurídica técnica con una lógica comercial y estratégica que le da a cada cliente una ventaja real.'
-              : 'A lawyer who thinks like an entrepreneur. We combine technical legal expertise with commercial and strategic logic that gives every client a real advantage.'}
+              ? 'Somos el único estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia, con cientos de juicios tramitados y una red internacional de abogados.'
+              : 'We are the only firm in Chile dedicated exclusively to International Family Law, with hundreds of successfully handled cases and an international attorney network.'}
           </p>
         </div>
 
@@ -44,14 +44,13 @@ export default function WhyChooseUsSection() {
             </div>
             <div className="flex flex-col justify-between flex-grow">
               <h3 className="mb-7 text-h3 leading-snug tracking-tight md:mb-8">
-                <span className="font-bold text-white block mb-2">{isSpanish ? 'Estrategia, no solo ley.' : 'Strategy, not just law.'}</span>
+                <span className="mb-2 block font-bold text-white">{isSpanish ? 'Experiencia comprobada.' : 'Proven experience.'}</span>
                 <span className="text-body font-normal text-gray-400">
-                  {isSpanish ? 'Analizamos incentivos, riesgos y escenarios. Le decimos qué conviene, cuándo conviene y cómo ejecutarlo.' : 'We analyze incentives, risks, and scenarios. We tell you what is best, when to do it, and how to execute it.'}
+                  {isSpanish ? 'Cientos de juicios en familia internacional, Convenio de La Haya y coordinación con autoridades centrales.' : 'Hundreds of international family law cases, Hague Convention work, and coordination with central authorities.'}
                 </span>
               </h3>
-              {/* Special Pill Button matching the photo */}
               <Link
-                href="/equipo"
+                href="/equipo/jaime-soto-silva"
                 className="mt-auto inline-flex w-full items-center justify-between gap-3 rounded-full bg-[var(--color-primary)] py-2 pl-5 pr-2 text-small font-bold text-white transition-transform hover:scale-105 sm:w-fit sm:justify-center sm:pl-6"
               >
                 {isSpanish ? 'Conoce al Equipo' : 'Meet the Team'}
@@ -77,9 +76,9 @@ export default function WhyChooseUsSection() {
             </div>
             <div className="flex flex-col justify-center p-6 lg:p-8 flex-grow">
               <h3 className="text-h3 leading-snug tracking-tight">
-                <span className="font-bold text-white block mb-1">{isSpanish ? 'Público + Privado.' : 'Public + Private.'}</span>
+                <span className="font-bold text-white block mb-1">{isSpanish ? 'Confidencialidad y cercanía.' : 'Confidentiality and care.'}</span>
                 <span className="text-body font-normal text-gray-400">
-                  {isSpanish ? 'Experiencia real en ambos mundos. Entendemos la lógica del Estado y la del mercado simultáneamente.' : 'Real experience in both worlds. We understand the logic of the State and the market simultaneously.'}
+                  {isSpanish ? 'Acompañamos a familias en momentos sensibles con claridad, contención y estrategia jurídica especializada.' : 'We guide families through sensitive moments with clarity, support, and specialized legal strategy.'}
                 </span>
               </h3>
             </div>
@@ -91,9 +90,9 @@ export default function WhyChooseUsSection() {
               <h3 className="mb-2 font-serif text-h2 font-bold leading-tight tracking-tight text-white">
                 {isSpanish ? 'Precisión' : 'Precision'}
               </h3>
-              <p className="mb-2 text-h3 font-bold text-[var(--color-primary)]">{isSpanish ? 'y velocidad.' : 'and speed.'}</p>
-              <p className="text-xs text-gray-500 leading-snug">
-                {isSpanish ? 'Diagnóstico jurídico rápido. Sin demoras innecesarias. Sabemos que el tiempo tiene valor.' : 'Fast legal diagnosis. No unnecessary delays. We know time has value.'}
+              <p className="mb-2 text-h3 font-bold text-[var(--color-primary)]">{isSpanish ? 'especializados.' : 'specialists.'}</p>
+              <p className="text-xs leading-snug text-gray-500">
+                {isSpanish ? 'Enfoque exclusivo en familia internacional, sin diluir la práctica en otras áreas.' : 'Exclusive focus on international family law, without diluting the practice across other areas.'}
               </p>
             </div>
             {/* Isolated floating object on the right */}
@@ -113,9 +112,9 @@ export default function WhyChooseUsSection() {
               <h3 className="max-w-[40ch] text-h3 leading-snug tracking-tight">
                 <span className="font-bold text-white block mb-2">{isSpanish ? 'Comunicación clara.' : 'Clear communication.'}</span>
                 <span className="text-body font-normal text-gray-400">
-                  {isSpanish 
-                    ? 'Traducimos el lenguaje jurídico a términos entendibles. Usted toma decisiones con información real. Hemos trabajado en administración pública, litigación privada, regulación administrativa y estructuración de negocios.' 
-                    : 'We translate legal language into understandable terms. You make decisions with real information. We have worked in public administration, private litigation, administrative regulation, and business structuring.'}
+                  {isSpanish
+                    ? 'Traducimos escenarios jurídicos complejos a alternativas claras. Consultados por medios como Las Últimas Noticias en casos de sustracción internacional.'
+                    : 'We translate complex legal scenarios into clear options. Quoted by media including Las Últimas Noticias on international abduction cases.'}
                 </span>
               </h3>
             </div>

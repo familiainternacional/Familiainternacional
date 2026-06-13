@@ -12,10 +12,10 @@ export default function AboutPageForm({ initialValues }: { initialValues: AboutP
   const [message, setMessage] = useState('');
 
   let parsedPayload: Record<string, string> = {
-    aboutIntro: "Estudio jurídico enfocado en empresas, empresarios y personas que requieren criterio técnico, estrategia y una ejecución clara.",
-    lawyer1Name: t('team.christian.name'),
-    lawyer1Bio1: t('team.christian.bio1'),
-    lawyer1Bio2: t('team.christian.bio2'),
+    aboutIntro: 'Estudio jurídico especializado en Derecho Internacional de Familia.',
+    lawyer1Name: t('team.jaime.name'),
+    lawyer1Bio1: t('team.jaime.bio1'),
+    lawyer1Bio2: t('team.jaime.bio2'),
     lawyer2Name: t('team.sebastian.name'),
     lawyer2Bio1: t('team.sebastian.bio1'),
     lawyer2Bio2: t('team.sebastian.bio2'),

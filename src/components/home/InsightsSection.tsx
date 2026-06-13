@@ -35,19 +35,19 @@ export default function InsightsSection() {
   return (
     <section className="relative z-10 w-full bg-white px-5 py-16 md:px-12 md:py-24 lg:px-24">
       <div className="mx-auto w-full max-w-7xl">
-        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between md:mb-16">
+        <div className="fi-section-header flex flex-col md:flex-row md:items-end md:justify-between">
           <div className="max-w-[34ch]">
-            <span className="mb-4 block text-small font-bold uppercase tracking-widest text-[var(--color-primary)]">
+            <span className="fi-eyebrow block text-[var(--color-primary)]">
               Perspectivas
             </span>
-            <h2 className="font-serif text-h2 font-semibold tracking-tight text-[#07234c]">
+            <h2 className="fi-section-heading text-[#07234c]">
               Conocimiento jurídico
             </h2>
           </div>
           
           <Link 
             href="/perspectivas" 
-            className="mt-6 hidden items-center gap-2 text-small font-bold uppercase tracking-widest text-[#333333] md:inline-flex"
+            className="fi-link-action mt-6 hidden text-[#333333] md:mt-0 md:inline-flex"
           >
             Ver todos los artículos
             <ArrowRight className="h-4 w-4" />
@@ -63,7 +63,7 @@ export default function InsightsSection() {
             >
               <div>
                 <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#07234c]/5 bg-brand/[0.03] px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-[#555555]">
+                  <span className="fi-card-meta inline-flex items-center gap-2 rounded-full border border-[#07234c]/5 bg-brand/[0.03] px-3 py-1.5 text-[#555555]">
                     <BookOpen className="h-3.5 w-3.5 text-[var(--color-primary)]" />
                     {insight.category}
                   </span>
@@ -71,12 +71,8 @@ export default function InsightsSection() {
                     {insight.date}
                   </span>
                 </div>
-                <h3 className="mb-3 font-serif text-h3 font-bold leading-snug text-[#07234c]">
-                  {insight.title}
-                </h3>
-                <p className="text-body text-[#555555]">
-                  {insight.excerpt}
-                </p>
+                <h3 className="fi-card-title mb-3 text-[#07234c]">{insight.title}</h3>
+                <p className="fi-card-desc">{insight.excerpt}</p>
               </div>
               
               <div className="mt-8 flex items-center font-bold text-[#07234c]">
@@ -89,7 +85,7 @@ export default function InsightsSection() {
 
         <Link 
           href="/perspectivas" 
-          className="mt-10 inline-flex items-center gap-2 text-small font-bold uppercase tracking-widest text-[#333333] md:hidden"
+          className="fi-link-action mt-10 text-[#333333] md:hidden"
         >
           Ver todos los artículos
           <ArrowRight className="h-4 w-4" />

@@ -13,7 +13,7 @@ const OFFICE_LNG = -70.5920947147805;
 const MAP_EMBED_SRC = buildGoogleMapsEmbedFromCoordinates(OFFICE_LAT, OFFICE_LNG, 16);
 const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${OFFICE_LAT},${OFFICE_LNG}`;
 
-function OfficeMapSectionInner() {
+function OfficeMapSectionInner({ showPageHeader = true }: { showPageHeader?: boolean }) {
   const { locale } = useI18n();
   const isSpanish = locale === 'es';
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -94,22 +94,27 @@ function OfficeMapSectionInner() {
       className="bg-white py-16 text-[#07234c] md:py-28"
     >
       {/* TOP: Title & Subtitle */}
-      <div className="mx-auto mb-10 max-w-[1440px] px-5 md:mb-14 md:px-12 lg:px-24">
-        <h2 id="contact-title" className="mb-6 font-serif text-h2 tracking-tight text-[#07234c]">
-          {isSpanish ? 'Contáctanos' : 'Get In Touch'}
-        </h2>
-        <p className="max-w-[65ch] text-body text-gray-500">
-          {isSpanish
-            ? 'Nos encantaría escucharte. Ya sea que tengas dudas, necesites asesoría legal o quieras conocer más sobre nuestros servicios, nuestro equipo está aquí para ayudarte.'
-            : 'We\'d love to hear from you! Whether you have questions, need legal advice, or want to learn more about our services, our team is here to help.'}
-        </p>
-      </div>
+      {showPageHeader ? (
+        <div className="fi-section-header mx-auto max-w-[1440px] px-5 md:px-12 lg:px-24">
+          <p className="fi-eyebrow text-[var(--color-primary)]">
+            {isSpanish ? 'Contacto' : 'Contact'}
+          </p>
+          <h2 id="contact-title" className="fi-section-heading text-[#07234c]">
+            {isSpanish ? 'Contáctanos' : 'Get In Touch'}
+          </h2>
+          <p className="fi-section-intro">
+            {isSpanish
+              ? 'Nos encantaría escucharte. Ya sea que tengas dudas, necesites asesoría legal o quieras conocer más sobre nuestros servicios, nuestro equipo está aquí para ayudarte.'
+              : 'We\'d love to hear from you! Whether you have questions, need legal advice, or want to learn more about our services, our team is here to help.'}
+          </p>
+        </div>
+      ) : null}
 
       {/* MIDDLE: Contained Map */}
-      <div className="mx-auto mb-16 max-w-[1440px] px-5 md:mb-28 md:px-12 lg:px-24">
+      <div className={`mx-auto max-w-[1440px] px-5 md:px-12 lg:px-24 ${showPageHeader ? 'mb-16 md:mb-28' : 'mb-12 md:mb-16'}`}>
         <div className="relative h-[360px] overflow-hidden rounded-[18px] bg-[#f2f2f2] md:h-[560px]">
           <iframe
-            title={isSpanish ? 'Mapa de Ruiz Leiva Abogados' : 'Ruiz Leiva Abogados map'}
+            title={isSpanish ? 'Mapa de Familia Internacional' : 'Familia Internacional map'}
             src={MAP_EMBED_SRC}
             className="absolute inset-0 h-full w-full grayscale-[15%]"
             loading="lazy"
@@ -135,10 +140,10 @@ function OfficeMapSectionInner() {
       {/* BOTTOM: Request a Demo / Form */}
       <div className="mx-auto grid max-w-[1440px] items-start gap-10 px-5 md:px-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24 lg:px-24">
         <div>
-          <h2 className="font-serif text-h2 tracking-tight text-[#07234c]">
+          <h3 className="text-h3 font-bold text-[#07234c]">
             {isSpanish ? 'Evalúa tu caso' : 'Request a Demo'}
-          </h2>
-          <p className="mt-5 max-w-[65ch] text-body text-gray-500">
+          </h3>
+          <p className="fi-section-intro">
             {isSpanish
               ? 'Cuéntanos brevemente qué necesitas y nuestro equipo evaluará el mejor camino jurídico para avanzar con claridad.'
               : 'Tell us briefly what you need and our team will evaluate the best legal path forward with clarity.'}
@@ -150,10 +155,10 @@ function OfficeMapSectionInner() {
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)]/10">
               <CheckCircle2 className="h-8 w-8 text-[var(--color-primary)]" />
             </div>
-            <h3 className="mb-4 text-h3 font-bold text-[#07234c]">
+            <h3 className="fi-card-title mb-4 text-[#07234c]">
               {isSpanish ? '¡Mensaje Enviado!' : 'Message Sent!'}
             </h3>
-            <p className="mb-8 max-w-[45ch] text-body text-[#666666]">
+            <p className="fi-card-desc mb-8 max-w-[45ch]">
               {isSpanish 
                 ? 'Hemos recibido su solicitud. Un abogado de nuestro equipo revisará su caso y se pondrá en contacto a la brevedad.'
                 : 'We have received your request. One of our lawyers will review your case and contact you shortly.'}
@@ -292,10 +297,10 @@ function OfficeMapSectionInner() {
   );
 }
 
-export default function OfficeMapSection() {
+export default function OfficeMapSection({ showPageHeader = true }: { showPageHeader?: boolean }) {
   return (
     <ReCaptchaWrapper>
-      <OfficeMapSectionInner />
+      <OfficeMapSectionInner showPageHeader={showPageHeader} />
     </ReCaptchaWrapper>
   );
 }

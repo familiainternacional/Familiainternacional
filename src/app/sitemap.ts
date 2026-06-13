@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { fallbackBlogPosts } from '@/config/blog-fallback-posts';
 import { serviceLandings } from '@/config/service-landings';
+import { getPressDetailPages } from '@/config/media-mentions';
+import { teamMembers } from '@/config/team';
 import { getPrismaClient } from '@/lib/db/prisma';
 
 export const revalidate = 86400;
@@ -44,10 +46,58 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${siteUrl}/evalua-tu-caso`,
+      url: `${siteUrl}/prensa`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.75,
+    },
+    ...getPressDetailPages().map((item) => ({
+      url: `${siteUrl}/prensa/${item.slug}`,
+      lastModified: new Date(item.date),
+      changeFrequency: 'yearly' as const,
+      priority: 0.7,
+    })),
+    ...teamMembers.map((member) => ({
+      url: `${siteUrl}/equipo/${member.slug}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.72,
+    })),
+    {
+      url: `${siteUrl}/nosotros`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${siteUrl}/metodologia`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/preguntas-frecuentes`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${siteUrl}/reseñas`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.76,
+    },
+    {
+      url: `${siteUrl}/contacto`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.82,
+    },
+    {
+      url: `${siteUrl}/evalua-tu-caso`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.88,
     },
     {
       url: `${siteUrl}/servicios`,

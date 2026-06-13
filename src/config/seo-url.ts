@@ -1,5 +1,5 @@
 /** Host canónico de marca. */
-export const CANONICAL_BRAND_HOST = 'www.rluabogados.cl';
+export const CANONICAL_BRAND_HOST = 'www.familiainternacional.cl';
 
 export function getDefaultCanonicalBaseUrl(): string {
   const raw = [
