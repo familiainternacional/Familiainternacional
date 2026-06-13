@@ -7,18 +7,19 @@ const defaultOfficeLines = siteConfig.offices[0]?.addressLines ?? ['Lo Barnechea
 export const defaultOfficeAddressMultiline = defaultOfficeLines.join('\n');
 export const defaultOfficeAddressInline = defaultOfficeLines.join(', ');
 
-const LEGACY_RLU_PATTERNS = {
-  email: /rluabogados\.cl/i,
+/** Contactos de otros proyectos que no deben sobreescribir la config FI en CMS. */
+const LEGACY_FOREIGN_CONTACT_PATTERNS = {
+  email: /rluabogados\.cl|calafatepropiedades/i,
   phone: /3540\s*6356|56935406356/i,
   address: /apoquindo/i,
 };
 
-function hasLegacyRluContact(values: SiteSettingsAdminValues): boolean {
+function hasLegacyForeignContact(values: SiteSettingsAdminValues): boolean {
   return (
-    LEGACY_RLU_PATTERNS.email.test(values.primaryEmail ?? '') ||
-    LEGACY_RLU_PATTERNS.phone.test(values.primaryPhone ?? '') ||
-    LEGACY_RLU_PATTERNS.phone.test(values.whatsappNumber ?? '') ||
-    LEGACY_RLU_PATTERNS.address.test(values.officeAddress ?? '')
+    LEGACY_FOREIGN_CONTACT_PATTERNS.email.test(values.primaryEmail ?? '') ||
+    LEGACY_FOREIGN_CONTACT_PATTERNS.phone.test(values.primaryPhone ?? '') ||
+    LEGACY_FOREIGN_CONTACT_PATTERNS.phone.test(values.whatsappNumber ?? '') ||
+    LEGACY_FOREIGN_CONTACT_PATTERNS.address.test(values.officeAddress ?? '')
   );
 }
 
@@ -34,7 +35,7 @@ export function resolveSiteContact(adminValues?: SiteSettingsAdminValues | null)
   const useAdmin =
     adminValues &&
     (adminValues.primaryPhone || adminValues.primaryEmail || adminValues.officeAddress) &&
-    !hasLegacyRluContact(adminValues);
+    !hasLegacyForeignContact(adminValues);
 
   const primaryPhone =
     useAdmin && adminValues.primaryPhone ? adminValues.primaryPhone : siteConfig.contact.primaryPhoneLabel;

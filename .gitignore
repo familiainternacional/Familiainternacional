@@ -27,7 +27,6 @@
 *.db-journal
 prisma/*.db
 prisma/*.db-journal
-public/Propiedades/
 *.zip
 Manual de marca.pdf
 
@@ -48,5 +47,3 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
-
-.vercel

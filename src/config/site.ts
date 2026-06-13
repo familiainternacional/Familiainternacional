@@ -55,8 +55,8 @@ export const siteConfig = {
     salesEmail: primaryContact.email,
     whatsappNumber: primaryContact.whatsappNumber,
     whatsappDisplay: primaryContact.displayPhone,
-    sellSubject: 'Quiero vender una propiedad',
-    advisorySubject: 'Quiero asesoría jurídica',
+    sellSubject: 'Consulta sobre mi caso internacional',
+    advisorySubject: 'Quiero evaluar mi caso',
     social: {
       instagram: 'https://instagram.com/estudiofamiliainternacional',
       linkedin: 'https://www.linkedin.com/in/jaime-soto-silva-28b7314a',
