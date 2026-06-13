@@ -1,0 +1,274 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Property {
+  id                      String   @id @default(cuid())
+  slug                    String   @unique
+  titleEs                 String
+  descriptionEs           String
+  price                   Float
+  priceType               String   @default("venta")
+  currency                String   @default("CLP")
+  zoneEs                  String
+  cityEs                  String
+  address                 String?
+  latitude                Float?
+  longitude               Float?
+  type                    String
+  status                  String   @default("disponible")
+  published               Boolean  @default(false)
+  featured                Boolean  @default(false)
+  bedrooms                Int?
+  bathrooms               Int?
+  area                    Float?
+  parking                 Int?
+  amenities               String   @default("[]")
+  images                  String   @default("[]")
+  coverImage              String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  province                String?
+  country                 String?  @default("Chile")
+  postalCode              String?
+  addressVisibility       String   @default("zona")
+  totalArea               Float?
+  builtArea               Float?
+  yearBuilt               Int?
+  expenses                Float?
+  internalCode            String?
+  agentName               String?
+  agentPhone              String?
+  agentEmail              String?
+  frontage                Float?
+  depth                   Float?
+  zoning                  String?
+  services                String   @default("[]")
+  featuredBeforeUnpublish Boolean  @default(false)
+  titleEn                 String?
+  descriptionEn           String?
+  zoneEn                  String?
+  cityEn                  String?
+  marketRegion            String   @default("latam")
+  seoTitleEs              String?
+  seoTitleEn              String?
+  seoDescriptionEs        String?
+  seoDescriptionEn        String?
+  customCanonical         String?
+  ogImage                 String?
+  mapUrl                  String?
+  virtualTourUrl          String?
+  lotSurfaceM2            Float?
+  totalLots               Int?
+  availableLots           Int?
+  stageName               String?
+  paymentTerms            String?
+  commissionPercent       Float?
+  operationalExpenses     String?
+  reservationAmount       Float?
+  waterStatus             String?
+  electricityStatus       String?
+  accessType              String?
+  roadType                String?
+  hasOwnRol               Boolean  @default(false)
+  availabilityNotes       String?
+  commercialNotes         String?
+  distanceHighlights      String   @default("[]")
+  priceFrom               Boolean  @default(false)
+  youtubeUrl              String?
+  sortOrder               Int      @default(0)
+  agentId                 String?
+  Lead                    Lead[]
+  agent                   Agent?   @relation(fields: [agentId], references: [id])
+
+  @@index([published, featured, createdAt])
+  @@index([published, type, priceType])
+  @@index([published, marketRegion])
+  @@index([published, country])
+  @@index([published, zoneEs])
+  @@index([published, zoneEn])
+  @@index([published, price])
+  @@index([published, bedrooms])
+  @@index([published, availableLots])
+  @@index([published, lotSurfaceM2])
+  @@index([published, sortOrder, createdAt])
+}
+
+model Lead {
+  id          String    @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  message     String?
+  propertyId  String?
+  createdAt   DateTime  @default(now())
+  status      String    @default("pendiente")
+  leadSource  String    @default("web_form")
+  landingPath String?
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+  Property    Property? @relation(fields: [propertyId], references: [id])
+
+  @@index([createdAt])
+  @@index([status, createdAt])
+  @@index([utmCampaign, createdAt])
+  @@index([propertyId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model HomeHeroSettings {
+  id           String   @id @default("main")
+  imageUrl     String?
+  titleLine1Es String?
+  titleLine2Es String?
+  subtitleEs   String?
+  titleLine1En String?
+  titleLine2En String?
+  subtitleEn   String?
+  updatedAt    DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                   String   @id
+  whatsappNumber       String?
+  primaryPhone         String?
+  primaryEmail         String?
+  officeAddress        String?
+  instagramUrl         String?
+  facebookUrl          String?
+  linkedinUrl          String?
+  discoverImageUrl     String?
+  discoverEyebrow      String?
+  discoverTitle        String?
+  discoverParagraph1   String?
+  discoverParagraph2   String?
+  discoverEyebrowEn    String?
+  discoverTitleEn      String?
+  discoverParagraph1En String?
+  discoverParagraph2En String?
+  updatedAt            DateTime @updatedAt
+  officeStreetAddress  String?
+  officeLocality       String?
+  officeRegion         String?
+}
+
+model SiteSeoSettings {
+  id                     String   @id @default("main")
+  siteName               String   @default("Ruiz Leiva Abogados")
+  titleTemplate          String   @default("%s | Ruiz Leiva Abogados")
+  defaultTitleEs         String   @default("Ruiz Leiva Abogados | Asesoria juridica estrategica en Santiago")
+  defaultDescriptionEs   String   @default("Asesoria juridica de alto estandar para empresas y empresarios en litigacion civil, derecho corporativo, derecho administrativo, compliance y resolucion de conflictos.")
+  defaultTitleEn         String?
+  defaultDescriptionEn   String?
+  keywords               String   @default("[]")
+  canonicalBaseUrl       String   @default("https://rluabogados.vercel.app")
+  defaultOgImage         String?
+  googleSiteVerification String?
+  googleAnalyticsId      String?
+  metaPixelId            String?
+  allowIndexing          Boolean  @default(true)
+  robotsDisallow         String   @default("[\"/admin/\",\"/api/\",\"/gracias\"]")
+  updatedAt              DateTime @default(now()) @updatedAt
+  serviceAreas           String   @default("[\"Los Lagos\",\"Los Ríos\",\"Maule\"]")
+}
+
+model StaticPage {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  titleEs          String
+  titleEn          String?
+  contentEs        String
+  contentEn        String?
+  published        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  seoTitleEs       String?
+  seoTitleEn       String?
+  seoDescriptionEs String?
+  seoDescriptionEn String?
+  customCanonical  String?
+  ogImage          String?
+
+  @@index([published, createdAt])
+}
+
+model Agent {
+  id         String     @id @default(cuid())
+  name       String
+  email      String?
+  phone      String?
+  photoUrl   String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  properties Property[]
+}
+
+model BlogPost {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  titleEs          String
+  titleEn          String?
+  excerptEs        String?
+  excerptEn        String?
+  contentEs        String
+  contentEn        String?
+  coverImage       String?
+  published        Boolean  @default(false)
+  publishedAt      DateTime?
+  seoTitleEs       String?
+  seoTitleEn       String?
+  seoDescriptionEs String?
+  seoDescriptionEn String?
+  seoKeywords      String?
+  ogImage          String?
+  authorName       String   @default("Ruiz Leiva Abogados")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([published, publishedAt])
+  @@index([slug])
+}
+
+model AboutPageSettings {
+  id        String   @id @default("main")
+  payload   String?
+  updatedAt DateTime @updatedAt
+}
+
+model ServicesPageSettings {
+  id        String   @id @default("main")
+  payload   String?
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  quoteEs   String
+  quoteEn   String?
+  author    String
+  roleEs    String
+  roleEn    String?
+  published Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, sortOrder])
+}
