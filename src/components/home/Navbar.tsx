@@ -331,14 +331,13 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
               </Link>
             </div>
 
-            {/* Center: Nav Links */}
             <nav className="hidden lg:flex items-center justify-center gap-8" aria-label={isEnglish ? 'Primary navigation' : 'Navegación principal'}>
               {mainNavItems.map((item) =>
                 item.type === 'link' ? (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`text-[12px] font-bold tracking-[0.15em] uppercase transition-colors hover:text-black/60 ${isNavPathActive(pathname, item.href, activeSectionForNav) ? 'text-black' : 'text-black/80'}`}
+                    className={`text-[12px] font-bold tracking-[0.15em] uppercase transition-colors ${isScrolled ? 'hover:text-black/60' : 'hover:text-white/60'} ${isNavPathActive(pathname, item.href, activeSectionForNav) ? (isScrolled ? 'text-black' : 'text-white') : (isScrolled ? 'text-black/80' : 'text-white/80')}`}
                   >
                     {item.label}
                   </Link>
@@ -362,21 +361,21 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
             <div className="flex items-center gap-4">
               <a
                 href={primaryPhoneHref}
-                className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-black/20 text-black hover:bg-black/5 transition-colors"
+                className={`hidden sm:flex items-center justify-center w-10 h-10 rounded-full border transition-colors ${isScrolled ? 'border-black/20 text-black hover:bg-black/5' : 'border-white/20 text-white hover:bg-white/10'}`}
                 aria-label={isEnglish ? `Call ${primaryPhone}` : `Llamar al ${primaryPhone}`}
               >
                 <Phone size={16} aria-hidden />
               </a>
               <Link
                 href="/evalua-tu-caso"
-                className="hidden lg:flex items-center justify-center border border-black/10 bg-white text-black font-bold text-[12px] tracking-[0.1em] uppercase rounded-full px-6 py-2.5 transition-all hover:bg-black/5"
+                className={`hidden lg:flex items-center justify-center border font-bold text-[12px] tracking-[0.1em] uppercase rounded-full px-6 py-2.5 transition-all ${isScrolled ? 'border-black/10 bg-white text-black hover:bg-black/5' : 'border-white/10 bg-white text-[#07234c] hover:bg-white/90'}`}
               >
                 Evaluar Caso
               </Link>
               <LocaleSelector />
               <button
                 type="button"
-                className="lg:hidden flex items-center justify-center w-10 h-10 text-black"
+                className={`lg:hidden flex items-center justify-center w-10 h-10 ${isScrolled ? 'text-black' : 'text-white'}`}
                 aria-label={mobileMenuOpen ? (isEnglish ? 'Close menu' : 'Cerrar menú') : isEnglish ? 'Open menu' : 'Abrir menú'}
                 aria-expanded={mobileMenuOpen}
                 onClick={() => setMobileMenuOpen(true)}

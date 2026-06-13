@@ -6,17 +6,13 @@ export default function ReplicaHero() {
   return (
     <div
       id="home"
-      className="relative flex min-h-screen flex-col items-center pt-32 pb-10 px-4 overflow-hidden bg-gradient-to-b from-[#fbf8f1] to-[#f3ebd5] font-sans"
+      className="relative flex min-h-screen flex-col items-center pt-32 pb-10 px-4 overflow-hidden bg-[#07234c] font-sans"
     >
-      {/* Decorative Blur Elements (Optional, to enhance the warmth) */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-orange-100/40 rounded-full blur-3xl -translate-y-1/2" />
-      <div className="absolute top-1/2 right-1/4 w-[600px] h-[600px] bg-yellow-50/40 rounded-full blur-3xl -translate-y-1/2" />
-
       {/* Main Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 w-full max-w-7xl mx-auto mt-10 lg:mt-0">
         
         {/* Giant Headline */}
-        <h1 className="text-[4rem] sm:text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] font-black text-[#1c1c1c] leading-[0.95] tracking-tight text-center flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-4 lg:gap-x-6">
+        <h1 className="text-[4rem] sm:text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] font-black text-white leading-[0.95] tracking-tight text-center flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-4 lg:gap-x-6">
           <span className="mb-2 sm:mb-0">Familias</span>
           
           {/* Pill Image embedded in text */}
@@ -34,7 +30,7 @@ export default function ReplicaHero() {
         </h1>
 
         {/* Subtitle - Kept from original content */}
-        <p className="mt-8 max-w-2xl text-center text-base sm:text-lg lg:text-[19px] text-neutral-700 font-medium leading-[1.6]">
+        <p className="mt-8 max-w-2xl text-center text-base sm:text-lg lg:text-[19px] text-white/80 font-medium leading-[1.6]">
           Somos el primer y único Estudio Jurídico en Chile dedicado exclusivamente a la protección de familias y menores a nivel global.
         </p>
 
@@ -49,37 +45,37 @@ export default function ReplicaHero() {
           
           <Link
             href="#services"
-            className="group flex items-center gap-3 bg-transparent hover:bg-black/5 text-[#1c1c1c] border border-black/10 font-bold text-[13px] tracking-widest uppercase rounded-full px-6 py-3.5 transition-all"
+            className="group flex items-center gap-3 bg-transparent hover:bg-white/10 text-white border border-white/20 font-bold text-[13px] tracking-widest uppercase rounded-full px-6 py-3.5 transition-all"
           >
             Necesito Ayuda
-            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-black/5 group-hover:bg-black/10 transition-colors">
-              <ArrowUpRight className="w-4 h-4 text-[#1c1c1c]" />
+            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+              <ArrowUpRight className="w-4 h-4 text-white" />
             </span>
           </Link>
         </div>
       </div>
 
       {/* Bottom Strip (Logos & Scroll) */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto mt-20 pt-8 border-t border-black/5 flex flex-col sm:flex-row items-center justify-between gap-6 px-4">
+      <div className="relative z-10 w-full max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 px-4">
         
         {/* Left/Center Partners or Features */}
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 lg:gap-16 opacity-70">
-          <div className="flex items-center gap-2 font-bold text-sm tracking-widest uppercase text-[#1c1c1c]">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 lg:gap-16 opacity-80">
+          <div className="flex items-center gap-2 font-bold text-sm tracking-widest uppercase text-white">
             <Shield className="w-5 h-5" />
             <span>Atención Global</span>
           </div>
-          <div className="font-bold text-[1.1rem] tracking-tight text-[#1c1c1c]">
+          <div className="font-bold text-[1.1rem] tracking-tight text-white">
             Derecho Corporativo
           </div>
-          <div className="font-bold text-[1.1rem] tracking-tight text-[#1c1c1c]">
+          <div className="font-bold text-[1.1rem] tracking-tight text-white">
             Asesoría Migratoria
           </div>
         </div>
 
         {/* Scroll Down Indicator */}
-        <div className="flex items-center gap-3 font-bold text-[11px] tracking-widest uppercase text-[#1c1c1c] opacity-60">
+        <div className="flex items-center gap-3 font-bold text-[11px] tracking-widest uppercase text-white opacity-60">
           Scroll Down
-          <span className="flex items-center justify-center w-8 h-8 rounded-full border border-black/20">
+          <span className="flex items-center justify-center w-8 h-8 rounded-full border border-white/20">
             <ArrowDown className="w-4 h-4" />
           </span>
         </div>
