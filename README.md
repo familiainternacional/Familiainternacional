@@ -37,6 +37,8 @@ npm run ci:verify
 - `LEAD_NOTIFICATION_TO`: destinatario interno del formulario, `contacto@familiainternacional.cl`.
 - `NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL`: URL pública de reservas con Google Calendar o Cal.com.
 
-## SEO
+## Deploy en Vercel
 
-El sitio usa metadata de Next.js, sitemap, robots, JSON-LD y landings por servicio bajo `/servicios/[slug]`.
+- **Proyecto:** [jaime-soto-s-projects/familiainternacional](https://vercel.com/jaime-soto-s-projects/familiainternacional)
+- **URL temporal:** `https://familiainternacional-jaime-soto-s-projects.vercel.app`
+- **Rama de producción en Git:** `main` (sincronizada desde `master`)
