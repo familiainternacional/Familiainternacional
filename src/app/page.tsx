@@ -7,6 +7,7 @@ import HeroSection from '@/components/home/HeroSection';
 import ReplicaHero from '@/components/ReplicaHero';
 import AboutSection from '@/components/home/AboutSection';
 import ReviewsSection from '@/components/home/ReviewsSection';
+import MediaMentionsSection from '@/components/home/MediaMentionsSection';
 import SeoTextSection from '@/components/home/SeoTextSection';
 import MissionSection from '@/components/home/MissionSection';
 import HowWeWorkSection from '@/components/home/HowWeWorkSection';
@@ -69,6 +70,11 @@ export default async function HomePage() {
         <CinematicSection parallax={-80}>
           <ScrollReveal>
             <ReviewsSection />
+          </ScrollReveal>
+        </CinematicSection>
+        <CinematicSection parallax={-70}>
+          <ScrollReveal delay={0.05}>
+            <MediaMentionsSection />
           </ScrollReveal>
         </CinematicSection>
         <CinematicSection parallax={-60}>
