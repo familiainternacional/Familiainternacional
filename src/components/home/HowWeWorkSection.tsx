@@ -160,9 +160,9 @@ export default function HowWeWorkSection() {
                   key={step.id}
                   type="button"
                   onClick={() => goToStep(index)}
-                  className={`group relative flex w-[280px] shrink-0 snap-center flex-col justify-end rounded-[2rem] p-6 text-left transition-all duration-500 ease-out sm:w-[320px] lg:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185365] focus-visible:ring-offset-2 ${
+                  className={`group relative flex w-[280px] shrink-0 snap-center flex-col justify-end rounded-[2rem] p-6 text-left transition-all duration-500 ease-out sm:w-[320px] lg:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c] focus-visible:ring-offset-2 ${
                     isActive
-                      ? 'bg-[#185365] shadow-xl lg:min-h-[118px] lg:py-7'
+                      ? 'bg-[#07234c] shadow-xl lg:min-h-[118px] lg:py-7'
                       : 'bg-[#f8fafc] hover:bg-[#f1f5f9] lg:min-h-[118px] lg:py-7'
                   }`}
                 >
