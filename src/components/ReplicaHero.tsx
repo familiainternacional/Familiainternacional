@@ -62,13 +62,13 @@ export default function ReplicaHero() {
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 lg:gap-16 opacity-80">
           <div className="flex items-center gap-2 font-bold text-sm tracking-widest uppercase text-white">
             <Shield className="w-5 h-5" />
-            <span>Atención Global</span>
+            <span>Sustracción de Niños</span>
           </div>
           <div className="font-bold text-[1.1rem] tracking-tight text-white">
-            Derecho Corporativo
+            Divorcios Internacionales
           </div>
           <div className="font-bold text-[1.1rem] tracking-tight text-white">
-            Asesoría Migratoria
+            Exequátur (Validación)
           </div>
         </div>
 
