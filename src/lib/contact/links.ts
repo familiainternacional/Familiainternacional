@@ -4,9 +4,9 @@ export function digitsOnly(value: string) {
 }
 
 const WHATSAPP_MESSAGE_ES =
-  'Hola, necesito asesoria juridica y quiero evaluar mi caso con Ruiz Leiva Abogados.';
+  'Hola, necesito asesoría en derecho de familia internacional y quiero evaluar mi caso con Familia Internacional.';
 const WHATSAPP_MESSAGE_EN =
-  'Hello, I need legal advice and would like to evaluate my case with Ruiz Leiva Abogados.';
+  'Hello, I need international family law advice and would like to evaluate my case with Familia Internacional.';
 
 export function buildWhatsAppHref(number: string, fallback = '#') {
   const digits = digitsOnly(number);

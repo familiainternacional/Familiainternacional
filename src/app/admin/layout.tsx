@@ -4,7 +4,7 @@ import { requireAdminSession } from '@/lib/supabase/auth';
 import AdminSidebar from './AdminSidebar';
 
 export const metadata = {
-  title: 'Admin Dashboard | Ruiz Leiva Abogados',
+  title: 'Admin Dashboard | Familia Internacional',
   robots: {
     index: false,
     follow: false,

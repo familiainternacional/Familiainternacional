@@ -18,7 +18,7 @@ async function fetchResolvedGoogleMapsUrl(mapUrl: string): Promise<string> {
     redirect: 'follow',
     signal: AbortSignal.timeout(10_000),
     headers: {
-      'User-Agent': 'RuizLeivaAbogados/1.0 (+https://rluabogados.cl)',
+      'User-Agent': 'FamiliaInternacional/1.0 (+https://www.familiainternacional.cl)',
       Accept: 'text/html,application/xhtml+xml',
     },
     cache: 'no-store',

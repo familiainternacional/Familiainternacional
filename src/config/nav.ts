@@ -25,7 +25,7 @@ export function getMainNavItems(locale: Locale): NavMenuItem[] {
 
   const serviceEntries = familyServices.map((service) => ({
     label: isSpanish ? service.shortTitle.es : service.shortTitle.en,
-    href: '/servicios',
+    href: `/servicios/${service.slug}`,
   }));
 
   return [

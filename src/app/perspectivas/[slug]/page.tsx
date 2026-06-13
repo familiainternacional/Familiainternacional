@@ -8,6 +8,7 @@ import Navbar from '@/components/home/Navbar';
 import Footer from '@/components/home/Footer';
 import { fallbackBlogPosts, getFallbackBlogPost } from '@/config/blog-fallback-posts';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
+import { getSiteLogoSrc } from '@/lib/storage/site-assets';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -102,11 +103,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       canonical: `/perspectivas/${post.slug}`,
     },
     openGraph: {
-      title: `${title} | Ruiz Leiva Abogados`,
+      title: `${title} | Familia Internacional`,
       description,
       type: 'article',
       publishedTime: post.publishedAt?.toISOString(),
-      authors: [post.authorName ?? 'Ruiz Leiva Abogados'],
+      authors: [post.authorName ?? 'Familia Internacional'],
       url: `/perspectivas/${post.slug}`,
       images: [
         {
@@ -119,7 +120,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | Ruiz Leiva Abogados`,
+      title: `${title} | Familia Internacional`,
       description,
       images: [image],
     },
@@ -143,7 +144,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const image = toAbsoluteUrl(post.ogImage ?? post.coverImage);
   const publishedAt = post.publishedAt ?? new Date();
   const updatedAt = post.updatedAt ?? publishedAt;
-  const authorName = post.authorName ?? 'Ruiz Leiva Abogados';
+  const authorName = post.authorName ?? 'Familia Internacional';
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -161,10 +162,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
     publisher: {
       '@type': 'LegalService',
-      name: 'Ruiz Leiva Abogados',
+      name: 'Familia Internacional',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/logo/logo-rlu.png`,
+        url: `${siteUrl}${getSiteLogoSrc()}`,
       },
     },
     datePublished: publishedAt.toISOString(),

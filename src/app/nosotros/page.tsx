@@ -6,6 +6,7 @@ import InnerPageHero from '@/components/marketing/InnerPageHero';
 import MissionSection from '@/components/home/MissionSection';
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
 import AboutSection from '@/components/home/AboutSection';
+import ProcessSection from '@/components/home/ProcessSection';
 import CtaSection from '@/components/home/CtaSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import { siteConfig } from '@/config/site';
@@ -62,6 +63,10 @@ export default async function NosotrosPage() {
 
       <ScrollReveal delay={0.05}>
         <WhyChooseUsSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.06}>
+        <ProcessSection />
       </ScrollReveal>
 
       <ScrollReveal delay={0.08}>

@@ -108,7 +108,7 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
                           </p>
                           
                           <Link 
-                            href="/evalua-tu-caso" 
+                            href={`/servicios/${service.slug}`} 
                             className="mt-8 inline-block text-[11px] font-bold tracking-widest uppercase text-[#0f172a] hover:text-slate-500 transition-colors underline decoration-slate-300 underline-offset-4 hover:decoration-slate-400"
                           >
                             {locale === 'es' ? 'LEER MÁS' : 'READ MORE'}

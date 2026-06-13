@@ -171,14 +171,14 @@ model SiteSettings {
 
 model SiteSeoSettings {
   id                     String   @id @default("main")
-  siteName               String   @default("Ruiz Leiva Abogados")
-  titleTemplate          String   @default("%s | Ruiz Leiva Abogados")
-  defaultTitleEs         String   @default("Ruiz Leiva Abogados | Asesoria juridica estrategica en Santiago")
-  defaultDescriptionEs   String   @default("Asesoria juridica de alto estandar para empresas y empresarios en litigacion civil, derecho corporativo, derecho administrativo, compliance y resolucion de conflictos.")
+  siteName               String   @default("Familia Internacional")
+  titleTemplate          String   @default("%s | Familia Internacional")
+  defaultTitleEs         String   @default("Familia Internacional | Derecho Internacional de Familia")
+  defaultDescriptionEs   String   @default("Primer estudio jurídico en Chile dedicado exclusivamente al Derecho Internacional de Familia: divorcios, sustracción de menores, exequátur, alimentos y más.")
   defaultTitleEn         String?
   defaultDescriptionEn   String?
   keywords               String   @default("[]")
-  canonicalBaseUrl       String   @default("https://rluabogados.vercel.app")
+  canonicalBaseUrl       String   @default("https://www.familiainternacional.cl")
   defaultOgImage         String?
   googleSiteVerification String?
   googleAnalyticsId      String?
@@ -186,7 +186,7 @@ model SiteSeoSettings {
   allowIndexing          Boolean  @default(true)
   robotsDisallow         String   @default("[\"/admin/\",\"/api/\",\"/gracias\"]")
   updatedAt              DateTime @default(now()) @updatedAt
-  serviceAreas           String   @default("[\"Los Lagos\",\"Los Ríos\",\"Maule\"]")
+  serviceAreas           String   @default("[\"Chile\",\"Lo Barnechea\",\"Santiago\"]")
 }
 
 model StaticPage {
@@ -238,7 +238,7 @@ model BlogPost {
   seoDescriptionEn String?
   seoKeywords      String?
   ogImage          String?
-  authorName       String   @default("Ruiz Leiva Abogados")
+  authorName       String   @default("Familia Internacional")
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

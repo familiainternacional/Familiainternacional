@@ -19,6 +19,7 @@ import {
   serviceLandings,
 } from '@/config/service-landings';
 import { getServiceSeoCopy } from '@/config/service-seo-copy';
+import { siteConfig } from '@/config/site';
 import { buildServiceLandingStructuredData } from '@/lib/seo/structured-data';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 
@@ -58,7 +59,7 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       canonical: `/servicios/${landing.slug}`,
     },
     openGraph: {
-      title: `${landing.seoTitle} | Ruiz Leiva Abogados`,
+      title: `${landing.seoTitle} | ${siteConfig.name}`,
       description: landing.seoDescription,
       url: `/servicios/${landing.slug}`,
       type: 'website',
@@ -67,13 +68,13 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
           url: `/servicios/${landing.slug}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: `${landing.title} - Ruiz Leiva Abogados`,
+          alt: `${landing.title} - ${siteConfig.name}`,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${landing.seoTitle} | Ruiz Leiva Abogados`,
+      title: `${landing.seoTitle} | ${siteConfig.name}`,
       description: landing.seoDescription,
       images: [`/servicios/${landing.slug}/opengraph-image`],
     },

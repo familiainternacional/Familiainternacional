@@ -11,49 +11,51 @@ export default function ProcessSection() {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const carouselRef = React.useRef<HTMLDivElement>(null);
 
+  const featureImages = ['/hero-familia.png', '/hero-defensa.png', '/hero-santiago.png', '/hero-familia.png'] as const;
+
   const featuresEs = [
     {
-      title: 'Velocidad y precisión',
-      desc: 'Diagnóstico jurídico rápido. Sin demoras innecesarias. Sabemos que el tiempo tiene valor en los negocios.',
-      image: '/bento_precision.png',
+      title: 'Solo familia internacional',
+      desc: 'Enfoque exclusivo en derecho de familia transfronterizo, sin diluir la práctica en otras áreas.',
+      image: featureImages[0],
     },
     {
-      title: 'Estrategia, no solo ley',
-      desc: 'Analizamos incentivos, riesgos y escenarios. Le decimos qué conviene, cuándo conviene y cómo ejecutarlo.',
-      image: '/bento_strategy.png',
+      title: 'Red internacional',
+      desc: 'Coordinación con abogados y autoridades centrales en Chile y en el extranjero.',
+      image: featureImages[1],
     },
     {
-      title: 'Público + Privado',
-      desc: 'Experiencia real en ambos mundos. Entendemos la lógica del Estado y la del mercado simultáneamente.',
-      image: '/bento_handshake_bw.png',
+      title: 'Convenio de La Haya',
+      desc: 'Experiencia directa en sustracción internacional, visitas y medidas urgentes.',
+      image: featureImages[2],
     },
     {
       title: 'Comunicación clara',
-      desc: 'Traducimos el lenguaje jurídico a términos entendibles. Usted toma decisiones con información real.',
-      image: '/bento_communication.png',
+      desc: 'Traducimos el lenguaje jurídico para decidir con información real en momentos sensibles.',
+      image: featureImages[3],
     },
   ];
 
   const featuresEn = [
     {
-      title: 'Speed and precision',
-      desc: 'Rapid legal diagnosis. No unnecessary delays. We know time has value in business.',
-      image: '/bento_precision.png',
+      title: 'International family law only',
+      desc: 'Exclusive focus on cross-border family matters without diluting the practice.',
+      image: featureImages[0],
     },
     {
-      title: 'Strategy, not just law',
-      desc: 'We analyze incentives, risks, and scenarios. We tell you what to do, when to do it, and how to execute.',
-      image: '/bento_strategy.png',
+      title: 'International network',
+      desc: 'Coordination with attorneys and central authorities in Chile and abroad.',
+      image: featureImages[1],
     },
     {
-      title: 'Public + Private',
-      desc: 'Real experience in both worlds. We understand the logic of the State and the market simultaneously.',
-      image: '/bento_handshake_bw.png',
+      title: 'Hague Convention',
+      desc: 'Direct experience in international abduction, access cases, and urgent measures.',
+      image: featureImages[2],
     },
     {
       title: 'Clear communication',
-      desc: 'We translate legal language into understandable terms. You make decisions with real information.',
-      image: '/bento_communication.png',
+      desc: 'We translate legal language so you can decide with real information in sensitive moments.',
+      image: featureImages[3],
     },
   ];
 
@@ -124,7 +126,7 @@ export default function ProcessSection() {
                 >
                   <div className="relative block aspect-square w-full overflow-hidden rounded-[2rem] bg-[#f2f2f2] md:aspect-[1.55] md:rounded-[1.75rem]">
                     <Image
-                      src={resolveSiteAssetSrc(item.image)}
+                      src={item.image.startsWith('/') ? item.image : resolveSiteAssetSrc(item.image)}
                       alt={item.title}
                       fill
                       sizes="(min-width: 1024px) 31vw, (min-width: 768px) 48vw, 92vw"

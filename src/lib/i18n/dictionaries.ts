@@ -13,11 +13,11 @@ export const dictionaries = {
       language: 'Idioma'
     },
     hero: {
-      eyebrow: 'Ruiz Leiva Abogados — Santiago, Chile',
-      title1: 'Derecho.',
-      title2: 'Estrategia.',
-      title3: 'Resultados.',
-      subtitle: 'Asesoría jurídica de alto estándar en Santiago de Chile para empresas y empresarios que necesitan más que un abogado: un socio estratégico que entiende el negocio.',
+      eyebrow: 'Familia Internacional — Santiago, Chile',
+      title1: 'Familias',
+      title2: 'Sin',
+      title3: 'Fronteras.',
+      subtitle: 'Primer estudio jurídico en Chile dedicado exclusivamente al Derecho Internacional de Familia: divorcios, sustracción de menores, exequátur y más.',
       cta: 'Formulario de contacto',
       services: 'Ver servicios',
       stats: [
@@ -101,15 +101,15 @@ export const dictionaries = {
       }
     },
     diferencial: {
-      label: 'Por qué Ruiz Leiva Abogados',
-      title1: 'Un abogado que ',
-      title2: 'piensa como empresario',
-      body: 'La mayoría de los abogados dominan la ley pero no entienden el negocio. En Ruiz Leiva Abogados combinamos experiencia jurídica técnica con una lógica comercial y estratégica que le da a cada cliente una ventaja real.',
+      label: 'Por qué Familia Internacional',
+      title1: 'Especialistas cuando ',
+      title2: 'las fronteras importan',
+      body: 'Estas materias son técnicas y poco frecuentes. Familia Internacional concentra cientos de juicios tramitados, dominio del Convenio de La Haya y una red internacional de abogados de familia.',
       features: [
-        { icon: '⚡', title: 'Velocidad y precisión', desc: 'Diagnóstico jurídico rápido. Sin demoras innecesarias. Sabemos que el tiempo tiene valor en los negocios.' },
-        { icon: '🎯', title: 'Estrategia, no solo ley', desc: 'Analizamos incentivos, riesgos y escenarios. Le decimos qué conviene, cuándo conviene y cómo ejecutarlo.' },
-        { icon: '🔗', title: 'Público + Privado', desc: 'Experiencia real en ambos mundos. Entendemos la lógica del Estado y la del mercado simultáneamente.' },
-        { icon: '📋', title: 'Comunicación clara', desc: 'Traducimos el lenguaje jurídico a términos entendibles. Usted toma decisiones con información real.' }
+        { icon: '⚖️', title: 'Solo familia internacional', desc: 'Enfoque exclusivo sin diluir la práctica en otras áreas del derecho.' },
+        { icon: '🌍', title: 'Red internacional', desc: 'Coordinación con abogados y autoridades en Chile y en el extranjero.' },
+        { icon: '📋', title: 'Convenio de La Haya', desc: 'Experiencia directa en sustracción internacional y visitas transfronterizas.' },
+        { icon: '💬', title: 'Comunicación clara', desc: 'Traducimos el lenguaje jurídico para que decida con información real en momentos sensibles.' },
       ]
     },
     footer: {
@@ -129,11 +129,11 @@ export const dictionaries = {
         prices: 'Honorarios',
         contact: 'Contacto',
         news: 'Casos de Éxito',
-        service1: 'Litigación Civil',
-        service2: 'Derecho Corporativo',
-        service3: 'Derecho Administrativo',
-        service4: 'Compliance',
-        service5: 'Asesoría Empresarial'
+        service1: 'Divorcios Internacionales',
+        service2: 'Cuidado y Sustracción',
+        service3: 'Filiación y Alimentos',
+        service4: 'Exequátur',
+        service5: 'Herencias Internacionales'
       }
     },
     cases: {
@@ -196,11 +196,11 @@ export const dictionaries = {
       language: 'Language'
     },
     hero: {
-      eyebrow: 'Ruiz Leiva Abogados — Santiago, Chile',
-      title1: 'Law.',
-      title2: 'Strategy.',
-      title3: 'Results.',
-      subtitle: 'High-standard legal counsel for businesses and entrepreneurs who need more than a lawyer: a strategic partner who understands business.',
+      eyebrow: 'Familia Internacional — Santiago, Chile',
+      title1: 'Families',
+      title2: 'Without',
+      title3: 'Borders.',
+      subtitle: 'The first law firm in Chile dedicated exclusively to International Family Law: divorce, child abduction, exequatur and more.',
       cta: 'Receive consultation',
       services: 'View services',
       stats: [
@@ -284,15 +284,15 @@ export const dictionaries = {
       }
     },
     diferencial: {
-      label: 'Why Ruiz Leiva Abogados',
-      title1: 'A lawyer who ',
-      title2: 'thinks like an entrepreneur',
-      body: 'Most lawyers master the law but do not understand business. At Ruiz Leiva Abogados we combine technical legal expertise with a commercial and strategic logic that gives each client a real advantage.',
+      label: 'Why Familia Internacional',
+      title1: 'Specialists when ',
+      title2: 'borders matter',
+      body: 'These matters are technical and uncommon. Familia Internacional has handled hundreds of cases, deep Hague Convention expertise, and an international network of family law attorneys.',
       features: [
-        { icon: '⚡', title: 'Speed and precision', desc: 'Rapid legal diagnosis. No unnecessary delays. We know time has value in business.' },
-        { icon: '🎯', title: 'Strategy, not just law', desc: 'We analyze incentives, risks, and scenarios. We tell you what to do, when to do it, and how to execute.' },
-        { icon: '🔗', title: 'Public + Private', desc: 'Real experience in both worlds. We understand the logic of the State and the market simultaneously.' },
-        { icon: '📋', title: 'Clear communication', desc: 'We translate legal language into understandable terms. You make decisions with real information.' }
+        { icon: '⚖️', title: 'International family law only', desc: 'Exclusive focus without diluting the practice across other legal areas.' },
+        { icon: '🌍', title: 'International network', desc: 'Coordination with attorneys and authorities in Chile and abroad.' },
+        { icon: '📋', title: 'Hague Convention', desc: 'Direct experience in international child abduction and cross-border access.' },
+        { icon: '💬', title: 'Clear communication', desc: 'We translate legal language so you can decide with real information in sensitive moments.' },
       ]
     },
     footer: {
@@ -312,11 +312,11 @@ export const dictionaries = {
         prices: 'Prices',
         contact: 'Contact',
         news: 'Success Stories',
-        service1: 'Civil Litigation',
-        service2: 'Corporate Law',
-        service3: 'Administrative Law',
-        service4: 'Compliance',
-        service5: 'Business Advisory'
+        service1: 'International Divorces',
+        service2: 'Custody & Abduction',
+        service3: 'Paternity & Support',
+        service4: 'Exequatur',
+        service5: 'International Estates'
       }
     },
     cases: {

@@ -50,7 +50,7 @@ export default async function ServicesIndexPage() {
                   '@type': 'ListItem',
                   position: index + 1,
                   name: service.title.es,
-                  url: `${siteUrl}/servicios#${service.slug}`,
+                  url: `${siteUrl}/servicios/${service.slug}`,
                 })),
               },
             },

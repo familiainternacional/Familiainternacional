@@ -106,20 +106,20 @@ export const siteConfig = {
     },
     aboutModelParagraphs: {
       es: [
-        'Ruiz Leiva Abogados trabaja asuntos civiles, comerciales, regulatorios y corporativos con foco en prevención, negociación y litigación estratégica.',
-        'Ordenamos riesgos, alternativas y próximos pasos para que cada cliente tome decisiones informadas y oportunas.',
+        'Familia Internacional acompaña a familias en conflictos transfronterizos con foco en divorcios, sustracción de menores, exequátur, alimentos y trámites consulares.',
+        'Ordenamos riesgos, alternativas y próximos pasos para que cada cliente tome decisiones informadas con abogados especializados en derecho de familia internacional.',
       ],
       en: [
-        'Ruiz Leiva Abogados handles civil, commercial, regulatory and corporate matters with a focus on prevention, negotiation and strategic litigation.',
-        'We organize risks, alternatives and next steps so each client can make informed and timely decisions.',
+        'Familia Internacional supports families in cross-border disputes with a focus on divorce, child abduction, exequatur, child support, and consular procedures.',
+        'We organize risks, alternatives, and next steps so each client can make informed decisions with attorneys specialized in international family law.',
       ],
     },
     discover: {
-      imageUrl: '/images/sur_chile_proyectos.png',
-      eyebrow: 'Criterio jurídico',
-      title: 'Estrategia clara para decisiones importantes',
+      imageUrl: '/hero-santiago.png',
+      eyebrow: 'Derecho de familia internacional',
+      title: 'Claridad jurídica cuando las fronteras importan',
       paragraphs: [
-        'Ruiz Leiva Abogados traduce escenarios jurídicos complejos en alternativas claras, ponderando riesgo, costo, oportunidad y resultado esperado.',
+        'Familia Internacional traduce escenarios jurídicos complejos en alternativas claras: qué conviene, en qué país actuar y cuál es el siguiente paso procesal.',
         'Acompañamos desde la primera evaluación hasta la ejecución de la estrategia, con información ordenada, atención directa y seguimiento profesional.',
       ],
     },

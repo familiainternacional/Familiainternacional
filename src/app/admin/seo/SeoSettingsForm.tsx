@@ -49,8 +49,8 @@ export default function SeoSettingsForm({ initialValues }: { initialValues: Site
             <label className="block text-sm font-medium text-gray-700 mb-1">Título de la Página (Meta Title)</label>
             <input
               name="defaultTitleEs"
-              defaultValue={initialValues.defaultTitleEs || 'Ruiz Leiva Abogados | Asesoría jurídica estratégica en Santiago'}
-              placeholder="Ej: Ruiz Leiva Abogados"
+              defaultValue={initialValues.defaultTitleEs || 'Familia Internacional | Derecho Internacional de Familia'}
+              placeholder="Ej: Familia Internacional"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
             />
             <p className="text-xs text-gray-500 mt-1">Recomendado: 50-60 caracteres.</p>

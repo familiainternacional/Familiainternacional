@@ -37,7 +37,7 @@ export default function ServicesHomePreview() {
           {familyServices.map((service) => (
             <Link
               key={service.slug}
-              href="/servicios"
+              href={`/servicios/${service.slug}`}
               className="group flex flex-col rounded-[1.25rem] border border-[#07234c]/8 bg-[#f8fafc] p-5 transition-colors hover:border-[#07234c]/20 hover:bg-white md:p-6"
             >
               <span className="fi-card-meta mb-3 text-[var(--color-primary)]">{service.num}</span>

@@ -79,7 +79,7 @@ export default function GoogleCalendarBooking({ bookingUrl }: GoogleCalendarBook
         <div className="min-h-[680px] border-t border-white/10 bg-white lg:border-l lg:border-t-0">
           <iframe
             src={normalizedUrl}
-            title={`Reservas de ${providerLabel} - Ruiz Leiva Abogados`}
+            title={`Reservas de ${providerLabel} - Familia Internacional`}
             className="h-[680px] w-full border-0"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

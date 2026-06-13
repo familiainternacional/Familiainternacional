@@ -9,7 +9,7 @@ import { siteConfig } from '@/config/site';
 import { logoImageSizes } from '@/config/logo';
 
 export const metadata = {
-  title: 'Acceso admin | Ruiz Leiva Abogados',
+  title: 'Acceso admin | Familia Internacional',
   robots: {
     index: false,
     follow: false,

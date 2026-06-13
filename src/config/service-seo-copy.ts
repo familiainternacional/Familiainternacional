@@ -11,188 +11,208 @@ export type ServiceSeoCopy = {
 };
 
 export const serviceSeoCopy = {
-  'litigacion-civil': {
+  'divorcios-internacionales': {
     keywords: [
-      'litigación civil Santiago',
-      'abogados litigios civiles',
-      'abogados conflictos comerciales',
-      'defensa civil empresas',
+      'divorcio internacional Chile',
+      'abogado divorcio extranjero',
+      'divorcio cónyuge en el exterior',
+      'efectos divorcio extranjero Chile',
     ],
-    intentTitle: 'Cuándo conviene buscar abogados de litigación civil',
+    intentTitle: 'Cuándo necesita un abogado de divorcio internacional',
     intentSummary:
-      'La litigación civil requiere actuar antes de que el conflicto pierda margen de maniobra. Cuando existe incumplimiento contractual, presión patrimonial, riesgo reputacional o una negociación bloqueada, una evaluación temprana permite definir si conviene demandar, negociar, preparar prueba o activar medidas prejudiciales.',
-    decisionTitle: 'Cómo evaluar una estrategia de litigio',
+      'El divorcio internacional aplica cuando usted o su cónyuge viven fuera de Chile, cuando existen bienes en más de un país o cuando necesita que una sentencia extranjera surta efectos locales. Una evaluación temprana evita errores de competencia y demoras innecesarias.',
+    decisionTitle: 'Qué revisar antes de iniciar un divorcio transfronterizo',
     decisionIntro:
-      'Un buen análisis no se limita a estimar probabilidades judiciales. Debe ponderar costo, tiempo, evidencia disponible, exposición comercial y capacidad real de ejecución.',
+      'Antes de demandar conviene definir domicilios, bienes relevantes, hijos en común y si existe convenio o sentencia previa en otro país.',
     decisionPoints: [
-      'Identificar si la vía judicial mejora o debilita la posición negociadora.',
-      'Ordenar prueba documental y comunicaciones relevantes desde el inicio.',
-      'Definir escenarios de acuerdo, juicio, medidas prejudiciales o cautelares.',
-      'Medir impacto financiero, operacional y reputacional antes de actuar.',
+      'Confirmar si Chile es competente para conocer del divorcio.',
+      'Identificar bienes en Chile y en el extranjero sujetos a reparto.',
+      'Evaluar acuerdos sobre hijos y pensión de alimentos.',
+      'Determinar si procede divorcio local o reconocimiento de sentencia extranjera.',
     ],
-    localTitle: 'Litigación civil y comercial en Santiago',
+    localTitle: 'Divorcio internacional desde Santiago, Chile',
     localParagraphs: [
-      'Ruiz Leiva Abogados asesora a empresas y empresarios desde Las Condes, Santiago, con foco en conflictos civiles y comerciales que exigen rapidez, criterio técnico y lectura empresarial.',
-      'Nuestro trabajo busca transformar un problema jurídico en una estrategia concreta: qué hacer, cuándo hacerlo y qué resultado razonable perseguir.',
+      'Familia Internacional asiste a clientes en Chile y en el extranjero desde Lo Barnechea, Santiago, con enfoque exclusivo en derecho de familia internacional.',
+      'Coordinamos con abogados en otros países cuando el caso lo exige y traducimos cada escenario a pasos concretos.',
     ],
     relatedSearches: [
-      'abogado civil para empresas',
-      'defensa en juicio civil',
-      'conflictos contractuales comerciales',
+      'divorcio unilateral cónyuge extranjero',
+      'abogado familia internacional Santiago',
+      'divorcio mutuo acuerdo internacional',
     ],
   },
-  'derecho-corporativo': {
+  'cuidado-sustraccion': {
     keywords: [
-      'abogados derecho corporativo Santiago',
-      'constitución de sociedades Chile',
-      'pactos de socios',
-      'asesoría societaria empresas',
+      'sustracción internacional menores Chile',
+      'Convenio de La Haya abogado',
+      'visitas internacionales hijos',
+      'autorización salir del país menor',
     ],
-    intentTitle: 'Cuándo una empresa necesita derecho corporativo',
+    intentTitle: 'Cuándo actuar en un caso de sustracción o custodia internacional',
     intentSummary:
-      'El derecho corporativo se vuelve crítico cuando una empresa incorpora socios, modifica su estructura, prepara financiamiento, reorganiza activos o necesita prevenir conflictos entre accionistas y administradores.',
-    decisionTitle: 'Qué debe revisar una asesoría corporativa',
+      'Si un menor fue trasladado o retenido en otro país sin autorización, o si existe riesgo inminente, el tiempo es crítico. El Convenio de La Haya y la legislación local ofrecen vías específicas que deben activarse con rapidez.',
+    decisionTitle: 'Pasos urgentes en sustracción internacional',
     decisionIntro:
-      'La estructura societaria debe ser clara, defendible y útil para operar. La revisión debe mirar documentos, poderes, obligaciones, incentivos y eventuales puntos de conflicto.',
+      'La estrategia depende del país donde está el menor, si Chile y ese país son parte del Convenio de La Haya y qué medidas cautelares proceden.',
     decisionPoints: [
-      'Revisar estatutos, poderes, actas y acuerdos vigentes.',
-      'Detectar ambigüedades en administración, salida de socios o toma de decisiones.',
-      'Ordenar pactos de socios y contratos comerciales relevantes.',
-      'Proyectar la estructura legal según crecimiento, inversión o reorganización.',
+      'Documentar fechas, viajes y comunicaciones relevantes.',
+      'Evaluar denuncia ante Autoridad Central y medidas judiciales.',
+      'Activar alertas o medidas cautelares si hay riesgo de fuga.',
+      'Coordinar abogado en país de destino cuando corresponde.',
     ],
-    localTitle: 'Asesoría corporativa para empresas en Santiago',
+    localTitle: 'Sustracción internacional y La Haya en Chile',
     localParagraphs: [
-      'Desde Las Condes, Ruiz Leiva Abogados acompaña a empresas que necesitan ordenar su estructura legal con una mirada práctica y comercial.',
-      'El objetivo es prevenir contingencias antes de que afecten la operación, la relación entre socios o la capacidad de tomar decisiones.',
+      'Familia Internacional ha tramitado cientos de juicios en esta materia, con experiencia en tribunales chilenos y coordinación con autoridades centrales.',
+      'Jaime Soto Silva ha sido consultado por medios nacionales en casos públicos de custodia transfronteriza bajo el Convenio de La Haya.',
     ],
     relatedSearches: [
-      'abogado societario Santiago',
-      'pacto de socios Chile',
-      'reorganización societaria',
+      'abogado sustracción internacional Santiago',
+      'retorno menor Convenio La Haya',
+      'relocalización internacional hijos',
     ],
   },
-  'derecho-administrativo': {
+  'filiacion-alimentos': {
     keywords: [
-      'abogados derecho administrativo Santiago',
-      'procedimientos administrativos Chile',
-      'defensa ante fiscalización',
-      'recursos administrativos',
+      'pensión alimentos internacional',
+      'Convenio Nueva York alimentos',
+      'demanda paternidad internacional Chile',
+      'cobro alimentos extranjero',
     ],
-    intentTitle: 'Cuándo actuar frente a un procedimiento administrativo',
+    intentTitle: 'Cuándo buscar asesoría en alimentos internacionales',
     intentSummary:
-      'En derecho administrativo los plazos, antecedentes y forma de responder pueden determinar el resultado. Una fiscalización, sanción, requerimiento u oficio debe analizarse antes de contestar para evitar errores difíciles de corregir.',
-    decisionTitle: 'Qué mirar antes de responder a la autoridad',
+      'Cuando el progenitor obligado vive fuera de Chile, el cobro de alimentos requiere conocer convenios internacionales y mecanismos de cooperación. Lo mismo aplica a demandas de filiación con partes en distintos países.',
+    decisionTitle: 'Qué define la estrategia de alimentos transfronteriza',
     decisionIntro:
-      'La defensa administrativa exige entender el expediente, la competencia del órgano, los hechos acreditables y la oportunidad procesal de cada presentación.',
+      'Se analiza residencia del deudor, existencia de resolución previa, convenios vigentes y bienes embargables.',
     decisionPoints: [
-      'Verificar plazos, acto administrativo y autoridad competente.',
-      'Ordenar antecedentes técnicos y jurídicos antes de presentar descargos.',
-      'Evaluar recursos administrativos o eventual judicialización.',
-      'Cuidar consistencia entre la respuesta legal y la operación del cliente.',
+      'Verificar si existe convenio aplicable entre Chile y el país del deudor.',
+      'Fijar o modificar pensión en tribunal competente.',
+      'Ejecutar resolución en Chile o en el extranjero.',
+      'Coordinar prueba de ingresos y domicilio del obligado.',
     ],
-    localTitle: 'Derecho administrativo para empresas y entidades en Santiago',
+    localTitle: 'Alimentos y filiación internacional en Chile',
     localParagraphs: [
-      'Ruiz Leiva Abogados combina experiencia institucional y análisis regulatorio para acompañar procedimientos ante organismos públicos en Chile.',
-      'Nuestro enfoque ayuda a responder con método, evitar improvisaciones y construir una posición defendible desde la primera presentación.',
+      'Familia Internacional tramita demandas de filiación y alimentos con progenitores o hijos en el exterior, desde Santiago.',
+      'Utilizamos el Convenio de Nueva York y vías locales según el país involucrado.',
     ],
     relatedSearches: [
-      'descargos administrativos',
-      'defensa sancionatoria administrativa',
-      'abogado fiscalización Chile',
+      'cobrar alimentos padre en el extranjero',
+      'abogado alimentos internacionales',
+      'reconocimiento paternidad internacional',
     ],
   },
-  compliance: {
+  exequatur: {
     keywords: [
-      'compliance legal Chile',
-      'modelo de cumplimiento empresas',
-      'matriz de riesgo legal',
-      'políticas internas empresa',
+      'exequátur Chile Corte Suprema',
+      'validar sentencia extranjera familia',
+      'reconocer divorcio extranjero Chile',
+      'exequatur cuidado personal',
     ],
-    intentTitle: 'Cuándo implementar compliance legal',
+    intentTitle: 'Cuándo necesita exequátur de una sentencia extranjera',
     intentSummary:
-      'Una empresa necesita compliance cuando enfrenta riesgos regulatorios, trabaja con terceros relevantes, participa en licitaciones, prepara auditorías o detecta que sus políticas internas no reflejan la operación real.',
-    decisionTitle: 'Qué debe tener un sistema de cumplimiento útil',
+      'Si obtuvo una sentencia de divorcio, nulidad, adopción o cuidado personal en otro país y necesita que produzca efectos en Chile, generalmente debe tramitar exequátur ante la Corte Suprema.',
+    decisionTitle: 'Requisitos clave del exequátur',
     decisionIntro:
-      'El compliance no debe ser un documento decorativo. Debe ser proporcional, aplicable y entendible para quienes toman decisiones dentro de la empresa.',
+      'La sentencia debe estar debidamente autenticada, traducida si corresponde, y cumplir requisitos de competencia y orden público.',
     decisionPoints: [
-      'Levantar riesgos legales y operacionales según industria y tamaño.',
-      'Definir políticas internas claras, controles y responsables.',
-      'Crear matrices de riesgo y mecanismos de seguimiento.',
-      'Capacitar equipos con lenguaje simple y criterios accionables.',
+      'Apostillar o legalizar sentencia y documentos anexos.',
+      'Traducir oficialmente si están en idioma distinto al español.',
+      'Verificar que el tribunal extranjero era competente.',
+      'Presentar solicitud de exequátur con estrategia procesal clara.',
     ],
-    localTitle: 'Compliance para empresas en Chile',
+    localTitle: 'Exequátur de sentencias de familia en Chile',
     localParagraphs: [
-      'Ruiz Leiva Abogados diseña modelos de cumplimiento adaptados a empresas que necesitan prevenir contingencias antes de que se transformen en sanciones, conflictos o pérdidas comerciales.',
-      'Nuestro trabajo prioriza controles reales, documentación útil y criterios de implementación que puedan sostenerse en el tiempo.',
+      'Familia Internacional tramita exequátur directamente ante la Corte Suprema en materias de familia.',
+      'Revisamos viabilidad, documentación y plazos antes de presentar para evitar rechazos formales.',
     ],
     relatedSearches: [
-      'compliance para pymes Chile',
-      'programa de cumplimiento legal',
-      'políticas internas compliance',
+      'exequátur divorcio extranjero Chile',
+      'validar sentencia familia extranjera',
+      'abogado exequátur Santiago',
     ],
   },
-  'resolucion-de-conflictos': {
+  'herencias-internacionales': {
     keywords: [
-      'resolución de conflictos comerciales',
-      'negociación legal estratégica',
-      'abogados conflictos entre socios',
-      'mediación conflictos comerciales',
+      'herencia internacional Chile',
+      'posesión efectiva extranjero',
+      'sucesión bienes Chile exterior',
+      'abogado herencias internacionales',
     ],
-    intentTitle: 'Cuándo conviene resolver antes de litigar',
+    intentTitle: 'Cuándo requiere asesoría una herencia internacional',
     intentSummary:
-      'No todo conflicto debe ir a tribunales, pero todo conflicto necesita estrategia. Cuando hay intereses cruzados, costos altos o una relación comercial que aún puede preservarse, una negociación bien preparada puede generar mejores resultados que una demanda inmediata.',
-    decisionTitle: 'Cómo preparar una negociación legal',
+      'Las sucesiones con causante o herederos en el extranjero, o con bienes en varios países, exigen coordinar leyes y trámites distintos. Una mala planificación puede bloquear la adjudicación de bienes.',
+    decisionTitle: 'Qué ordenar en una sucesión transfronteriza',
     decisionIntro:
-      'La resolución de conflictos exige mapear intereses reales, riesgos, puntos de presión y alternativas de salida antes de sentarse a negociar.',
+      'Conviene identificar todos los bienes, la ley aplicable y si la posesión efectiva debe tramitarse en Chile, en el extranjero o en ambos.',
     decisionPoints: [
-      'Identificar objetivos mínimos, concesiones posibles y líneas rojas.',
-      'Medir costos de acuerdo versus costos de judicialización.',
-      'Preparar evidencia y argumentos antes de comunicar posición.',
-      'Definir cuándo negociar y cuándo escalar a litigio.',
+      'Inventariar bienes muebles e inmuebles en cada país.',
+      'Determinar tribunal competente para la sucesión.',
+      'Tramitar posesión efectiva o equivalente local.',
+      'Coordinar impuestos y escrituras de adjudicación.',
     ],
-    localTitle: 'Resolución de conflictos civiles y comerciales',
+    localTitle: 'Herencias internacionales desde Santiago',
     localParagraphs: [
-      'Desde Santiago, Ruiz Leiva Abogados acompaña conflictos comerciales, societarios y civiles con una lógica práctica: resolver bien, sin escalar innecesariamente.',
-      'Cuando la negociación no protege el interés del cliente, preparamos una vía litigiosa ordenada y consistente.',
+      'Familia Internacional asiste en posesión efectiva y adjudicación cuando hay vínculos con Chile y el exterior.',
+      'Coordinamos con especialistas en otros países para evitar trámites duplicados o incompatibles.',
     ],
     relatedSearches: [
-      'abogado negociación comercial',
-      'conflictos entre socios Chile',
-      'acuerdos prejudiciales',
+      'posesión efectiva causante extranjero',
+      'herencia bienes Chile y España',
+      'sucesión internacional abogado',
     ],
   },
-  'asesoria-empresarial': {
+  'tramites-consulares': {
     keywords: [
-      'asesoría legal empresarial Santiago',
-      'abogado para empresas',
-      'consultoría jurídica empresas',
-      'asesoría contractual empresas',
+      'mandato judicial consulado chileno',
+      'poder consular Chile extranjero',
+      'representación tribunales familia extranjero',
+      'abogado chileno residentes exterior',
     ],
-    intentTitle: 'Cuándo contratar asesoría legal empresarial',
+    intentTitle: 'Cuándo necesita mandato consular o representación remota',
     intentSummary:
-      'La asesoría empresarial es clave cuando una empresa toma decisiones frecuentes con impacto legal: contratos, proveedores, clientes, socios, financiamiento, regulación o crecimiento operativo.',
-    decisionTitle: 'Qué aporta un advisory jurídico continuo',
+      'Si vive fuera de Chile y debe litigar, firmar acuerdos o vender bienes, probablemente necesite mandato judicial o trámite consular válido. Un error en la redacción puede invalidar meses de gestión.',
+    decisionTitle: 'Qué preparar antes del consulado',
     decisionIntro:
-      'Un acompañamiento legal permanente permite detectar contingencias antes de que se transformen en conflictos, pérdidas o bloqueos de negocio.',
+      'Definimos el acto exacto a autorizar, requisitos del consulado correspondiente y si se requiere representación judicial en Chile.',
     decisionPoints: [
-      'Revisar contratos y decisiones relevantes antes de firmar.',
-      'Detectar riesgos recurrentes en la operación diaria.',
-      'Alinear criterio legal con objetivos comerciales.',
-      'Entregar respuestas claras y oportunas para decidir mejor.',
+      'Redactar mandato conforme a ley chilena y al consulado.',
+      'Coordinar firma, apostilla y envío de documentos.',
+      'Patrocinar demanda o defensa en tribunales chilenos.',
+      'Mantener informado al cliente en el extranjero en cada hito.',
     ],
-    localTitle: 'Asesoría legal empresarial en Santiago',
+    localTitle: 'Trámites consulares y representación desde Chile',
     localParagraphs: [
-      'Ruiz Leiva Abogados acompaña a empresas y empresarios que necesitan criterio jurídico continuo, práctico y conectado con la realidad del negocio.',
-      'Nuestra asesoría busca reducir incertidumbre, ordenar decisiones y entregar una ruta clara ante riesgos contractuales, societarios o regulatorios.',
+      'Familia Internacional prepara mandatos y representa a clientes en familia aunque residan en Europa, América u otras regiones.',
+      'Evitamos rechazos consulares y judiciales por defectos de forma en poderes y escrituras.',
     ],
     relatedSearches: [
-      'abogado externo para empresas',
-      'asesoría contractual Chile',
-      'legal advisory empresas',
+      'mandato judicial Chile consulado',
+      'abogado familia chilenos en el exterior',
+      'poder especial familia extranjero',
     ],
   },
 } as const satisfies Record<string, ServiceSeoCopy>;
 
 export function getServiceSeoCopy(slug: string): ServiceSeoCopy {
-  return serviceSeoCopy[slug as keyof typeof serviceSeoCopy];
+  return (
+    serviceSeoCopy[slug as keyof typeof serviceSeoCopy] ?? {
+      keywords: ['derecho familia internacional Chile', 'Familia Internacional'],
+      intentTitle: 'Cuándo consultar a Familia Internacional',
+      intentSummary:
+        'Si su situación involucra más de un país en materia de familia, conviene una evaluación especializada antes de actuar.',
+      decisionTitle: 'Próximos pasos',
+      decisionIntro: 'Evaluamos su caso, países involucrados y vías procesales disponibles.',
+      decisionPoints: [
+        'Revisión de antecedentes y urgencia.',
+        'Definición de estrategia transfronteriza.',
+        'Ejecución con seguimiento continuo.',
+      ],
+      localTitle: 'Familia Internacional en Santiago',
+      localParagraphs: [
+        'Primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia.',
+        'Atendemos desde Lo Barnechea, Santiago, a clientes en Chile y en el extranjero.',
+      ],
+      relatedSearches: ['abogado familia internacional', 'evaluar caso familia'],
+    }
+  );
 }

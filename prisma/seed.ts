@@ -4,7 +4,7 @@ import { getPrismaClient } from '../src/lib/db/prisma';
 type PrismaClientInstance = ReturnType<typeof getPrismaClient>;
 
 function buildSeoTitle(title: string) {
-  return `${title} | Ruiz Leiva Abogados`;
+  return `${title} | Familia Internacional`;
 }
 
 function buildSeoDescription(excerpt: string) {

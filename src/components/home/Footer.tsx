@@ -16,7 +16,7 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
   const contact = resolveSiteContact(adminValues);
   const serviceLinks = familyServices.map((service) => ({
     label: locale === 'es' ? service.title.es : service.title.en,
-    href: '/servicios',
+    href: `/servicios/${service.slug}`,
   }));
 
   return (

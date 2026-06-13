@@ -23,7 +23,7 @@ export default function AdminLoginForm() {
             autoComplete="email"
             required
             className="min-h-12 w-full bg-transparent text-white outline-none placeholder:text-gray-600"
-            placeholder="admin@rluabogados.cl"
+            placeholder="admin@familiainternacional.cl"
           />
         </span>
       </label>

@@ -1,7 +1,7 @@
 import { Server, Database, Lock, Calendar, CreditCard, FolderKey, ShieldAlert, Rocket, TrendingUp, BarChart3, Users, Briefcase } from 'lucide-react';
 
 export const metadata = {
-  title: 'Visión Tecnológica | Admin Ruiz Leiva',
+  title: 'Visión Tecnológica | Admin Familia Internacional',
 };
 
 export default function VisionDashboardPage() {

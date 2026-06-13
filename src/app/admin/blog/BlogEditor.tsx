@@ -161,7 +161,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   type="text"
                   id="authorName"
                   name="authorName"
-                  defaultValue={post?.authorName ?? 'Equipo Ruiz Leiva'}
+                  defaultValue={post?.authorName ?? 'Familia Internacional'}
                   className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors"
                 />
               </div>

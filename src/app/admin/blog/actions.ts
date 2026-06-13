@@ -44,7 +44,7 @@ export async function savePost(formData: FormData) {
     excerptEs: getOptionalString(formData, 'excerptEs'),
     contentEs: getRequiredString(formData, 'contentEs'),
     coverImage: getOptionalString(formData, 'coverImage'),
-    authorName: getOptionalString(formData, 'authorName') ?? 'Equipo Ruiz Leiva',
+    authorName: getOptionalString(formData, 'authorName') ?? 'Familia Internacional',
     seoTitleEs: getOptionalString(formData, 'seoTitleEs'),
     seoDescriptionEs: getOptionalString(formData, 'seoDescriptionEs'),
     seoKeywords: getOptionalString(formData, 'seoKeywords'),

@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import { getPrismaClient } from './prisma';
 
-/** Roles internos de Postgres para RLS (Ruiz Leiva Abogados). */
+/** Roles internos de Postgres para RLS (Familia Internacional). */
 const DATABASE_ROLES = {
   public: 'rlu_public_runtime',
   auth: 'rlu_auth_runtime',
@@ -40,7 +40,7 @@ export function withDatabaseRole<T>(
       if (!isMissingRoleError(error)) throw error;
       await tx.$executeRawUnsafe('ROLLBACK TO SAVEPOINT app_role_switch');
 
-      const setupHint = 'Run the Ruiz Leiva RLS role setup migration in Supabase SQL Editor.';
+      const setupHint = 'Run the Familia Internacional RLS role setup migration in Supabase SQL Editor.';
 
       if (shouldEnforceRlsRoles()) {
         throw new Error(
