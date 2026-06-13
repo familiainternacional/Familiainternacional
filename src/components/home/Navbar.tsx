@@ -321,13 +321,13 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
     <>
       {!mobileMenuOpen ? (
         <header
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'} ${isMobileOnly ? 'block lg:hidden' : 'block'}`}
+          className={`absolute top-0 left-0 right-0 z-50 bg-transparent py-6 ${isMobileOnly ? 'block lg:hidden' : 'block'}`}
         >
-          <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <div className="container flex items-center justify-between">
             {/* Left: Brand */}
             <div className="flex-shrink-0">
               <Link href="/#home" className="inline-flex items-center" aria-label={siteConfig.name}>
-                <FiLogo compact={isScrolled} />
+                <FiLogo compact={false} />
               </Link>
             </div>
 
@@ -337,7 +337,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`text-[12px] font-bold tracking-[0.15em] uppercase transition-colors ${isScrolled ? 'hover:text-black/60' : 'hover:text-white/60'} ${isNavPathActive(pathname, item.href, activeSectionForNav) ? (isScrolled ? 'text-black' : 'text-white') : (isScrolled ? 'text-black/80' : 'text-white/80')}`}
+                    className={`text-[12px] font-bold tracking-[0.15em] uppercase transition-colors hover:text-white/60 ${isNavPathActive(pathname, item.href, activeSectionForNav) ? 'text-white' : 'text-white/80'}`}
                   >
                     {item.label}
                   </Link>
@@ -361,21 +361,21 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
             <div className="flex items-center gap-4">
               <a
                 href={primaryPhoneHref}
-                className={`hidden sm:flex items-center justify-center w-10 h-10 rounded-full border transition-colors ${isScrolled ? 'border-black/20 text-black hover:bg-black/5' : 'border-white/20 text-white hover:bg-white/10'}`}
+                className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors"
                 aria-label={isEnglish ? `Call ${primaryPhone}` : `Llamar al ${primaryPhone}`}
               >
                 <Phone size={16} aria-hidden />
               </a>
               <Link
                 href="/evalua-tu-caso"
-                className={`hidden lg:flex items-center justify-center border font-bold text-[12px] tracking-[0.1em] uppercase rounded-full px-6 py-2.5 transition-all ${isScrolled ? 'border-black/10 bg-white text-black hover:bg-black/5' : 'border-white/10 bg-white text-[#07234c] hover:bg-white/90'}`}
+                className="hidden lg:flex items-center justify-center border border-white/10 bg-white text-[#07234c] font-bold text-[12px] tracking-[0.1em] uppercase rounded-full px-6 py-2.5 transition-all hover:bg-white/90"
               >
                 Evaluar Caso
               </Link>
               <LocaleSelector />
               <button
                 type="button"
-                className={`lg:hidden flex items-center justify-center w-10 h-10 ${isScrolled ? 'text-black' : 'text-white'}`}
+                className="lg:hidden flex items-center justify-center w-10 h-10 text-white"
                 aria-label={mobileMenuOpen ? (isEnglish ? 'Close menu' : 'Cerrar menú') : isEnglish ? 'Open menu' : 'Abrir menú'}
                 aria-expanded={mobileMenuOpen}
                 onClick={() => setMobileMenuOpen(true)}
