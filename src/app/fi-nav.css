@@ -91,16 +91,16 @@
 .fi-nav-logo {
   display: block;
   width: auto;
-  max-width: min(630px, 70vw);
-  height: 138px;
+  max-width: min(420px, 60vw);
+  height: 92px;
   object-fit: contain;
   object-position: left center;
   flex-shrink: 0;
 }
 
 .fi-nav-logo--compact {
-  height: 114px;
-  max-width: min(540px, 60vw);
+  height: 76px;
+  max-width: min(360px, 50vw);
 }
 
 .fi-nav--floating .fi-nav-link {
