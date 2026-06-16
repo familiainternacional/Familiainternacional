@@ -55,10 +55,11 @@ export default function GoogleReviewsSection({
     <section
       id="reseñas"
       aria-labelledby="google-reviews-title"
-      className={`relative z-10 w-full bg-white ${compact ? 'px-5 py-14 md:px-12 md:py-20 lg:px-24' : 'px-5 py-24 md:px-12 lg:px-24'}`}
+      className={`relative z-10 w-full bg-white ${compact ? 'py-16 sm:py-24' : 'py-20 sm:py-32'} font-sans`}
     >
-      <div className="mx-auto flex max-w-7xl flex-col items-center">
-        <div className="fi-section-header fi-section-header--center">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex w-full flex-col items-start">
+        <div className="fi-section-header">
           <p className="fi-eyebrow text-[#07234c]">
             {isSpanish ? 'Reseñas verificadas' : 'Verified reviews'}
           </p>
@@ -67,12 +68,18 @@ export default function GoogleReviewsSection({
               ? 'Experiencias reales de familias que confiaron en nosotros'
               : 'Real experiences from families who trusted us'}
           </h2>
-          <p className="fi-section-intro fi-section-intro--center mt-4 flex flex-wrap items-center justify-center gap-3">
+          <p className="fi-section-intro mt-4 flex flex-wrap items-center justify-start gap-3">
             <span className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-[#fbbc04] text-[#fbbc04]" aria-hidden />
               ))}
               <span className="ml-1 font-bold text-[#1c1c1c]">{aggregateRating.ratingValue.toFixed(1)}</span>
+            </span>
+            <span className="text-neutral-400">·</span>
+            <span className="text-sm font-medium text-neutral-500">
+              {isSpanish
+                ? `${aggregateRating.reviewCount} reseñas en Google`
+                : `${aggregateRating.reviewCount} Google reviews`}
             </span>
             <span className="text-neutral-400">·</span>
             <GoogleBadge />
@@ -101,9 +108,23 @@ export default function GoogleReviewsSection({
             >
               <div>
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-bold text-[#1c1c1c]">
-                    {review.initial}
-                  </div>
+                  {review.authorPhotoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={review.authorPhotoUrl}
+                      alt={`Foto de perfil de ${review.author}`}
+                      width={40}
+                      height={40}
+                      loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                      className="h-10 w-10 rounded-full border border-neutral-200 object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-bold text-[#1c1c1c]">
+                      {review.initial}
+                    </div>
+                  )}
                   <GoogleBadge />
                 </div>
 
@@ -149,6 +170,7 @@ export default function GoogleReviewsSection({
             <ArrowUpRight className="h-4 w-4" aria-hidden />
           </Link>
         ) : null}
+        </div>
       </div>
     </section>
   );

@@ -72,7 +72,7 @@ export default function HomeHeroForm({ initialValues }: { initialValues: HomeHer
         <button
           type="submit"
           disabled={isPending}
-          className="flex items-center gap-2 bg-brand text-white px-6 py-2.5 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+          className="flex items-center gap-2 bg-brand text-white px-6 py-2.5 rounded-lg font-medium hover:bg-brand-dark disabled:opacity-70 disabled:cursor-not-allowed transition-all"
         >
           {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
           Guardar Cambios

@@ -23,11 +23,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const admin = await requireAdminSession();
 
   return (
-    <div className="h-screen bg-[#07234c] text-white flex flex-col md:flex-row overflow-hidden">
+    <div className="h-screen bg-white text-[#0f172a] flex flex-col md:flex-row overflow-hidden">
       <AdminSidebar adminEmail={admin.email ?? 'Admin'} />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-[#07234c]">
+      <main className="flex-1 overflow-auto bg-white">
         <div className="p-6 md:p-8">
           {children}
         </div>

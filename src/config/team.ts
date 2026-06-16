@@ -22,7 +22,7 @@ export const teamMembers: TeamMember[] = [
     name: 'Jaime Soto Silva',
     role: { es: 'Abogado – Socio', en: 'Attorney – Partner' },
     email: 'contacto@familiainternacional.cl',
-    image: '/hero-familia.png',
+    image: '/jaime-soto.png',
     imageAlt: 'Jaime Soto Silva - Familia Internacional',
     tags: [
       'Convenio de La Haya',
@@ -32,7 +32,7 @@ export const teamMembers: TeamMember[] = [
     ],
     bio: {
       es: [
-        'Abogado, Magíster y Profesor Universitario en Derecho de Familia y Práctica Profesional. Ex abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para la aplicación de los Convenios de La Haya de 1980 y de Nueva York de 1956.',
+        'Abogado – Magíster – Profesor Universitario en Derecho de Familia y Práctica Profesional – Ex Abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para la aplicación de los Convenios de La Haya de 1980 y de Nueva York de 1956.',
         'Su trayectoria combina litigación en tribunales de familia, coordinación con autoridades centrales y asesoría a familias en conflictos transfronterizos de alta complejidad.',
       ],
       en: [

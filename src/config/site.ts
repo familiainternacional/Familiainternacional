@@ -58,9 +58,9 @@ export const siteConfig = {
     sellSubject: 'Consulta sobre mi caso internacional',
     advisorySubject: 'Quiero evaluar mi caso',
     social: {
-      instagram: 'https://instagram.com/estudiofamiliainternacional',
+      instagram: 'https://instagram.com/estudiofamiliainternacional?igshid=1uxnpi8pu2r4r',
       linkedin: 'https://www.linkedin.com/in/jaime-soto-silva-28b7314a',
-      facebook: 'https://twitter.com/Familiainter_cl',
+      x: 'https://twitter.com/Familiainter_cl',
     },
   },
   offices: [
@@ -97,8 +97,8 @@ export const siteConfig = {
       en: 'Strategic legal advisory',
     },
     aboutIntro: {
-      es: 'Estudio jurídico enfocado en empresas, empresarios y personas que requieren criterio técnico, estrategia y una ejecución clara.',
-      en: 'Law firm focused on companies, entrepreneurs and individuals who require technical judgment, strategy and clear execution.',
+      es: 'Estudio jurídico especializado en familias con conflictos transfronterizos que requieren criterio técnico, estrategia procesal y acompañamiento directo.',
+      en: 'Law firm specialized in families facing cross-border disputes who need technical judgment, procedural strategy, and direct guidance.',
     },
     aboutModelTitle: {
       es: 'Acompañamiento directo para decidir con criterio jurídico y comercial.',
@@ -129,8 +129,8 @@ export const siteConfig = {
         en: 'International Family Law',
       },
       description: {
-        es: 'Somos el primer y único Estudio Jurídico en Chile dedicado exclusivamente a la protección de familias y menores a nivel global.',
-        en: 'We are the first and only law firm in Chile dedicated exclusively to protecting families and minors worldwide.',
+        es: 'Asesoría en divorcios internacionales, sustracción de menores, exequátur y custodia transfronteriza.',
+        en: 'Advisory on international divorce, child abduction, exequatur, and cross-border custody.',
       },
     },
     mission: {
@@ -139,8 +139,8 @@ export const siteConfig = {
         en: 'Our mission',
       },
       lead: {
-        es: 'Protegemos a las familias cuando sus derechos cruzan fronteras. Somos el primer y único estudio jurídico en Chile dedicado exclusivamente al Derecho Internacional de Familia, ',
-        en: 'We protect families when their rights cross borders. We are the first and only law firm in Chile dedicated exclusively to International Family Law, ',
+        es: 'Protegemos a las familias cuando sus derechos cruzan fronteras. Somos un estudio dedicado exclusivamente al Derecho Internacional de Familia, ',
+        en: 'We protect families when their rights cross borders. We are a firm dedicated exclusively to International Family Law, ',
       },
       supporting: {
         es: 'con el respaldo de cientos de juicios tramitados, dominio de los Convenios de La Haya y Nueva York, y una red internacional de abogados que acompaña cada caso con experiencia, confidencialidad y cercanía.',

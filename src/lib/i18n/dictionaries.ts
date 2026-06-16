@@ -71,16 +71,17 @@ export const dictionaries = {
       ]
     },
     team: {
-      label: 'Quiénes Somos',
-      title1: 'Verdaderos expertos en',
-      title2: 'Derecho de Familia Internacional.',
+      label: 'Acerca de nosotros',
+      subtitle: 'Conoce un poco más de nuestro estudio',
+      title1: 'Verdaderos expertos en Derecho de Familia Internacional',
+      title2: '',
       intro:
-        'Nuestro estudio nace de la necesidad de brindar asesoría experta en temas donde no es fácil encontrar profesionales con experiencia. Con cientos de juicios tramitados y una red internacional de abogados, acompañamos a familias en Chile y en el extranjero.',
+        'Nuestro estudio jurídico nace de la necesidad de brindar a nuestros clientes una asesoría experta en temas de Derecho de Familia Internacional. Sabemos que por lo específico de los temas, no es fácil encontrar profesionales con experiencia en estas materias, por lo que, con el respaldo de cientos de juicios exitosamente tramitados, podemos asegurar un trabajo altamente calificado. Formamos parte de una extensa red de abogados internacionales dedicados al derecho de familia.',
       jaime: {
         name: 'Jaime Soto Silva',
         role: 'Abogado – Socio',
         bio1:
-          'Abogado, Magíster y Profesor Universitario en Derecho de Familia y Práctica Profesional. Ex abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para la aplicación de los Convenios de La Haya de 1980 y de Nueva York de 1956.',
+          'Abogado – Magíster – Profesor Universitario en Derecho de Familia y Práctica Profesional – Ex Abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para la aplicación de los Convenios de La Haya de 1980 y de Nueva York de 1956.',
         bio2:
           'Su trayectoria combina litigación en tribunales de familia, coordinación con autoridades centrales y asesoría a familias en conflictos transfronterizos de alta complejidad.',
         tags: ['Convenio de La Haya', 'Sustracción Internacional', 'Exequátur', 'Alimentos Internacionales'],
@@ -254,11 +255,12 @@ export const dictionaries = {
       ]
     },
     team: {
-      label: 'About Us',
-      title1: 'True experts in',
-      title2: 'International Family Law.',
+      label: 'About us',
+      subtitle: 'Learn a little more about our firm',
+      title1: 'True experts in International Family Law',
+      title2: '',
       intro:
-        'Our firm was founded to provide expert guidance in matters where experienced professionals are hard to find. With hundreds of successfully handled cases and an international network of attorneys, we support families in Chile and abroad.',
+        'Our law firm was founded to provide our clients with expert advice on International Family Law matters. Because these issues are highly specialized, it is not easy to find professionals with experience in this field. Backed by hundreds of successfully handled cases, we can ensure highly qualified work. We are part of an extensive network of international family law attorneys.',
       jaime: {
         name: 'Jaime Soto Silva',
         role: 'Attorney – Partner',
@@ -397,6 +399,7 @@ export type TranslationKey =
   | 'services.title1'
   | 'services.title2'
   | 'team.label'
+  | 'team.subtitle'
   | 'team.title1'
   | 'team.title2'
   | 'team.intro'

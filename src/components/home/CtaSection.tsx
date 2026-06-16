@@ -1,108 +1,57 @@
 'use client';
 
-import { useRef } from 'react';
-import Image from 'next/image';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-import { motion } from 'framer-motion';
-import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { premiumEase } from '@/lib/motion/easings';
 
 export default function CtaSection() {
   const { locale } = useI18n();
   const isSpanish = locale === 'es';
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion || !sectionRef.current || !bgRef.current) {
-        return;
-      }
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      gsap.to(bgRef.current, {
-        y: 80,
-        scale: 1.12,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-    },
-    { scope: sectionRef, dependencies: [prefersReducedMotion] },
-  );
 
   return (
-    <section className="px-4 py-16 md:px-8 lg:px-12 bg-white">
-      <div
-        ref={sectionRef}
-        id="vision"
-        aria-labelledby="vision-title"
-        className="relative overflow-hidden rounded-[2rem] lg:rounded-[2.5rem] bg-neutral-900 mx-auto w-full max-w-[1400px]"
-      >
-        <div ref={bgRef} className="absolute inset-0 will-change-transform">
-          <Image
-            src={resolveSiteAssetSrc('/library.png')}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover opacity-60 grayscale"
-          />
-          {/* Dark overlay for contrast */}
-          <div className="absolute inset-0 bg-neutral-900/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/80 via-neutral-900/40 to-neutral-900/80" />
-        </div>
+    <section className="w-full bg-white py-16 font-sans sm:py-24">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative flex w-full flex-col items-center justify-between gap-12 overflow-hidden rounded-[1.75rem] bg-[#07234c] px-5 py-14 shadow-2xl sm:rounded-[2rem] sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:px-10 lg:py-20 xl:rounded-[2.25rem] xl:px-14 xl:py-24">
+          
+          {/* Subtle background decoration */}
+          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-72 h-72 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.75, ease: premiumEase }}
-          className="relative z-10 mx-auto flex min-h-[350px] md:min-h-[450px] flex-col items-center justify-center text-center px-6 py-16 md:py-24"
-        >
-          <h2 id="vision-title" className="fi-section-heading mb-4 text-white">
-            {isSpanish ? '¿Necesitas asesoría legal?' : 'Need legal guidance?'}
-          </h2>
+          {/* Left Content */}
+          <div className="relative z-10 flex-1 max-w-2xl text-center lg:text-left">
+            <h2 className="mb-6 text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem] xl:text-5xl">
+              {isSpanish ? '¿Necesitas asesoría legal experta?' : 'Need expert legal guidance?'}
+            </h2>
+            <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 xl:max-w-2xl">
+              {isSpanish
+                ? 'Asesoría en derecho de familia nacional e internacional. Agenda tu hora online con nuestros abogados y protege lo que más importa.'
+                : 'National and international family law advice. Book your online consultation with our lawyers and protect what matters most.'}
+            </p>
+            
+            <div className="flex items-center justify-center lg:justify-start gap-4">
+              <div className="h-[1px] w-8 sm:w-12 bg-white/20"></div>
+              <p className="text-white/60 text-xs sm:text-sm">
+                {isSpanish ? 'Consultados por ' : 'Featured in '}
+                <Link href="/prensa" className="text-white font-medium hover:text-white/80 transition-colors underline underline-offset-4 decoration-white/30">
+                  Las Últimas Noticias
+                </Link>
+                {isSpanish ? ' en casos de sustracción internacional.' : ' on international child abduction cases.'}
+              </p>
+            </div>
+          </div>
 
-          <p className="fi-section-intro fi-section-intro--center fi-section-intro--inverse mx-auto mb-8 max-w-xl font-medium">
-            {isSpanish
-              ? 'Asesoría experta en derecho de familia nacional e internacional. Agenda tu hora online con nuestros abogados.'
-              : 'Expert guidance in national and international family law. Book your online consultation with our attorneys.'}
-          </p>
-
-          <p className="mb-10 text-sm text-white/60">
-            {isSpanish ? 'Consultados por ' : 'Featured in '}
-            <Link href="/prensa" className="font-semibold text-white/85 underline-offset-4 hover:underline">
-              Las Últimas Noticias
-            </Link>
-            {isSpanish ? ' en casos de sustracción internacional.' : ' on international child abduction cases.'}
-          </p>
-
-          <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 400, damping: 25 }}>
+          {/* Right Action */}
+          <div className="relative z-10 flex-shrink-0">
             <Link
               href="/evalua-tu-caso"
-              className="group flex items-center justify-center gap-3"
+              className="inline-flex min-h-[56px] items-center justify-center whitespace-nowrap rounded-full bg-white px-8 text-base font-bold text-[#07234c] shadow-xl shadow-[#07234c]/20 transition-all hover:scale-[1.02] hover:bg-white/95 sm:px-10 sm:text-lg"
             >
-              <div className="rounded-full bg-white px-8 py-4 text-base font-bold uppercase tracking-wide text-black transition-colors hover:bg-neutral-100">
-                {isSpanish ? 'Solicitar una consulta' : 'Request a consultation'}
-              </div>
-              <div className="flex items-center justify-center rounded-full bg-white p-3.5 text-black transition-colors hover:bg-neutral-100">
-                <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
-              </div>
+              {isSpanish ? 'Evaluar mi caso' : 'Evaluate my case'}
+              <ArrowUpRight className="ml-2 h-5 w-5" strokeWidth={2.5} aria-hidden />
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+          
+        </div>
       </div>
     </section>
   );

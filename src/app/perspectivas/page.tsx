@@ -52,16 +52,16 @@ export default async function PerspectivasPage() {
   const olderPosts = posts.slice(1, 4);
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#07234c] text-white selection:bg-[var(--color-primary)] selection:text-white">
+    <main className="flex min-h-screen flex-col bg-white text-[#07234c] selection:bg-[var(--color-primary)] selection:text-white">
       <Navbar />
 
       <section id="articulos" className="flex-1 px-5 pb-24 pt-32 md:px-12 md:pb-32 md:pt-40 lg:px-24">
         <div className="mx-auto max-w-[1440px]">
           <div className="mb-8 flex items-end justify-between md:mb-12">
-            <h1 className="font-serif text-3xl tracking-tight text-white md:text-4xl lg:text-h2">
+            <h1 className="font-serif text-3xl tracking-tight text-[#07234c] md:text-4xl lg:text-h2">
               Perspectivas
             </h1>
-            <span className="text-sm font-medium text-gray-400">
+            <span className="text-sm font-medium text-neutral-500">
               analisis legal
             </span>
           </div>
@@ -69,7 +69,7 @@ export default async function PerspectivasPage() {
           <div className="grid grid-cols-1 gap-10 md:gap-14 lg:grid-cols-12">
             <div className="group flex cursor-pointer flex-col lg:col-span-7 xl:col-span-7">
               <Link href={`/perspectivas/${latestPost.slug}`} className="flex h-full flex-col">
-                <div className="relative mb-6 aspect-[4/3] w-full overflow-hidden rounded-xl bg-white/5 md:aspect-[16/10] md:rounded-2xl">
+                <div className="relative mb-6 aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#f8fafc] md:aspect-[16/10] md:rounded-2xl">
                   {latestPost.coverImage && (
                     <Image
                       src={latestPost.coverImage}
@@ -80,14 +80,14 @@ export default async function PerspectivasPage() {
                       priority
                     />
                   )}
-                  <div className="absolute inset-0 bg-[#07234c]/10 transition-colors duration-500 group-hover:bg-transparent" />
+                  <div className="absolute inset-0 bg-white/30 transition-colors duration-500 group-hover:bg-transparent" />
                 </div>
 
                 <div className="mt-auto grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
-                  <h2 className="text-xl font-bold leading-tight text-white transition-colors group-hover:text-gray-200 md:text-2xl">
+                  <h2 className="text-xl font-bold leading-tight text-[#07234c] transition-colors group-hover:text-[#0d3566] md:text-2xl">
                     {latestPost.titleEs}
                   </h2>
-                  <p className="line-clamp-4 text-sm leading-relaxed text-gray-400 md:text-base">
+                  <p className="line-clamp-4 text-sm leading-relaxed text-neutral-600 md:text-base">
                     {latestPost.excerptEs}
                   </p>
                 </div>
@@ -101,7 +101,7 @@ export default async function PerspectivasPage() {
                   key={post.slug}
                   className="group grid grid-cols-1 items-start gap-4 sm:grid-cols-[2fr_3fr] md:gap-6 lg:grid-cols-[1.5fr_2fr]"
                 >
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-white/5 sm:aspect-[4/3]">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-[#f8fafc] sm:aspect-[4/3]">
                     {post.coverImage && (
                       <Image
                         src={post.coverImage}
@@ -111,14 +111,14 @@ export default async function PerspectivasPage() {
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     )}
-                    <div className="absolute inset-0 bg-[#07234c]/10 transition-colors duration-500 group-hover:bg-transparent" />
+                    <div className="absolute inset-0 bg-white/30 transition-colors duration-500 group-hover:bg-transparent" />
                   </div>
 
                   <div className="flex flex-col">
-                    <h3 className="mb-2 text-lg font-semibold leading-tight text-white transition-colors group-hover:text-gray-200 md:mb-3 md:text-xl">
+                    <h3 className="mb-2 text-lg font-semibold leading-tight text-[#07234c] transition-colors group-hover:text-[#0d3566] md:mb-3 md:text-xl">
                       {post.titleEs}
                     </h3>
-                    <p className="line-clamp-3 text-xs leading-relaxed text-gray-400 md:text-sm">
+                    <p className="line-clamp-3 text-xs leading-relaxed text-neutral-600 md:text-sm">
                       {post.excerptEs}
                     </p>
                   </div>

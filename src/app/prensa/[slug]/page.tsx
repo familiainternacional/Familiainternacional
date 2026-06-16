@@ -174,16 +174,16 @@ export default async function PrensaDetailPage({ params }: PageProps) {
             </section>
           ) : null}
 
-          <aside className="mt-14 flex flex-col gap-4 rounded-[2rem] border border-[#07234c]/10 bg-[#07234c] p-6 text-white md:flex-row md:items-center md:justify-between md:p-8">
+          <aside className="mt-14 flex flex-col gap-4 rounded-[2rem] border border-[#07234c]/10 bg-white p-6 text-[#07234c] shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
             <div>
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-white/70">¿Tu familia enfrenta un caso similar?</p>
-              <p className="max-w-xl text-base leading-relaxed text-white/90">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-[#07234c]/60">¿Tu familia enfrenta un caso similar?</p>
+              <p className="max-w-xl text-base leading-relaxed text-neutral-700">
                 Agenda una evaluación con abogados especializados en derecho de familia internacional.
               </p>
             </div>
             <Link
               href="/evalua-tu-caso"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#07234c] transition-colors hover:bg-white/90"
+              className="fi-btn-primary inline-flex shrink-0 items-center justify-center gap-2 px-5 py-3 text-sm font-bold"
             >
               Evaluar mi caso
               <ArrowUpRight className="h-4 w-4" aria-hidden />

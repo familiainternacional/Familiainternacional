@@ -11,7 +11,6 @@ import {
 import Navbar from '@/components/home/Navbar';
 import Footer from '@/components/home/Footer';
 import ScrollReveal from '@/components/home/ScrollReveal';
-import WhatsAppWidget from '@/components/home/WhatsAppWidget';
 import JsonLd from '@/components/seo/JsonLd';
 import FaqAccordion from '@/components/ui/FaqAccordion';
 import {
@@ -115,7 +114,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
       <main>
         <section
           aria-labelledby="service-hero-title"
-          className="relative z-10 min-h-[620px] w-full max-w-full overflow-hidden bg-[#07234c] lg:h-screen lg:min-h-[800px] lg:overflow-visible"
+          className="relative z-10 min-h-[620px] w-full max-w-full overflow-hidden bg-white lg:h-screen lg:min-h-[800px] lg:overflow-visible"
         >
           <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
             <Image
@@ -123,11 +122,11 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
               alt=""
               fill
               sizes="100vw"
-              className="object-cover opacity-35 grayscale-[25%]"
+              className="object-cover opacity-15 grayscale-[15%]"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#07234c] via-[#07234c]/78 to-[#07234c]/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#07234c] via-[#07234c]/20 to-[#07234c]/40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/75 to-white/60" />
           </div>
 
           <div className="absolute inset-0 lg:hidden">
@@ -139,15 +138,15 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
               className="object-cover object-center grayscale contrast-125"
               priority
             />
-            <div className="absolute inset-0 bg-[#07234c]/74" />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#07234c]/55 via-[#07234c]/35 to-[#07234c]/90" />
+            <div className="absolute inset-0 bg-white/80" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/80 to-white" />
           </div>
 
           <div className="relative z-10 mx-auto flex min-h-[620px] w-full flex-col justify-start pb-12 pt-36 md:px-8 lg:mx-0 lg:h-full lg:w-[55%] lg:justify-center lg:px-0 lg:pl-32 lg:pt-0 xl:w-[60%]">
             <div className="mx-auto max-w-[343px] px-2 text-center lg:mx-0 lg:mt-16 lg:max-w-2xl lg:pr-0 lg:text-left">
               <Link
                 href="/servicios"
-                className="mb-7 inline-flex items-center text-small font-semibold text-white/75 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+                className="mb-7 inline-flex items-center text-small font-semibold text-[#07234c]/70 underline decoration-[#07234c]/20 underline-offset-4 transition-colors hover:text-[#07234c]"
               >
                 Servicios juridicos
               </Link>
@@ -157,12 +156,12 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
               </span>
               <h1
                 id="service-hero-title"
-                className="mb-5 font-serif text-[2.65rem] leading-[1.05] tracking-tight text-white sm:text-[3rem] lg:mb-10 lg:text-h1"
+                className="mb-5 font-serif text-[2.65rem] leading-[1.05] tracking-tight text-[#07234c] sm:text-[3rem] lg:mb-10 lg:text-h1"
               >
                 {landing.heroTitle}
               </h1>
 
-              <p className="mx-auto mb-7 max-w-[65ch] text-base leading-relaxed text-white/90 lg:mx-0 lg:mb-9 lg:text-body">
+              <p className="mx-auto mb-7 max-w-[65ch] text-base leading-relaxed text-[#334155] lg:mx-0 lg:mb-9 lg:text-body">
                 {landing.heroSubtitle}
               </p>
 
@@ -178,20 +177,20 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
             <div className="mx-auto mt-12 grid w-full max-w-[343px] grid-cols-2 gap-x-8 gap-y-6 px-2 sm:grid-cols-4 sm:gap-x-4 sm:gap-y-2 lg:absolute lg:bottom-12 lg:left-32 lg:right-auto lg:mx-0 lg:mt-0 lg:flex lg:w-[80%] lg:max-w-3xl lg:justify-between lg:gap-16 lg:overflow-visible lg:px-0 lg:pr-12">
               {heroStats.map((stat) => (
                 <div key={stat.label} className="min-w-0 pr-2 lg:flex-shrink-0 lg:pr-0">
-                  <p className="mb-1 font-serif text-h3 text-white lg:mb-3">
+                  <p className="mb-1 font-serif text-h3 text-[#07234c] lg:mb-3">
                     {stat.value}
                   </p>
-                  <p className="max-w-[13ch] text-small text-gray-200 lg:max-w-[120px]">
+                  <p className="max-w-[13ch] text-small text-[#475569] lg:max-w-[120px]">
                     {stat.label}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="absolute bottom-20 hidden h-[1px] bg-white/10 lg:left-32 lg:block lg:w-[80%] lg:max-w-3xl" />
+            <div className="absolute bottom-20 hidden h-[1px] bg-[#07234c]/10 lg:left-32 lg:block lg:w-[80%] lg:max-w-3xl" />
           </div>
 
-          <div className="absolute bottom-0 right-0 top-24 hidden w-full border-l border-t border-white/5 bg-[#07234c] lg:right-12 lg:block lg:w-[45%] xl:w-[40%]">
+          <div className="absolute bottom-0 right-0 top-24 hidden w-full border-l border-t border-[#07234c]/10 bg-white lg:right-12 lg:block lg:w-[45%] xl:w-[40%]">
             <div className="absolute inset-0">
               <Image
                 src={resolveSiteAssetSrc(landing.image)}
@@ -201,8 +200,8 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                 className="object-cover object-center opacity-90 grayscale contrast-125"
                 priority
               />
-              <div className="absolute inset-0 bg-[#07234c]/18" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/45 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-white/35" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
             </div>
           </div>
         </section>
@@ -396,11 +395,11 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                           className="object-cover grayscale-[15%] transition duration-500 group-hover:scale-[1.03]"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-[#07234c]/28" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/62 via-[#07234c]/12 to-transparent" />
+                        <div className="absolute inset-0 bg-white/35" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
 
                         <div className="absolute right-4 top-4 md:hidden">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#07234c]/15 text-[0.875rem] font-semibold text-white backdrop-blur-md">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-[0.875rem] font-semibold text-[#07234c] backdrop-blur-md">
                             {includeNumber}
                           </div>
                         </div>
@@ -497,8 +496,8 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                         sizes="(min-width: 768px) 30vw, 92vw"
                         className="object-cover grayscale-[15%] transition duration-500 group-hover:scale-[1.03]"
                       />
-                      <div className="absolute inset-0 bg-[#07234c]/28" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/62 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-white/35" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
                     </div>
                     <div className="p-5">
                       <span className="text-small font-bold uppercase tracking-widest text-brand">
@@ -519,7 +518,6 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
       </main>
 
-      <WhatsAppWidget />
       <Footer />
     </div>
   );

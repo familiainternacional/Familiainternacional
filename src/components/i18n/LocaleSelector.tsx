@@ -2,13 +2,18 @@
 
 import { Globe } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 
 interface LocaleSelectorProps {
   triggerClassName?: string;
+  triggerStyle?: CSSProperties;
 }
 
-export default function LocaleSelector({ triggerClassName = 'fi-nav-action fi-nav-action--icon' }: LocaleSelectorProps) {
+export default function LocaleSelector({
+  triggerClassName = 'fi-nav-action fi-nav-action--icon',
+  triggerStyle,
+}: LocaleSelectorProps) {
   const { locale, setLocale } = useI18n();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -31,6 +36,7 @@ export default function LocaleSelector({ triggerClassName = 'fi-nav-action fi-na
       <button
         type="button"
         className={triggerClassName}
+        style={triggerStyle}
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label={locale === 'es' ? 'Seleccionar idioma' : 'Select language'}

@@ -1,13 +1,29 @@
 import type { Locale } from '@/lib/i18n/config';
-import { familyServices } from '@/config/family-services';
 
-export type NavSection = 'home' | 'about' | 'services' | 'metodologia' | 'process' | 'contact';
+export type NavSection =
+  | 'home'
+  | 'services'
+  | 'about'
+  | 'metodologia'
+  | 'prensa'
+  | 'perspectivas'
+  | 'contact';
+
+export const HOME_NAV_SECTIONS: NavSection[] = [
+  'home',
+  'services',
+  'about',
+  'metodologia',
+  'prensa',
+  'perspectivas',
+  'contact',
+];
 
 export type NavMenuLink = {
   type: 'link';
   label: string;
   href: string;
-  section?: NavSection;
+  section: NavSection;
   mobileLabel?: string;
 };
 
@@ -20,56 +36,54 @@ export type NavMenuDropdown = {
 
 export type NavMenuItem = NavMenuLink | NavMenuDropdown;
 
+function homeSectionHref(section: NavSection) {
+  return `/#${section}`;
+}
+
 export function getMainNavItems(locale: Locale): NavMenuItem[] {
   const isSpanish = locale === 'es';
-
-  const serviceEntries = familyServices.map((service) => ({
-    label: isSpanish ? service.shortTitle.es : service.shortTitle.en,
-    href: `/servicios/${service.slug}`,
-  }));
 
   return [
     {
       type: 'link',
       label: isSpanish ? 'Inicio' : 'Home',
-      href: '/',
+      href: homeSectionHref('home'),
       section: 'home',
     },
     {
-      type: 'dropdown',
-      label: isSpanish ? 'Servicios' : 'Services',
-      href: '/servicios',
-      entries: [
-        { label: isSpanish ? 'Todos los servicios' : 'All services', href: '/servicios' },
-        ...serviceEntries,
-      ],
-    },
-    {
       type: 'link',
-      label: isSpanish ? 'Metodología' : 'Methodology',
-      href: '/metodologia',
-      section: 'metodologia',
+      label: isSpanish ? 'Servicios' : 'Services',
+      href: homeSectionHref('services'),
+      section: 'services',
     },
     {
       type: 'link',
       label: isSpanish ? 'Nosotros' : 'About',
-      href: '/nosotros',
+      href: homeSectionHref('about'),
       section: 'about',
     },
     {
       type: 'link',
+      label: isSpanish ? 'Metodología' : 'Methodology',
+      href: homeSectionHref('metodologia'),
+      section: 'metodologia',
+    },
+    {
+      type: 'link',
       label: isSpanish ? 'Prensa' : 'Press',
-      href: '/prensa',
+      href: homeSectionHref('prensa'),
+      section: 'prensa',
     },
     {
       type: 'link',
       label: isSpanish ? 'Perspectivas' : 'Insights',
-      href: '/perspectivas',
+      href: homeSectionHref('perspectivas'),
+      section: 'perspectivas',
     },
     {
       type: 'link',
       label: isSpanish ? 'Contacto' : 'Contact',
-      href: '/contacto',
+      href: homeSectionHref('contact'),
       section: 'contact',
     },
   ];
@@ -81,7 +95,7 @@ export function isNavPathActive(pathname: string, href: string, activeSection?: 
     return pathname === '/' && activeSection === section;
   }
 
-  if (href === '/') {
+  if (href === '/' || href === '/#home') {
     return pathname === '/' && (!activeSection || activeSection === 'home');
   }
 
@@ -99,4 +113,22 @@ export function isNavDropdownActive(
   }
 
   return entries.some((entry) => isNavPathActive(pathname, entry.href, activeSection));
+}
+
+export function navigateToHomeSection(
+  pathname: string,
+  href: string,
+  section: NavSection,
+  onNavigate?: () => void,
+) {
+  if (pathname !== '/') return false;
+
+  const target = document.getElementById(section);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  window.history.replaceState(null, '', href);
+  onNavigate?.();
+  return true;
 }

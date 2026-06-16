@@ -14,12 +14,12 @@ export default async function AdminLeadsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Bandeja de Casos</h1>
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-600 mt-1">
             Gestione las solicitudes de evaluación de casos recibidas desde el sitio web.
           </p>
         </div>
-        <div className="bg-[#051830] border border-white/10 px-4 py-2 rounded-lg">
-          <span className="text-gray-400 text-sm mr-2">Total recibidos:</span>
+        <div className="bg-white border border-[#07234c]/10 px-4 py-2 rounded-lg">
+          <span className="text-gray-600 text-sm mr-2">Total recibidos:</span>
           <span className="font-bold text-[var(--color-primary)]">{leads.length}</span>
         </div>
       </div>

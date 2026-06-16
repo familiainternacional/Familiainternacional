@@ -40,7 +40,7 @@ export default function ContactHomeTeaser() {
         <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
           <Link
             href="/evalua-tu-caso"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25d366] px-7 py-4 text-base font-bold text-white transition-colors hover:bg-[#20bd5a]"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#07234c] px-7 py-4 text-base font-bold text-white transition-colors hover:bg-[#0d3566]"
           >
             {isSpanish ? 'Evaluar mi caso' : 'Evaluate my case'}
           </Link>

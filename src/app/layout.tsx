@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Montserrat, Playfair_Display } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import LenisProvider from '@/components/providers/LenisProvider';
 import { I18nProvider } from '@/lib/i18n/I18nProvider';
 import { siteConfig } from '@/config/site';
@@ -9,11 +9,11 @@ import CliengoWidget from '@/components/integrations/CliengoWidget';
 import './globals.css';
 import './fi-nav.css';
 
-const fontSans = Inter({
+const fontSans = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const fontAdmin = Montserrat({
@@ -23,11 +23,11 @@ const fontAdmin = Montserrat({
   weight: ['400', '500', '600', '700', '800'],
 });
 
-const fontSerif = Playfair_Display({
+const fontSerif = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-playfair',
-  weight: ['400', '600', '700', '800'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const siteUrl = getDefaultCanonicalBaseUrl();

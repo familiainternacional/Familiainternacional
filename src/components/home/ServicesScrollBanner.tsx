@@ -1,0 +1,74 @@
+'use client';
+
+import Image from 'next/image';
+import {
+  Baby,
+  FileCheck,
+  Globe2,
+  Landmark,
+  Scale,
+  Users,
+  type LucideIcon,
+} from 'lucide-react';
+import { familyServices } from '@/config/family-services';
+import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
+import { useI18n } from '@/lib/i18n/I18nProvider';
+
+const serviceIcons: Record<string, LucideIcon> = {
+  'divorcios-internacionales': Users,
+  'cuidado-sustraccion': Baby,
+  'filiacion-alimentos': Scale,
+  exequatur: FileCheck,
+  'herencias-internacionales': Landmark,
+  'tramites-consulares': Globe2,
+};
+
+export default function ServicesScrollBanner() {
+  const { locale } = useI18n();
+  const isSpanish = locale === 'es';
+
+  return (
+    <section
+      aria-label={isSpanish ? 'Servicios del estudio' : 'Firm practice areas'}
+      className="w-full pt-4"
+    >
+      <div className="w-full overflow-hidden rounded-[1.75rem] border border-[#dbe4e2] shadow-[0_12px_40px_rgba(15,23,42,0.06)] sm:rounded-[2rem] xl:rounded-[2.25rem]">
+        <div className="flex snap-x snap-mandatory gap-0 overflow-x-auto pb-0 hide-scrollbar sm:gap-0 lg:grid lg:grid-cols-6 lg:gap-0 lg:overflow-visible lg:snap-none">
+          {familyServices.map((service) => {
+            const Icon = serviceIcons[service.slug] ?? Scale;
+            const title = isSpanish ? service.title.es : service.title.en;
+
+            return (
+              <article
+                key={service.slug}
+                className="relative h-[188px] w-[min(78vw,240px)] shrink-0 snap-start overflow-hidden sm:h-[204px] sm:w-[min(42vw,260px)] lg:h-[212px] lg:w-auto"
+              >
+                  <Image
+                    src={resolveSiteAssetSrc(service.image)}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 16vw, 240px"
+                    className="object-cover grayscale-[35%]"
+                    aria-hidden
+                  />
+                  <div className="absolute inset-0 bg-[#07234c]/72" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/85 via-[#07234c]/45 to-[#07234c]/25" />
+
+                  <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 px-4 text-center sm:gap-3.5 sm:px-5">
+                    <Icon
+                      className="h-9 w-9 text-[#d4af37] sm:h-10 sm:w-10"
+                      strokeWidth={1.6}
+                      aria-hidden
+                    />
+                    <h3 className="max-w-[16ch] text-sm font-bold leading-snug tracking-tight text-white sm:text-[0.95rem]">
+                      {title}
+                    </h3>
+                  </div>
+                </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

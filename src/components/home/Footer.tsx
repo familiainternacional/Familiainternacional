@@ -8,23 +8,29 @@ import { useI18n } from '@/lib/i18n/I18nProvider';
 import { getSiteLogoSrc } from '@/lib/storage/site-assets';
 import { resolveSiteContact } from '@/lib/site-contact';
 import { logoImageSizes } from '@/config/logo';
+import { SITE_CONTAINER_CLASS } from '@/lib/layout';
 import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 
 export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdminValues | null }) {
   const { t, locale } = useI18n();
-  const logoSrc = getSiteLogoSrc();
+  const logoSrc = getSiteLogoSrc('light');
   const contact = resolveSiteContact(adminValues);
   const serviceLinks = familyServices.map((service) => ({
     label: locale === 'es' ? service.title.es : service.title.en,
     href: `/servicios/${service.slug}`,
   }));
 
+  const instagramUrl = adminValues?.instagramUrl || siteConfig.contact.social.instagram;
+  const linkedinUrl = adminValues?.linkedinUrl || siteConfig.contact.social.linkedin;
+  const xUrl = siteConfig.contact.social.x;
+
   return (
     <footer
       id="footer"
-      className="w-full max-w-full overflow-hidden bg-brand px-5 py-12 text-gray-400 md:px-16 md:py-20 lg:px-24 lg:py-24"
+      className="w-full max-w-full overflow-hidden bg-brand py-12 text-gray-400 md:py-20 lg:py-24"
     >
-      <div className="mx-auto grid w-full max-w-[343px] grid-cols-1 gap-10 md:max-w-7xl md:grid-cols-3 lg:gap-12">
+      <div className={SITE_CONTAINER_CLASS}>
+        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-3 lg:gap-12">
         <div className="flex max-w-xs flex-col">
           <Link href="/" className="mb-7 block lg:mb-10">
             <Image
@@ -32,7 +38,7 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
               alt={siteConfig.name}
               width={logoImageSizes.footer.width}
               height={logoImageSizes.footer.height}
-              className="h-8 w-auto rounded-md object-contain lg:h-10"
+              className="h-11 w-auto object-contain brightness-0 invert lg:h-14"
             />
           </Link>
 
@@ -67,10 +73,10 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
                 </svg>
               </a>
             )}
-            {adminValues?.facebookUrl && (
-              <a href={adminValues.facebookUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+            {xUrl && (
+              <a href={xUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="X (Twitter)">
+                <svg className="h-5 w-5 mt-0.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
             )}
@@ -144,9 +150,10 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
             ))}
           </ul>
         </div>
+        </div>
       </div>
 
-      <div className="mx-auto mt-12 flex w-full max-w-[343px] flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 md:max-w-7xl md:flex-row md:items-center md:gap-0 lg:mt-16 lg:pt-10">
+      <div className={`${SITE_CONTAINER_CLASS} mt-12 flex w-full flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:gap-0 lg:mt-16 lg:pt-10`}>
         <p className="text-small text-gray-400">
           © 2026 Familia Internacional. Todos los derechos reservados.
         </p>

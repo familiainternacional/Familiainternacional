@@ -1,14 +1,16 @@
-/** Logo oficial: logoabogados_VERSIONES-04 (blanco sobre fondo #07234c) */
-export const LOCAL_LOGO_SRC = '/logo/logo-familia.png';
-export const LOCAL_LOGO_MASTER = '/Logo Familia Internacional/logoabogados_VERSIONES-04.png';
-export const SUPABASE_LOGO_PATH = 'brand/logo-familia.png';
+/** Logo tipográfico — textofamilia.png (800×133 px, fondo transparente). */
+export const LOCAL_LOGO_SRC = '/logo/textofamilia.png';
+export const LOCAL_LOGO_DARK_SRC = '/logo/textofamilia.png';
+export const LOCAL_LOGO_MASTER = '/logo/textofamilia.png';
+export const SUPABASE_LOGO_PATH = 'brand/textofamilia.png';
 export const SUPABASE_LOGO_URL =
-  'https://cnyhhosxdzmrnyemiqic.supabase.co/storage/v1/object/public/rlu-assets/brand/logo-familia.png';
+  'https://cnyhhosxdzmrnyemiqic.supabase.co/storage/v1/object/public/rlu-assets/brand/textofamilia.png';
 const PUBLIC_SUPABASE_SITE_ASSET_BUCKET =
   process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET?.trim() || 'rlu-assets';
 
 const LOCAL_PATH_OVERRIDES: Record<string, string> = {
   [LOCAL_LOGO_SRC]: SUPABASE_LOGO_PATH,
+  [LOCAL_LOGO_DARK_SRC]: SUPABASE_LOGO_PATH,
   [LOCAL_LOGO_MASTER]: SUPABASE_LOGO_PATH,
 };
 
@@ -65,13 +67,15 @@ export function resolveSiteAssetSrc(localPath: string) {
   return getPublicSupabaseAssetUrl(supabasePath) ?? localPath;
 }
 
-/** Logo VERSIONES-04. `dark` se mantiene por compatibilidad pero apunta al mismo asset. */
-export function getSiteLogoSrc(_variant?: 'light' | 'dark') {
+/** Logo del sitio. `light` = blanco (fondos oscuros). `dark` = azul (fondos claros). */
+export function getSiteLogoSrc(variant: 'light' | 'dark' = 'light') {
+  const local = variant === 'dark' ? LOCAL_LOGO_DARK_SRC : LOCAL_LOGO_SRC;
+
   if (!shouldUseSupabaseSiteImages()) {
-    return LOCAL_LOGO_SRC;
+    return local;
   }
 
-  return getPublicSupabaseAssetUrl(SUPABASE_LOGO_PATH) ?? LOCAL_LOGO_SRC;
+  return getPublicSupabaseAssetUrl(SUPABASE_LOGO_PATH) ?? local;
 }
 
 export function isSiteImageExtension(fileName: string) {

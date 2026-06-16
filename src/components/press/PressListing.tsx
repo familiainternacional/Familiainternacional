@@ -18,11 +18,20 @@ function isExternalItem(item: MediaMention) {
 
 type PressListingProps = {
   showFeatured?: boolean;
+  filterKind?: 'video' | 'press';
+  limit?: number;
 };
 
-export default function PressListing({ showFeatured = true }: PressListingProps) {
+export default function PressListing({ showFeatured = true, filterKind, limit }: PressListingProps) {
   const featured = getFeaturedPressMention();
-  const items = showFeatured && featured ? getPressHubItems().filter((item) => item.id !== featured.id) : getPressHubItems();
+  let items = showFeatured && featured ? getPressHubItems().filter((item) => item.id !== featured.id) : getPressHubItems();
+
+  if (filterKind) {
+    items = items.filter((item) => item.kind === filterKind);
+  }
+  if (limit) {
+    items = items.slice(0, limit);
+  }
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col">
@@ -111,7 +120,9 @@ export default function PressListing({ showFeatured = true }: PressListingProps)
                   <img
                     src={item.thumbnail}
                     alt={item.title}
-                    className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
+                    className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${
+                      item.kind === 'video' ? 'object-contain p-3' : 'object-cover'
+                    } opacity-80`}
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-tr from-[#07234c] to-[#185365] opacity-90 transition-transform duration-500 group-hover:scale-105" />

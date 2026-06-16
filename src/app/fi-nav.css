@@ -92,14 +92,14 @@
   display: block;
   width: auto;
   max-width: min(420px, 60vw);
-  height: 92px;
+  height: 110px;
   object-fit: contain;
   object-position: left center;
   flex-shrink: 0;
 }
 
 .fi-nav-logo--compact {
-  height: 76px;
+  height: 85px;
   max-width: min(360px, 50vw);
 }
 
@@ -453,8 +453,8 @@ body.mobile-nav-lock {
 
 .mobile-nav-header .fi-nav-logo,
 .mobile-nav-header .fi-nav-logo--compact {
-  height: 40px;
-  max-width: min(200px, 52vw);
+  height: 54px;
+  max-width: min(300px, 68vw);
 }
 
 .mobile-nav-header-actions {

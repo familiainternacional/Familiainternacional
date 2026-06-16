@@ -101,7 +101,7 @@ export default function MediaLibrary() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
-            className="flex items-center gap-2 bg-brand text-white px-5 py-2.5 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-70 transition-all whitespace-nowrap"
+            className="flex items-center gap-2 bg-brand text-white px-5 py-2.5 rounded-lg font-medium hover:bg-brand-dark disabled:opacity-70 transition-all whitespace-nowrap"
           >
             {isUploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <UploadCloud className="w-5 h-5" />}
             {isUploading ? 'Subiendo...' : 'Subir Archivo'}
@@ -137,7 +137,7 @@ export default function MediaLibrary() {
                   )}
                   
                   {/* Overlay actions */}
-                  <div className="absolute inset-0 bg-[#07234c]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <div className="absolute inset-0 bg-white/75 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button
                       onClick={() => handleCopy(file.publicUrl)}
                       className="p-2 bg-white rounded-full text-brand hover:bg-gray-200 transition-colors"

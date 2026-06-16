@@ -4,18 +4,18 @@ import Navbar from '@/components/home/Navbar';
 import ReplicaHero from '@/components/ReplicaHero';
 import ServicesHomePreview from '@/components/home/ServicesHomePreview';
 import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
-import MediaHighlightHome from '@/components/home/MediaHighlightHome';
+import AboutSection from '@/components/home/AboutSection';
 import CtaSection from '@/components/home/CtaSection';
-import ContactHomeTeaser from '@/components/home/ContactHomeTeaser';
 import Footer from '@/components/home/Footer';
 import ScrollReveal from '@/components/home/ScrollReveal';
-import CinematicSection from '@/components/motion/CinematicSection';
-import CinematicPageShell from '@/components/motion/CinematicPageShell';
-import WhatsAppWidget from '@/components/home/WhatsAppWidget';
 import JsonLd from '@/components/seo/JsonLd';
 import { siteConfig } from '@/config/site';
 import { buildHomeStructuredData } from '@/lib/seo/structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
+import GuideProcessSection from '@/components/home/GuideProcessSection';
+import ReplicaContactSection from '@/components/home/ReplicaContactSection';
+import ReplicaMediaSection from '@/components/home/ReplicaMediaSection';
 
 export const metadata: Metadata = {
   title: {
@@ -28,10 +28,13 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
+  const [siteSettings, aboutSettings] = await Promise.all([
+    getSiteSettingsAdminValues().catch(() => null),
+    getAboutPageAdminValues().catch(() => null),
+  ]);
 
   return (
-    <CinematicPageShell>
+    <>
       <JsonLd data={buildHomeStructuredData()} />
 
       <a
@@ -43,29 +46,39 @@ export default async function HomePage() {
 
       <Navbar adminValues={siteSettings} />
 
-      <main id="main-content" className="cinematic-main">
+      <main id="main-content">
         <ReplicaHero />
+
+        <ScrollReveal>
+          <GuideProcessSection />
+        </ScrollReveal>
+
         <ScrollReveal>
           <ServicesHomePreview />
         </ScrollReveal>
-        <ScrollReveal delay={0.05}>
-          <MediaHighlightHome />
+
+        <ScrollReveal>
+          <AboutSection adminValues={aboutSettings} />
         </ScrollReveal>
-        <ScrollReveal delay={0.06}>
+
+        <ScrollReveal>
           <GoogleReviewsSection limit={3} compact showViewAllLink />
         </ScrollReveal>
-        <CinematicSection parallax={-80}>
-          <ScrollReveal delay={0.06}>
-            <CtaSection />
-          </ScrollReveal>
-        </CinematicSection>
+
         <ScrollReveal>
-          <ContactHomeTeaser />
+          <CtaSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <ReplicaMediaSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <ReplicaContactSection adminValues={siteSettings} />
         </ScrollReveal>
       </main>
 
-      <WhatsAppWidget adminValues={siteSettings} />
       <Footer adminValues={siteSettings} />
-    </CinematicPageShell>
+    </>
   );
 }

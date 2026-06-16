@@ -44,7 +44,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
       <div className="flex items-center justify-between mb-8">
         <Link 
           href="/admin/blog" 
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-[#07234c] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Volver
@@ -66,9 +66,9 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-[#051830] p-6 rounded-2xl border border-white/10 space-y-6">
+            <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 space-y-6">
               <div>
-                <label htmlFor="titleEs" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="titleEs" className="block text-sm font-medium text-gray-700 mb-2">
                   Título del Artículo *
                 </label>
                 <input
@@ -78,16 +78,16 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   required
                   defaultValue={post?.titleEs}
                   onChange={handleTitleChange}
-                  className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors"
+                  className="w-full bg-white border border-[#07234c]/15 rounded-lg px-4 py-3 text-[#111827] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
                   placeholder="Ej: Nueva Ley de Delitos Económicos..."
                 />
               </div>
 
               <div>
-                <label htmlFor="slug" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
                   Slug (URL) *
                 </label>
-                <div className="flex items-center bg-[#07234c] border border-white/10 rounded-lg px-4 py-3 focus-within:border-[var(--color-primary)] transition-colors">
+                <div className="flex items-center bg-white border border-[#07234c]/15 rounded-lg px-4 py-3 focus-within:border-[var(--color-primary)] transition-colors">
                   <span className="text-gray-500 mr-1">/perspectivas/</span>
                   <input
                     type="text"
@@ -96,14 +96,14 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                     required
                     defaultValue={post?.slug}
                     onInput={(e) => { (e.target as HTMLInputElement).dataset.manual = 'true' }}
-                    className="w-full bg-transparent text-white focus:outline-none"
+                    className="w-full bg-transparent text-[#111827] focus:outline-none"
                     placeholder="nueva-ley-delitos"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="excerptEs" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="excerptEs" className="block text-sm font-medium text-gray-700 mb-2">
                   Resumen (Excerpt)
                 </label>
                 <textarea
@@ -111,13 +111,13 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   name="excerptEs"
                   rows={3}
                   defaultValue={post?.excerptEs ?? ''}
-                  className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors"
+                  className="w-full bg-white border border-[#07234c]/15 rounded-lg px-4 py-3 text-[#111827] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
                   placeholder="Un breve resumen que aparecerá en las tarjetas..."
                 />
               </div>
 
               <div>
-                <label htmlFor="contentEs" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="contentEs" className="block text-sm font-medium text-gray-700 mb-2">
                   Contenido del Artículo
                 </label>
                 <RichTextEditor
@@ -133,8 +133,8 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
 
           {/* Sidebar / Settings Column */}
           <div className="space-y-6">
-            <div className="bg-[#051830] p-6 rounded-2xl border border-white/10 space-y-6">
-              <h3 className="font-bold text-lg border-b border-white/10 pb-4">Publicación</h3>
+            <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 space-y-6">
+              <h3 className="font-bold text-lg border-b border-[#07234c]/10 pb-4">Publicación</h3>
               
               <div>
                 <label htmlFor="isDraft" className="flex items-center gap-3 cursor-pointer">
@@ -144,9 +144,9 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                     name="isDraft"
                     value="true"
                     defaultChecked={post ? !post.published : true}
-                    className="w-5 h-5 rounded border-white/10 bg-[#07234c] text-[var(--color-primary)] focus:ring-[var(--color-primary)] focus:ring-offset-[#051830]"
+                    className="w-5 h-5 rounded border-[#07234c]/20 bg-white text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                   />
-                  <span className="text-sm font-medium text-gray-300">Guardar como borrador</span>
+                  <span className="text-sm font-medium text-gray-700">Guardar como borrador</span>
                 </label>
                 <p className="text-xs text-gray-500 mt-2 ml-8">
                   Si no está marcado, el artículo se publicará y será visible inmediatamente.
@@ -154,7 +154,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
               </div>
 
               <div>
-                <label htmlFor="authorName" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="authorName" className="block text-sm font-medium text-gray-700 mb-2">
                   Autor
                 </label>
                 <input
@@ -162,22 +162,22 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   id="authorName"
                   name="authorName"
                   defaultValue={post?.authorName ?? 'Familia Internacional'}
-                  className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors"
+                  className="w-full bg-white border border-[#07234c]/15 rounded-lg px-4 py-2 text-[#111827] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
                 />
               </div>
 
               <div>
-                <label htmlFor="coverImage" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="coverImage" className="block text-sm font-medium text-gray-700 mb-2">
                   URL Imagen de Portada
                 </label>
-                <div className="flex items-center bg-[#07234c] border border-white/10 rounded-lg px-4 py-2 focus-within:border-[var(--color-primary)] transition-colors">
+                <div className="flex items-center bg-white border border-[#07234c]/15 rounded-lg px-4 py-2 focus-within:border-[var(--color-primary)] transition-colors">
                   <ImageIcon className="w-4 h-4 text-gray-500 mr-2" />
                   <input
                     type="text"
                     id="coverImage"
                     name="coverImage"
                     defaultValue={post?.coverImage ?? ''}
-                    className="w-full bg-transparent text-white focus:outline-none text-sm"
+                    className="w-full bg-transparent text-[#111827] focus:outline-none text-sm"
                     placeholder="/images/post-1.jpg o https://..."
                   />
                 </div>
@@ -193,11 +193,11 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
               </button>
             </div>
 
-            <div className="bg-[#051830] p-6 rounded-2xl border border-white/10 space-y-6">
-              <h3 className="font-bold text-lg border-b border-white/10 pb-4">SEO (Google)</h3>
+            <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 space-y-6">
+              <h3 className="font-bold text-lg border-b border-[#07234c]/10 pb-4">SEO (Google)</h3>
               
               <div>
-                <label htmlFor="seoTitleEs" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="seoTitleEs" className="block text-sm font-medium text-gray-700 mb-2">
                   Meta Título
                 </label>
                 <input
@@ -205,13 +205,13 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   id="seoTitleEs"
                   name="seoTitleEs"
                   defaultValue={post?.seoTitleEs ?? ''}
-                  className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-primary)] text-sm"
+                  className="w-full bg-white border border-[#07234c]/15 rounded-lg px-4 py-2 text-[#111827] focus:outline-none focus:border-[var(--color-primary)] text-sm"
                   placeholder="Si se deja vacío, usa el título principal."
                 />
               </div>
 
               <div>
-                <label htmlFor="seoDescriptionEs" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="seoDescriptionEs" className="block text-sm font-medium text-gray-700 mb-2">
                   Meta Descripción
                 </label>
                 <textarea
@@ -219,13 +219,13 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   name="seoDescriptionEs"
                   rows={3}
                   defaultValue={post?.seoDescriptionEs ?? ''}
-                  className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-primary)] text-sm"
+                  className="w-full bg-white border border-[#07234c]/15 rounded-lg px-4 py-2 text-[#111827] focus:outline-none focus:border-[var(--color-primary)] text-sm"
                   placeholder="Resumen para Google (160 caracteres). Si se deja vacío, usa el Resumen general."
                 />
               </div>
 
               <div>
-                <label htmlFor="seoKeywords" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="seoKeywords" className="block text-sm font-medium text-gray-700 mb-2">
                   Palabras Clave (Keywords)
                 </label>
                 <textarea
@@ -233,7 +233,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
                   name="seoKeywords"
                   rows={2}
                   defaultValue={post?.seoKeywords ?? ''}
-                  className="w-full bg-[#07234c] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-primary)] text-sm"
+                  className="w-full bg-white border border-[#07234c]/15 rounded-lg px-4 py-2 text-[#111827] focus:outline-none focus:border-[var(--color-primary)] text-sm"
                   placeholder="ley de quiebras, insolvencia, chile (separadas por comas)"
                 />
               </div>

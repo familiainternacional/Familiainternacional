@@ -8,6 +8,7 @@ import type { AboutPageSettingsAdminValues } from '@/app/admin/nosotros/actions'
 import ReactMarkdown from 'react-markdown';
 import { primaryContact } from '@/config/contact';
 import { siteConfig } from '@/config/site';
+import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
 
 type TabKey = 'bio' | 'formacion' | 'experiencia' | 'contacto';
 
@@ -58,9 +59,8 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
         'Integrante de una extensa red internacional de abogados dedicados al derecho de familia.',
       ],
       contacto: primaryContact.email,
-      image: '/hero-familia.png',
+      image: '/jaime-soto.png',
       imageAlt: 'Jaime Soto Silva - Familia Internacional',
-      tags: ['Convenio de La Haya', 'Sustracción Internacional', 'Exequátur', 'Alimentos Internacionales'],
     },
   ] as const;
 
@@ -92,22 +92,10 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
     switch (activeTab) {
       case 'bio':
         return (
-          <>
-            <div className="space-y-5 prose prose-base max-w-none text-body text-[#333333] leading-relaxed">
-              <ReactMarkdown>{profile.bio1}</ReactMarkdown>
-              <ReactMarkdown>{profile.bio2}</ReactMarkdown>
-            </div>
-            <div className="mt-7 flex flex-wrap gap-2">
-              {profile.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-[#07234c]/10 bg-brand/[0.03] px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#555555]"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </>
+          <div className="prose prose-base max-w-none space-y-5 text-body leading-relaxed text-[#333333]">
+            <ReactMarkdown>{profile.bio1}</ReactMarkdown>
+            <ReactMarkdown>{profile.bio2}</ReactMarkdown>
+          </div>
         );
       case 'formacion':
         return (
@@ -143,7 +131,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
     <section
       id="about"
       aria-labelledby="about-title"
-      className="relative z-10 w-full overflow-hidden border-t border-[#07234c]/5 bg-white px-5 py-24 text-[#07234c] md:px-12 md:py-32 lg:px-24"
+      className={`relative z-10 w-full overflow-hidden border-t border-[#07234c]/5 bg-white py-24 text-[#07234c] md:py-32 ${HOME_SECTION_ANCHOR_CLASS}`}
     >
       <div className="pointer-events-none absolute inset-0 z-0">
         <Image
@@ -157,69 +145,47 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
         <div className="absolute inset-0 bg-gradient-to-r from-[#f8f9fa] via-[#f8f9fa]/80 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
         <div className="fi-section-header max-w-[65ch]">
           <span className="fi-eyebrow block text-[var(--color-primary)]">
             {t('team.label')}
           </span>
-          <h2 id="about-title" className="fi-section-heading max-w-[20ch] text-[#07234c]">
+          <p className="mb-3 text-base leading-relaxed text-[#555555] sm:mb-4">
+            {t('team.subtitle')}
+          </p>
+          <h2 id="about-title" className="fi-section-heading max-w-[32ch] text-[#07234c]">
             {t('team.title1')}
-            <br />
-            {t('team.title2')}
+            {t('team.title2') ? (
+              <>
+                <br />
+                {t('team.title2')}
+              </>
+            ) : null}
           </h2>
           <p className="fi-section-intro">{t('team.intro')}</p>
-          <p className="mt-4 text-sm leading-relaxed text-[#666666]">
-            {locale === 'es' ? (
-              <>
-                Consultado por medios nacionales como Las Últimas Noticias.{' '}
-                <a href="/prensa" className="font-semibold text-[var(--color-primary)] hover:underline">
-                  Ver prensa
-                </a>
-                {' · '}
-                <a href="/equipo/jaime-soto-silva" className="font-semibold text-[var(--color-primary)] hover:underline">
-                  Conocer al equipo
-                </a>
-              </>
-            ) : (
-              <>
-                Quoted in national media including Las Últimas Noticias.{' '}
-                <a href="/prensa" className="font-semibold text-[var(--color-primary)] hover:underline">
-                  Press coverage
-                </a>
-                {' · '}
-                <a href="/equipo/jaime-soto-silva" className="font-semibold text-[var(--color-primary)] hover:underline">
-                  Meet the team
-                </a>
-              </>
-            )}
-          </p>
         </div>
 
         {/* --- DESKTOP VIEW --- */}
-        <div className="hidden lg:block relative">
-          <article className="relative overflow-visible rounded-[2rem] border border-[#07234c]/5 bg-white/80 p-4 backdrop-blur-md md:p-6 lg:p-8">
-            <div className="absolute inset-0 overflow-hidden rounded-[2rem]">
-              <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-[var(--color-primary)]/8 blur-3xl" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-transparent to-black/[0.03]" />
-            </div>
-
-            <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,0.96fr)_minmax(360px,0.74fr)] lg:items-center">
-              <div className="rounded-[2rem] border border-[#07234c]/5 bg-white p-5 text-[#333333] shadow-md md:p-8 lg:translate-x-2 lg:p-10 flex flex-col h-full">
-                <h3 className="fi-card-title mb-2 text-[#07234c]">
+        <div className="relative mt-8 hidden md:block">
+          <article className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[#07234c]/10 bg-white shadow-lg">
+            <div className="grid items-stretch md:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
+              {/* Text Side */}
+              <div className="relative z-10 flex h-full flex-col p-8 lg:p-10 xl:p-12">
+                <h3 className="fi-card-title mb-2 text-xl text-[#07234c] lg:text-2xl">
                   {activeProfile.name}
                 </h3>
-                <p className="fi-card-meta mb-6 max-w-[54ch] text-[var(--color-primary)]">
+                <p className="fi-card-meta mb-6 max-w-[54ch] text-sm font-medium uppercase tracking-wide text-[var(--color-primary)] lg:text-base">
                   {formatRole(activeProfile.role)}
                 </p>
 
                 {/* Tabs Navigation */}
-                <div className="mb-6 flex space-x-6 border-b border-[#07234c]/10">
+                <div className="no-scrollbar mb-6 flex gap-5 overflow-x-auto border-b border-[#07234c]/10 lg:gap-8">
                   {tabs.map((tab) => (
                     <button
                       key={tab.key}
                       onClick={() => setActiveDesktopTab(tab.key)}
-                      className={`pb-3 text-sm font-semibold transition-colors relative ${
-                        activeDesktopTab === tab.key ? 'text-[#07234c]' : 'text-gray-400 hover:text-gray-600'
+                      className={`pb-4 text-sm font-bold uppercase tracking-wider transition-colors relative whitespace-nowrap ${
+                        activeDesktopTab === tab.key ? 'text-[#07234c]' : 'text-neutral-400 hover:text-neutral-600'
                       }`}
                     >
                       {tab.label}
@@ -236,25 +202,25 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
                 </div>
               </div>
 
-              <div className="relative min-h-[300px] overflow-hidden rounded-[2rem] bg-[#f2f2f2] md:min-h-[360px] lg:-ml-14 lg:h-full">
+              {/* Image Side */}
+              <div className="relative min-h-[360px] h-full bg-[#07234c]">
                 <Image
                   src={resolveSiteAssetSrc(activeProfile.image)}
                   alt={activeProfile.imageAlt}
                   fill
-                  sizes="(min-width: 1024px) 38vw, 92vw"
-                  className="object-cover object-center opacity-90 grayscale saturate-0 brightness-[0.86] contrast-110 transition duration-500"
+                  sizes="(min-width: 1280px) 280px, (min-width: 1024px) 260px, 220px"
+                  className="object-cover object-top opacity-90 grayscale saturate-0 brightness-[0.86] contrast-110 transition duration-500"
                   style={{ filter: 'grayscale(1) saturate(0) brightness(0.86) contrast(1.1)' }}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-[#07234c]/20" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/48 via-[#07234c]/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/60 via-[#07234c]/10 to-transparent" />
               </div>
             </div>
           </article>
         </div>
 
         {/* --- MOBILE VIEW --- */}
-        <div className="flex flex-col gap-8 lg:hidden">
+        <div className="flex flex-col gap-8 md:hidden">
           {lawyers.map((lawyer) => {
             const isExpanded = expandedMobileLawyer === lawyer.id;
             const currentTab = activeMobileTabs[lawyer.id] || 'bio';
@@ -268,17 +234,17 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
                 className="flex scroll-mt-24 flex-col overflow-hidden rounded-[2rem] border border-[#07234c]/10 bg-white shadow-xl"
               >
                 {/* Top Image Part */}
-                <div className="relative aspect-[3/2] sm:aspect-[16/9] w-full bg-[#f2f2f2]">
+                <div className="relative h-[240px] sm:h-[300px] w-full bg-[#f2f2f2]">
                   <Image
                     src={resolveSiteAssetSrc(lawyer.image)}
                     alt={lawyer.imageAlt}
                     fill
                     sizes="100vw"
-                    className="object-cover object-center opacity-90 grayscale saturate-0 brightness-[0.86] contrast-110"
+                    className="object-cover object-top opacity-90 grayscale saturate-0 brightness-[0.86] contrast-110"
                     style={{ filter: 'grayscale(1) saturate(0) brightness(0.86) contrast(1.1)' }}
                   />
-                  <div className="absolute inset-0 bg-[#07234c]/20" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/48 via-[#07234c]/10 to-transparent" />
+                  <div className="absolute inset-0 bg-[#07234c]/10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/50 via-[#07234c]/5 to-transparent" />
                   
                   {/* Overlay Text */}
                   <div className="absolute bottom-6 left-5 right-5">

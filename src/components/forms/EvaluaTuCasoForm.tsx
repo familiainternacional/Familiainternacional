@@ -2,15 +2,32 @@
 
 import { useState } from 'react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
-import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import ReCaptchaWrapper from './ReCaptchaWrapper';
 
-function EvaluaTuCasoFormInner() {
+type EvaluaTuCasoFormVariant = 'default' | 'light';
+
+const EVALUATE_CTA_BUTTON_CLASS =
+  'inline-flex min-h-[56px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-8 text-base font-bold text-[#07234c] shadow-xl shadow-[#07234c]/20 transition-all hover:scale-[1.02] hover:bg-white/95 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100 sm:w-auto sm:px-10 sm:text-lg';
+
+const EVALUATE_CTA_BUTTON_LIGHT_CLASS = `${EVALUATE_CTA_BUTTON_CLASS} border border-[#07234c]/10`;
+
+const LIGHT_FIELD_CLASS =
+  'border-black/10 bg-white/70 text-[#111827] placeholder:text-[#9ca3af] backdrop-blur-sm';
+
+function EvaluaTuCasoFormInner({
+  variant = 'default',
+  fillHeight = false,
+}: {
+  variant?: EvaluaTuCasoFormVariant;
+  fillHeight?: boolean;
+}) {
   useI18n();
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const isLight = variant === 'light';
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState(
     'Ocurrio un error al enviar su solicitud. Por favor, intente nuevamente o contactenos por telefono.',
@@ -65,18 +82,18 @@ function EvaluaTuCasoFormInner() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#051830] p-8 rounded-2xl border border-white/10 text-center"
+        className={`${isLight ? 'border border-black/10 bg-transparent p-6 text-[#111827]' : 'bg-[#051830] p-8 border border-white/10 text-white'} rounded-2xl text-center`}
       >
-        <div className="w-16 h-16 bg-[var(--color-primary)]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)]/20">
           <CheckCircle2 className="w-8 h-8 text-[var(--color-primary)]" />
         </div>
-        <h3 className="mb-4 text-h3 text-white">¡Hemos recibido su solicitud!</h3>
-        <p className="mb-8 max-w-[65ch] text-body text-gray-400">
+        <h3 className={`mb-4 text-h3 ${isLight ? 'text-[#111827]' : 'text-white'}`}>¡Hemos recibido su solicitud!</h3>
+        <p className={`mb-8 max-w-[65ch] text-body ${isLight ? 'text-[#4b5563]' : 'text-gray-400'}`}>
           Un abogado de nuestro equipo revisará su caso y se pondrá en contacto con usted a la brevedad posible.
         </p>
         <button 
           onClick={() => setStatus('idle')}
-          className="rounded-xl border border-white/10 bg-white/5 px-8 py-3 text-small font-medium text-white transition-colors hover:bg-white/10"
+          className={`${isLight ? 'border-black/10 bg-black/[0.03] text-[#111827] hover:bg-black/[0.06]' : 'border-white/10 bg-white/5 text-white hover:bg-white/10'} rounded-xl border px-8 py-3 text-small font-medium transition-colors`}
         >
           Enviar otra consulta
         </button>
@@ -85,8 +102,10 @@ function EvaluaTuCasoFormInner() {
   }
 
   return (
-    <div className="bg-[#051830] p-5 min-[380px]:p-6 md:p-10 rounded-2xl md:rounded-3xl border border-white/10 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-primary)]/10 rounded-full blur-[100px] pointer-events-none" />
+    <div className={`${isLight ? 'bg-transparent p-0 md:p-0 border-0 shadow-none' : 'bg-[#051830] p-5 min-[380px]:p-6 md:p-10 border border-white/10'} relative overflow-hidden ${isLight ? 'rounded-none' : 'rounded-2xl md:rounded-3xl'} ${fillHeight ? 'lg:flex lg:h-full lg:flex-col' : ''}`}>
+      {!isLight ? (
+        <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full bg-[var(--color-primary)]/10 blur-[100px]" />
+      ) : null}
       
       {status === 'error' && (
         <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl mb-6 flex items-start gap-3">
@@ -95,10 +114,13 @@ function EvaluaTuCasoFormInner() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form
+        onSubmit={handleSubmit}
+        className={`relative z-10 ${isLight ? 'space-y-5' : 'space-y-6'} ${fillHeight ? 'lg:flex lg:h-full lg:flex-col' : ''}`}
+      >
+        <div className={`grid grid-cols-1 gap-5 ${isLight ? 'md:grid-cols-2 md:gap-5' : 'md:grid-cols-2 gap-6'}`}>
           <div className="space-y-2">
-            <label htmlFor="name" className="text-small font-medium text-gray-300">
+            <label htmlFor="name" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
               Nombre Completo <span className="text-[var(--color-primary)]">*</span>
             </label>
             <input
@@ -107,12 +129,12 @@ function EvaluaTuCasoFormInner() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full bg-[#07234c] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+              className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
               placeholder="Ej. Juan Pérez"
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="email" className="text-small font-medium text-gray-300">
+            <label htmlFor="email" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
               Correo Electrónico <span className="text-[var(--color-primary)]">*</span>
             </label>
             <input
@@ -122,14 +144,14 @@ function EvaluaTuCasoFormInner() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#07234c] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+              className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
               placeholder="ejemplo@correo.com"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="phone" className="text-small font-medium text-gray-300">
+          <label htmlFor="phone" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
             Teléfono de Contacto
           </label>
           <input
@@ -138,13 +160,13 @@ function EvaluaTuCasoFormInner() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full bg-[#07234c] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+            className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
             placeholder="+56 9 ..."
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="message" className="text-small font-medium text-gray-300">
+          <label htmlFor="message" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
             Descripción de su Caso <span className="text-[var(--color-primary)]">*</span>
           </label>
           <textarea
@@ -153,8 +175,8 @@ function EvaluaTuCasoFormInner() {
             name="message"
             value={formData.message}
             onChange={handleChange}
-            rows={5}
-            className="w-full bg-[#07234c] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all resize-none"
+            rows={isLight ? 4 : 5}
+            className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full resize-none rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
             placeholder="Describa brevemente la situación legal en la que necesita asesoría..."
           />
         </div>
@@ -162,11 +184,11 @@ function EvaluaTuCasoFormInner() {
         <button
           disabled={status === 'submitting'}
           type="submit"
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-8 py-4 text-small font-medium text-white transition-all hover:bg-[#d62828] disabled:cursor-not-allowed disabled:opacity-70"
+          className={`${isLight ? EVALUATE_CTA_BUTTON_LIGHT_CLASS : EVALUATE_CTA_BUTTON_CLASS} ${fillHeight ? 'lg:mb-8 lg:mt-auto' : ''}`}
         >
           {status === 'submitting' ? (
             <span className="flex items-center gap-2">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="-ml-1 mr-3 h-5 w-5 animate-spin text-[#07234c]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -175,7 +197,7 @@ function EvaluaTuCasoFormInner() {
           ) : (
             <>
               Solicitar Evaluación
-              <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              <ArrowUpRight className="h-5 w-5" strokeWidth={2.5} aria-hidden />
             </>
           )}
         </button>
@@ -184,10 +206,16 @@ function EvaluaTuCasoFormInner() {
   );
 }
 
-export default function EvaluaTuCasoForm() {
+export default function EvaluaTuCasoForm({
+  variant = 'default',
+  fillHeight = false,
+}: {
+  variant?: EvaluaTuCasoFormVariant;
+  fillHeight?: boolean;
+}) {
   return (
     <ReCaptchaWrapper>
-      <EvaluaTuCasoFormInner />
+      <EvaluaTuCasoFormInner variant={variant} fillHeight={fillHeight} />
     </ReCaptchaWrapper>
   );
 }

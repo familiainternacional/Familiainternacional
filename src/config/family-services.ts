@@ -6,6 +6,8 @@ export type FamilyService = {
   title: { es: string; en: string };
   shortTitle: { es: string; en: string };
   desc: { es: string; en: string };
+  intro: { es: string; en: string };
+  includes: { es: string[]; en: string[] };
   image: string;
 };
 
@@ -16,5 +18,7 @@ export const familyServices: FamilyService[] = serviceLandings.map((service) => 
   title: { es: service.title, en: service.title },
   shortTitle: { es: service.shortTitle, en: service.shortTitle },
   desc: { es: service.seoDescription, en: service.seoDescription },
+  intro: { es: service.intro, en: service.intro },
+  includes: { es: [...service.includes], en: [...service.includes] },
   image: service.image,
 }));

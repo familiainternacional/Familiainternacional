@@ -4,19 +4,25 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { fallbackBlogPosts } from '@/config/blog-fallback-posts';
+import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
 
 export default function InsightsSection() {
+  const formatMonthYear = (date: Date) => {
+    const value = date.toLocaleDateString('es-CL', { month: 'short', year: 'numeric' });
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
+
   const insights = fallbackBlogPosts.slice(0, 3).map((post) => ({
     id: post.slug,
     title: post.titleEs,
     excerpt: post.excerptEs,
     slug: post.slug,
     category: 'Familia internacional',
-    date: post.publishedAt.toLocaleDateString('es-CL', { month: 'short', year: 'numeric' }),
+    date: formatMonthYear(post.publishedAt),
   }));
 
   return (
-    <section className="relative z-10 w-full bg-white px-5 py-16 md:px-12 md:py-24 lg:px-24">
+    <section id="perspectivas" className={`relative z-10 w-full bg-white px-5 py-16 md:px-12 md:py-24 lg:px-24 ${HOME_SECTION_ANCHOR_CLASS}`}>
       <div className="mx-auto w-full max-w-7xl">
         <div className="fi-section-header flex flex-col md:flex-row md:items-end md:justify-between">
           <div className="max-w-[34ch]">

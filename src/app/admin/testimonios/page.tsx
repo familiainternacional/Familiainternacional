@@ -24,7 +24,7 @@ export default async function TestimonialsPage() {
         </div>
         <Link
           href="/admin/testimonios/new"
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
         >
           <Plus className="w-5 h-5" />
           Nuevo Testimonio

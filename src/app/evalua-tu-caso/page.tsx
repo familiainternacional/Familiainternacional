@@ -29,20 +29,20 @@ export default async function EvaluaTuCasoPage() {
   const contact = resolveSiteContact(null);
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#07234c] text-white selection:bg-[var(--color-primary)] selection:text-white">
+    <main className="flex min-h-screen flex-col bg-white text-[#07234c] selection:bg-[var(--color-primary)] selection:text-white">
       <JsonLd data={buildEvaluaTuCasoStructuredData()} />
       <Navbar />
 
-      <section className="relative flex-1 overflow-hidden pb-16 pt-28 md:pb-20 md:pt-32">
-        <div className="pointer-events-none absolute left-0 top-0 h-[500px] w-full bg-gradient-to-b from-[var(--color-primary)]/5 to-transparent" />
-        <div className="pointer-events-none absolute right-[-10%] top-[-20%] h-[50%] w-[50%] rounded-full bg-[var(--color-primary)]/10 blur-[120px]" />
+      <section className="relative flex-1 overflow-hidden bg-white pb-16 pt-28 md:pb-20 md:pt-32">
+        <div className="pointer-events-none absolute left-0 top-0 h-[500px] w-full bg-gradient-to-b from-[var(--color-primary)]/[0.06] to-transparent" />
+        <div className="pointer-events-none absolute right-[-10%] top-[-20%] h-[50%] w-[50%] rounded-full bg-[var(--color-primary)]/[0.10] blur-[120px]" />
 
         <div className="container relative z-10 mx-auto px-5 lg:px-8">
           <div className="mx-auto mb-12 max-w-4xl px-1 text-center md:mb-16">
             <h1 className="mb-5 text-h1 tracking-tight md:mb-6">
               Evalúa tu <span className="text-[var(--color-primary)]">Caso</span>
             </h1>
-            <p className="mx-auto max-w-[65ch] text-body text-gray-400">
+            <p className="mx-auto max-w-[65ch] text-body text-neutral-600">
               Nuestro equipo especializado en derecho de familia internacional está listo para analizar tu situación.
               Completa el formulario y te daremos una evaluación inicial para definir la mejor estrategia.
             </p>
@@ -54,36 +54,36 @@ export default async function EvaluaTuCasoPage() {
                 <h2 className="mb-8 text-h3">¿Por qué elegirnos?</h2>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#07234c]/10 bg-[#07234c]/[0.03]">
                       <Scale className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
                       <h3 className="mb-1 text-h3">Especialistas en familia internacional</h3>
-                      <p className="max-w-[65ch] text-body text-gray-400">
+                      <p className="max-w-[65ch] text-body text-neutral-600">
                         Primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia y al Convenio de La Haya.
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#07234c]/10 bg-[#07234c]/[0.03]">
                       <Clock className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
                       <h3 className="mb-1 text-h3">Respuesta rápida</h3>
-                      <p className="max-w-[65ch] text-body text-gray-400">
+                      <p className="max-w-[65ch] text-body text-neutral-600">
                         Analizamos tu consulta y te contactamos en el menor tiempo posible para no retrasar tus procesos.
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#07234c]/10 bg-[#07234c]/[0.03]">
                       <ShieldCheck className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
                       <h3 className="mb-1 text-h3">Confidencialidad total</h3>
-                      <p className="max-w-[65ch] text-body text-gray-400">
+                      <p className="max-w-[65ch] text-body text-neutral-600">
                         Toda la información que nos proporciones será tratada con absoluta reserva y seguridad.
                       </p>
                     </div>
@@ -91,21 +91,21 @@ export default async function EvaluaTuCasoPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div className="rounded-2xl border border-[#07234c]/10 bg-[#07234c]/[0.03] p-6">
                 <h2 className="mb-2 font-semibold">Contacto directo</h2>
-                <p className="mb-4 max-w-[65ch] text-body text-gray-400">
+                <p className="mb-4 max-w-[65ch] text-body text-neutral-600">
                   Si prefieres, también puedes escribirnos directamente a nuestro correo.
                 </p>
                 <div className="space-y-3 text-small">
                   <p>
-                    <strong className="block text-white">Jaime Soto Silva</strong>
-                    <span className="block text-gray-400">Abogado – Socio</span>
-                    <a href={`mailto:${contact.primaryEmail}`} className="break-all text-gray-300 transition-colors hover:text-white">
+                    <strong className="block text-[#07234c]">Jaime Soto Silva</strong>
+                    <span className="block text-neutral-600">Abogado – Socio</span>
+                    <a href={`mailto:${contact.primaryEmail}`} className="break-all text-[#0d3566] transition-colors hover:underline">
                       {contact.primaryEmail}
                     </a>
                   </p>
                   <p>
-                    <a href={contact.primaryPhoneHref} className="text-gray-300 transition-colors hover:text-white">
+                    <a href={contact.primaryPhoneHref} className="text-[#0d3566] transition-colors hover:underline">
                       {contact.primaryPhone}
                     </a>
                   </p>

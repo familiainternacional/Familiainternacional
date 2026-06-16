@@ -172,7 +172,7 @@ export default function TestimonialEditor({ testimonial }: { testimonial?: Testi
           <button
             type="submit"
             disabled={isPending || isDeleting}
-            className="flex items-center gap-2 bg-brand text-white px-6 py-2.5 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-70 transition-all"
+            className="flex items-center gap-2 bg-brand text-white px-6 py-2.5 rounded-lg font-medium hover:bg-brand-dark disabled:opacity-70 transition-all"
           >
             {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
             {testimonial ? 'Guardar Cambios' : 'Crear Testimonio'}

@@ -468,13 +468,38 @@ input, textarea, select {
 }
 
 .fi-btn-hero--primary {
-  background: #25d366;
+  background: var(--color-primary);
   color: #fff;
-  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.22);
+  box-shadow: 0 12px 28px rgba(7, 35, 76, 0.22);
 }
 
 .fi-btn-hero--primary:hover {
-  background: #20bd5a;
+  background: var(--color-primary-mid);
+}
+
+.fi-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--btn-height-lg);
+  padding: 0.75rem 1.75rem;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: #fff;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.fi-btn-primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.fi-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .fi-btn-hero--secondary {
@@ -714,14 +739,14 @@ input, textarea, select {
 
 .rlu-button-primary {
   border-color: rgba(7, 35, 76, 0.85);
-  background: var(--color-primary-interactive);
+  background: var(--color-primary);
   color: #ffffff;
   box-shadow: none;
 }
 
 .rlu-button-primary:hover {
   border-color: var(--color-primary-dark);
-  background: var(--color-primary);
+  background: var(--color-primary-dark);
 }
 
 .rlu-button-secondary {
@@ -8622,4 +8647,22 @@ input:checked + .slider:before {
   }
 }
 
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.mask-horizontal {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
