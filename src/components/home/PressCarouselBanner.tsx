@@ -10,6 +10,13 @@ import { HOME_CARD_TITLE_CLASS } from '@/lib/layout';
 const MOBILE_INTRO_MAX_WIDTH_PX = 1023;
 const DEFAULT_INTRO_DURATION_MS = 6000;
 
+const STANDALONE_FRAME_HEIGHT_CLASS = 'min-h-[420px] sm:min-h-[460px] xl:min-h-[500px]';
+const EMBEDDED_FRAME_HEIGHT_CLASS = 'h-[260px] sm:h-[280px] lg:h-[226px] xl:h-[238px]';
+
+type PressCarouselBannerProps = {
+  embedded?: boolean;
+};
+
 function formatMediaDate(date: string, locale: string) {
   const parsed = new Date(`${date}T12:00:00`);
   if (Number.isNaN(parsed.getTime())) return date;
@@ -42,15 +49,18 @@ function PressIntroSlide({
   item,
   locale,
   durationMs,
+  embedded = false,
 }: {
   item: MediaMention;
   locale: string;
   durationMs: number;
+  embedded?: boolean;
 }) {
   const isEnglish = locale === 'en';
+  const frameHeightClass = embedded ? EMBEDDED_FRAME_HEIGHT_CLASS : STANDALONE_FRAME_HEIGHT_CLASS;
 
   return (
-    <div className="relative flex min-h-[420px] flex-col bg-[#f4f6f8] sm:min-h-[460px] xl:min-h-[500px]">
+    <div className={`relative flex flex-col bg-[#f4f6f8] ${frameHeightClass}`}>
       <div className="relative min-h-0 flex-1">
         <Image
           src={item.mobilePressIntro!.image}
@@ -81,12 +91,15 @@ function PressArticleSlide({
   item,
   locale,
   activeIndex,
+  embedded = false,
 }: {
   item: MediaMention;
   locale: string;
   activeIndex: number;
+  embedded?: boolean;
 }) {
   const isEnglish = locale === 'en';
+  const frameHeightClass = embedded ? EMBEDDED_FRAME_HEIGHT_CLASS : STANDALONE_FRAME_HEIGHT_CLASS;
 
   return (
     <>
@@ -95,21 +108,31 @@ function PressArticleSlide({
         src={item.thumbnail!}
         alt={isEnglish ? `Press clipping: ${item.title}` : `Recorte de prensa: ${item.title}`}
         fill
-        sizes="(min-width: 1280px) 1280px, 100vw"
+        sizes={embedded ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1280px) 1280px, 100vw'}
         className="object-cover object-top"
         priority={activeIndex === 0}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#07234c]/90 via-[#07234c]/35 to-[#07234c]/10" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#07234c]/55 via-transparent to-transparent" />
 
-      <div className="relative z-10 flex h-full min-h-[420px] flex-col justify-end p-4 sm:min-h-[460px] sm:p-6 xl:min-h-[500px] xl:p-8">
-        <article className="w-full max-w-xl rounded-card border border-white/15 bg-white/95 p-5 shadow-[0_20px_50px_rgba(15,23,42,0.18)] backdrop-blur-sm rounded-card sm:p-6 lg:max-w-lg xl:max-w-xl xl:p-7">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#07234c]/8 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#07234c] sm:text-[11px]">
+      <div
+        className={`relative z-10 flex h-full flex-col justify-end ${frameHeightClass} ${
+          embedded ? 'p-3 sm:p-4 lg:p-4 xl:p-5' : 'min-h-[420px] p-4 sm:min-h-[460px] sm:p-6 xl:min-h-[500px] xl:p-8'
+        }`}
+      >
+        <article
+          className={`w-full rounded-card border border-white/15 bg-white/95 shadow-[0_20px_50px_rgba(15,23,42,0.18)] backdrop-blur-sm ${
+            embedded
+              ? 'max-w-none p-4 sm:p-4'
+              : 'max-w-xl p-5 sm:p-6 lg:max-w-lg xl:max-w-xl xl:p-7'
+          }`}
+        >
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#07234c]/8 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#07234c] sm:text-[11px]">
             <Newspaper className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
             {isEnglish ? 'Featured press' : 'Prensa destacada'}
           </div>
 
-          <div className="mb-3 flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#07234c]/80 sm:text-[11px]">
+          <div className="mb-2 flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#07234c]/80 sm:text-[11px]">
             <span>{item.source}</span>
             <span className="text-neutral-300" aria-hidden>
               ·
@@ -117,13 +140,19 @@ function PressArticleSlide({
             <time dateTime={item.date}>{formatMediaDate(item.date, locale)}</time>
           </div>
 
-          <h3 className={`mb-3 ${HOME_CARD_TITLE_CLASS}`}>
+          <h3 className={`mb-2 ${HOME_CARD_TITLE_CLASS} ${embedded ? 'line-clamp-2 text-lg sm:text-xl' : 'mb-3'}`}>
             {item.title}
           </h3>
 
-          <p className="mb-4 text-sm leading-relaxed text-[#555555] sm:text-[15px]">{item.description}</p>
+          <p
+            className={`text-sm leading-relaxed text-[#555555] sm:text-[15px] ${
+              embedded ? 'mb-3 line-clamp-2' : 'mb-4'
+            }`}
+          >
+            {item.description}
+          </p>
 
-          {item.expertQuote ? (
+          {!embedded && item.expertQuote ? (
             <blockquote className="mb-5 border-l-[3px] border-[#d4af37] pl-3 text-sm italic leading-relaxed text-[#374151] sm:text-[15px]">
               “{isEnglish ? item.expertQuote.en : item.expertQuote.es}”
               {item.expertName ? (
@@ -139,7 +168,9 @@ function PressArticleSlide({
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[#07234c]/15 bg-white px-4 py-2.5 text-xs font-bold text-[#07234c] transition-colors hover:bg-[#07234c]/5 sm:px-5 sm:py-3 sm:text-sm"
+              className={`inline-flex items-center gap-2 rounded-full border border-[#07234c]/15 bg-white font-bold text-[#07234c] transition-colors hover:bg-[#07234c]/5 ${
+                embedded ? 'px-3 py-2 text-xs sm:px-4 sm:py-2.5 sm:text-sm' : 'px-4 py-2.5 text-xs sm:px-5 sm:py-3 sm:text-sm'
+              }`}
             >
               {isEnglish ? 'View original article' : 'Ver nota original'}
               <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -157,12 +188,14 @@ function PressCarouselSlide({
   activeIndex,
   isMobile,
   onIntroPlayingChange,
+  embedded = false,
 }: {
   item: MediaMention;
   locale: string;
   activeIndex: number;
   isMobile: boolean;
   onIntroPlayingChange: (playing: boolean) => void;
+  embedded?: boolean;
 }) {
   const hasIntro = isMobile && Boolean(item.mobilePressIntro);
   const introDurationMs = item.mobilePressIntro?.durationMs ?? DEFAULT_INTRO_DURATION_MS;
@@ -182,13 +215,13 @@ function PressCarouselSlide({
   }, [onIntroPlayingChange, showIntro]);
 
   return showIntro ? (
-    <PressIntroSlide item={item} locale={locale} durationMs={introDurationMs} />
+    <PressIntroSlide item={item} locale={locale} durationMs={introDurationMs} embedded={embedded} />
   ) : (
-    <PressArticleSlide item={item} locale={locale} activeIndex={activeIndex} />
+    <PressArticleSlide item={item} locale={locale} activeIndex={activeIndex} embedded={embedded} />
   );
 }
 
-export default function PressCarouselBanner() {
+export default function PressCarouselBanner({ embedded = false }: PressCarouselBannerProps) {
   const { locale } = useI18n();
   const isEnglish = locale === 'en';
   const isMobile = useMobilePressIntro();
@@ -205,9 +238,13 @@ export default function PressCarouselBanner() {
     setActiveIndex((index + items.length) % items.length);
   }
 
+  const frameHeightClass = embedded ? EMBEDDED_FRAME_HEIGHT_CLASS : STANDALONE_FRAME_HEIGHT_CLASS;
+
   return (
-    <div className="relative mb-12 w-full sm:mb-16">
-      <div className="relative min-h-[420px] overflow-hidden rounded-card border border-[#dbe4e2] shadow-[0_16px_48px_rgba(15,23,42,0.1)] sm:min-h-[460px] rounded-card xl:min-h-[500px] rounded-card">
+    <div className={`relative w-full ${embedded ? '' : 'mb-12 sm:mb-16'}`}>
+      <div
+        className={`relative overflow-hidden rounded-card border border-[#dbe4e2] shadow-[0_16px_48px_rgba(15,23,42,0.1)] ${frameHeightClass}`}
+      >
         <PressCarouselSlide
           key={item.id}
           item={item}
@@ -215,6 +252,7 @@ export default function PressCarouselBanner() {
           activeIndex={activeIndex}
           isMobile={isMobile}
           onIntroPlayingChange={setIntroPlaying}
+          embedded={embedded}
         />
 
         {hasMultiple && !introPlaying ? (

@@ -25,6 +25,9 @@ export const HOME_STEP_TITLE_CLASS =
 /** Esquinas totalmente redondeadas para tarjetas y contenedores tipo card. */
 export const CARD_ROUNDED_CLASS = 'rounded-card';
 
+/** Tarjeta promocional de la home (CTA, prensa destacada): mismo contenedor y proporciones. */
+export const HOME_PROMO_CARD_SHELL_CLASS = `relative flex w-full flex-col items-center justify-between gap-8 overflow-hidden ${CARD_ROUNDED_CLASS} px-5 py-14 shadow-2xl sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:gap-12 lg:px-10 lg:py-20 xl:px-14 xl:py-24`;
+
 /** Línea fina entre secciones en páginas slug (servicios, prensa, perspectivas). */
 export const SLUG_PAGE_SECTION_DIVIDER_CLASS = 'border-t border-[#07234c]/10';
 

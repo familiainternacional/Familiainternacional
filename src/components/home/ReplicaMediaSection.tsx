@@ -7,7 +7,7 @@ import { useIsLgViewport } from '@/lib/hooks/use-is-lg-viewport';
 
 import PressListing from '@/components/press/PressListing';
 import PressCarouselBanner from '@/components/home/PressCarouselBanner';
-import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS } from '@/lib/layout';
+import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_CLASS } from '@/lib/layout';
 
 export default function ReplicaMediaSection() {
   const isLg = useIsLgViewport();
@@ -18,7 +18,7 @@ export default function ReplicaMediaSection() {
     <section id="prensa" className={`w-full bg-white py-16 font-sans sm:py-24 ${HOME_SECTION_ANCHOR_CLASS}`}>
       <div className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
         <div className="fi-section-header w-full text-left">
-          <h2 className={`mb-4 ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
+          <h2 className={`mb-4 ${HOME_SECTION_TITLE_CLASS} text-black`}>
             Menciones en Medios y Publicaciones
           </h2>
 
@@ -31,11 +31,11 @@ export default function ReplicaMediaSection() {
         <PressCarouselBanner />
 
         {/* Marquee Container */}
-        <div className="relative flex w-full max-w-6xl overflow-hidden mask-horizontal py-4 mb-16">
-          <motion.div 
+        <div className="relative mb-16 flex w-full max-w-6xl overflow-hidden mask-horizontal py-4">
+          <motion.div
             className="flex w-max items-center gap-x-12 sm:gap-x-24"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ ease: "linear", duration: 40, repeat: Infinity }}
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ ease: 'linear', duration: 40, repeat: Infinity }}
           >
             {duplicatedLogos.map((media, index) => {
               const logo = (
@@ -46,7 +46,7 @@ export default function ReplicaMediaSection() {
                   width={media.width}
                   height={media.height}
                   loading="lazy"
-                  className="h-7 sm:h-9 w-auto max-w-[140px] sm:max-w-[180px] object-contain"
+                  className="h-7 w-auto max-w-[140px] object-contain sm:h-9 sm:max-w-[180px]"
                 />
               );
 
@@ -55,7 +55,7 @@ export default function ReplicaMediaSection() {
                   <Link
                     key={`${media.name}-${index}`}
                     href={media.href}
-                    className="flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 hover:scale-105"
+                    className="flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:scale-105 hover:opacity-100 hover:grayscale-0"
                     aria-label={`Ver cobertura en ${media.name}`}
                   >
                     {logo}
