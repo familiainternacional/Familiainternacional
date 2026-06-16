@@ -11,8 +11,10 @@ import { buildWhatsAppWidgetHref } from '@/lib/contact/links';
 import { navigateToHomeSection, type NavSection } from '@/config/nav';
 import {
   closeMobileCliengoChat,
+  isCliengoEnabled,
   isMobileTabBarViewport,
   openCliengoChat,
+  subscribeCliengoProactivePrompt,
 } from '@/lib/integrations/cliengo';
 import MobileChatSheet from '@/components/home/MobileChatSheet';
 import { siteConfig } from '@/config/site';
@@ -32,6 +34,9 @@ function isEditableFormField(target: EventTarget | null) {
   return target.isContentEditable;
 }
 
+const TAB_BAR_REVEAL_SCROLL_PX = 80;
+const MOBILE_TAB_BAR_REVEALED_BODY_CLASS = 'fi-mobile-tab-bar-revealed';
+
 export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: string }) {
   const pathname = usePathname();
   const { locale } = useI18n();
@@ -40,6 +45,8 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   const whatsappHref = buildWhatsAppWidgetHref(phone, locale);
   const [chatOpen, setChatOpen] = useState(false);
   const [hiddenByFormFocus, setHiddenByFormFocus] = useState(false);
+  const [revealedByScroll, setRevealedByScroll] = useState(false);
+  const [chatPromptActive, setChatPromptActive] = useState(false);
   const hiddenByFormFocusRef = useRef(false);
 
   const closeChat = () => {
@@ -56,6 +63,9 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
       if (!isMobileTabBarViewport()) {
         setChatOpen(false);
         setHiddenByFormFocus(false);
+        setRevealedByScroll(false);
+        setChatPromptActive(false);
+        document.body.classList.remove(MOBILE_TAB_BAR_REVEALED_BODY_CLASS);
         closeMobileCliengoChat();
       }
     };
@@ -65,6 +75,8 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   }, []);
 
   useEffect(() => {
+    const readScrollY = () => (lenis ? lenis.scroll : window.scrollY);
+
     const onFocusIn = (event: FocusEvent) => {
       if (!isMobileTabBarViewport()) return;
       if (isEditableFormField(event.target)) {
@@ -74,15 +86,22 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
     let scrollRaf: number | null = null;
     const onScroll = () => {
-      if (!isMobileTabBarViewport() || !hiddenByFormFocusRef.current) return;
+      if (!isMobileTabBarViewport()) return;
 
       if (scrollRaf !== null) return;
       scrollRaf = window.requestAnimationFrame(() => {
         scrollRaf = null;
-        setHiddenByFormFocus(false);
+
+        const scrollY = readScrollY();
+        setRevealedByScroll(scrollY > TAB_BAR_REVEAL_SCROLL_PX);
+
+        if (hiddenByFormFocusRef.current && scrollY > 0) {
+          setHiddenByFormFocus(false);
+        }
       });
     };
 
+    onScroll();
     document.addEventListener('focusin', onFocusIn);
     window.addEventListener('scroll', onScroll, { passive: true });
     lenis?.on('scroll', onScroll);
@@ -97,7 +116,31 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
     };
   }, [lenis]);
 
-  const isTabBarVisible = !hiddenByFormFocus && !chatOpen;
+  const isTabBarVisible = revealedByScroll && !hiddenByFormFocus && !chatOpen;
+
+  useEffect(() => {
+    if (!isMobileTabBarViewport()) {
+      document.body.classList.remove(MOBILE_TAB_BAR_REVEALED_BODY_CLASS);
+      return;
+    }
+
+    document.body.classList.toggle(MOBILE_TAB_BAR_REVEALED_BODY_CLASS, isTabBarVisible);
+
+    return () => {
+      document.body.classList.remove(MOBILE_TAB_BAR_REVEALED_BODY_CLASS);
+    };
+  }, [isTabBarVisible]);
+
+  useEffect(() => {
+    if (!isCliengoEnabled() || !isMobileTabBarViewport()) {
+      setChatPromptActive(false);
+      return;
+    }
+
+    return subscribeCliengoProactivePrompt(() => {
+      setChatPromptActive(true);
+    });
+  }, []);
 
   const handleChatClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -107,7 +150,8 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
       return;
     }
 
-    if (openCliengoChat()) {
+    if (isCliengoEnabled() && openCliengoChat()) {
+      setChatPromptActive(false);
       setChatOpen(true);
       return;
     }
@@ -152,6 +196,22 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             <Info size={22} strokeWidth={2} />
             <span className="text-[10px] font-bold tracking-wide">Nosotros</span>
           </Link>
+          <button
+            type="button"
+            onClick={handleChatClick}
+            aria-expanded={chatOpen}
+            aria-label={locale === 'en' ? 'Open chat' : 'Abrir chat'}
+            className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
+              chatOpen
+                ? 'bg-[#07234c] text-white'
+                : chatPromptActive
+                  ? 'text-[#1a9e4b] hover:text-[#25D366]'
+                  : 'text-[#07234c] hover:text-[#0a3169]'
+            }`}
+          >
+            <MessageCircle size={22} strokeWidth={2} />
+            <span className="text-[10px] font-bold tracking-wide">Chat</span>
+          </button>
           <a
             href={whatsappHref}
             target="_blank"
@@ -161,20 +221,6 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             <WhatsAppIcon size={22} />
             <span className="text-[10px] font-bold tracking-wide">WhatsApp</span>
           </a>
-          <button
-            type="button"
-            onClick={handleChatClick}
-            aria-expanded={chatOpen}
-            aria-label={locale === 'en' ? 'Open chat' : 'Abrir chat'}
-            className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
-              chatOpen
-                ? 'bg-[#07234c] text-white'
-                : 'text-[#07234c] hover:text-[#0a3169]'
-            }`}
-          >
-            <MessageCircle size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">Chat</span>
-          </button>
         </nav>
       </div>
     </>

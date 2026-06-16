@@ -199,7 +199,11 @@ body {
 
 @media (max-width: 1023px) {
   body {
-    padding-bottom: 96px; /* Espacio para la tab bar inferior en móvil */
+    padding-bottom: 0;
+  }
+
+  body.fi-mobile-tab-bar-revealed {
+    padding-bottom: 96px;
   }
 
   /* Launchers flotantes de terceros: acciones en MobileTabBar */
@@ -257,6 +261,21 @@ body {
 
   body.fi-mobile-chat-open #popupIframe {
     display: none !important;
+  }
+
+  .fi-mobile-chat-sheet__launcher-host #cliengo-button,
+  .fi-mobile-chat-sheet__launcher-host .clgo-chat-launcher,
+  .fi-mobile-chat-sheet__launcher-host #popupIframe {
+    display: block !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+    min-height: 72px !important;
+    border: none !important;
+    overflow: visible !important;
   }
 }
 

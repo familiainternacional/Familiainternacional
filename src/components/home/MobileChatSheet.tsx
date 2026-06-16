@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import {
   MOBILE_CHAT_OPEN_BODY_CLASS,
+  getCliengoLauncherElement,
   mountMobileCliengoChat,
+  mountMobileCliengoLauncher,
   unmountMobileCliengoChat,
+  unmountMobileCliengoLauncher,
 } from '@/lib/integrations/cliengo';
 
 type MobileChatSheetProps = {
@@ -18,17 +21,105 @@ const DISMISS_THRESHOLD_PX = 96;
 
 export default function MobileChatSheet({ open, onClose, locale }: MobileChatSheetProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
+  const launcherHostRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const [chatActive, setChatActive] = useState(false);
   const isEnglish = locale === 'en';
 
   useEffect(() => {
     if (!open) {
+      setChatActive(false);
       document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
+      unmountMobileCliengoLauncher();
       unmountMobileCliengoChat();
       return;
     }
 
     document.body.classList.add(MOBILE_CHAT_OPEN_BODY_CLASS);
+
+    return () => {
+      document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
+      unmountMobileCliengoLauncher();
+      unmountMobileCliengoChat();
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || chatActive) return;
+
+    let attempts = 0;
+    const mountLauncher = () => {
+      if (!launcherHostRef.current) return;
+      mountMobileCliengoLauncher(launcherHostRef.current);
+      attempts += 1;
+    };
+
+    mountLauncher();
+    const interval = window.setInterval(() => {
+      mountLauncher();
+      const launcher = getCliengoLauncherElement();
+      if ((launcher && launcherHostRef.current?.contains(launcher)) || attempts >= 28) {
+        window.clearInterval(interval);
+      }
+    }, 150);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [open, chatActive]);
+
+  useEffect(() => {
+    if (!open || chatActive) return;
+
+    let waitInterval: number | null = null;
+
+    const activateChat = () => {
+      if (waitInterval !== null) return;
+
+      waitInterval = window.setInterval(() => {
+        if (!bodyRef.current) return;
+        if (mountMobileCliengoChat(bodyRef.current)) {
+          setChatActive(true);
+          if (waitInterval !== null) {
+            window.clearInterval(waitInterval);
+            waitInterval = null;
+          }
+        }
+      }, 150);
+
+      window.setTimeout(() => {
+        if (waitInterval !== null) {
+          window.clearInterval(waitInterval);
+          waitInterval = null;
+        }
+      }, 12000);
+    };
+
+    const host = launcherHostRef.current;
+    const launcher = host?.querySelector('#cliengo-button, .clgo-chat-launcher, #popupIframe');
+    launcher?.addEventListener('click', activateChat);
+
+    const observer = new MutationObserver(() => {
+      const iframe = document.getElementById('chatIframe');
+      if (iframe && iframe.offsetHeight > 0) {
+        activateChat();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+
+    return () => {
+      launcher?.removeEventListener('click', activateChat);
+      observer.disconnect();
+      if (waitInterval !== null) {
+        window.clearInterval(waitInterval);
+      }
+    };
+  }, [open, chatActive]);
+
+  useEffect(() => {
+    if (!open || !chatActive || !bodyRef.current) return;
+
+    unmountMobileCliengoLauncher();
 
     let attempts = 0;
     const mount = () => {
@@ -47,10 +138,8 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
 
     return () => {
       window.clearInterval(interval);
-      document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
-      unmountMobileCliengoChat();
     };
-  }, [open]);
+  }, [open, chatActive]);
 
   useEffect(() => {
     const header = headerRef.current;
@@ -140,7 +229,19 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
       <div
         ref={bodyRef}
         className="fi-mobile-chat-sheet__body relative min-h-0 flex-1 overflow-hidden bg-white pb-[env(safe-area-inset-bottom)]"
-      />
+      >
+        {!chatActive ? (
+          <div className="flex h-full flex-col items-center justify-center gap-5 px-8 text-center">
+            <div
+              ref={launcherHostRef}
+              className="fi-mobile-chat-sheet__launcher-host flex min-h-[5.5rem] min-w-[5.5rem] items-center justify-center"
+            />
+            <p className="max-w-xs text-sm leading-relaxed text-neutral-600">
+              {isEnglish ? 'Tap the icon to start chatting' : 'Haz click en el icono para chatear'}
+            </p>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
