@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import BookCallButton from '@/components/home/BookCallButton';
+import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import { HOME_PROMO_CARD_SHELL_CLASS, HOME_SECTION_TITLE_INVERSE_CLASS, OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 export default function CtaSection() {
@@ -11,8 +13,20 @@ export default function CtaSection() {
   const isSpanish = locale === 'es';
 
   return (
-    <section className="w-full bg-white py-16 font-sans sm:py-24">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative w-full overflow-hidden border-t border-[#07234c]/5 bg-white py-16 font-sans sm:py-24">
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src={resolveSiteAssetSrc('/santiago_las_condes.png')}
+          alt=""
+          fill
+          className="object-cover object-center opacity-[0.08] mix-blend-luminosity"
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f8f9fa] via-[#f8f9fa]/70 to-[#f8f9fa]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f8f9fa] via-[#f8f9fa]/80 to-transparent" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className={`${HOME_PROMO_CARD_SHELL_CLASS} bg-[#07234c]`}>
           
           {/* Subtle background decoration */}

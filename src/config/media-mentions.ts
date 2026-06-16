@@ -126,7 +126,7 @@ export const mediaMentions: MediaMention[] = [
     description:
       'Cobertura de Teletrece sobre el complejo caso de custodia internacional de la actriz chilena Mane Swett.',
     url: 'https://www.t13.cl/videos/espectaculos/el-drama-judicial-mane-swett-estados-unidos-10-5-2024',
-    thumbnail: null,
+    thumbnail: '/media/t13-drama-judicial-mane-swett.jpg',
     topics: ['Custodia internacional', 'Medios'],
   },
   {

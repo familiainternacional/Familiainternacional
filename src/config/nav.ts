@@ -6,7 +6,6 @@ export type NavSection =
   | 'about'
   | 'metodologia'
   | 'prensa'
-  | 'perspectivas'
   | 'contact';
 
 export const HOME_NAV_SECTIONS: NavSection[] = [
@@ -15,7 +14,6 @@ export const HOME_NAV_SECTIONS: NavSection[] = [
   'about',
   'metodologia',
   'prensa',
-  'perspectivas',
   'contact',
 ];
 
@@ -73,12 +71,6 @@ export function getMainNavItems(locale: Locale): NavMenuLink[] {
       label: isSpanish ? 'Prensa' : 'Press',
       href: homeSectionHref('prensa'),
       section: 'prensa',
-    },
-    {
-      type: 'link',
-      label: isSpanish ? 'Perspectivas' : 'Insights',
-      href: homeSectionHref('perspectivas'),
-      section: 'perspectivas',
     },
     {
       type: 'link',

@@ -13,8 +13,6 @@ import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
 import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
 import { createPageMetadata } from '@/lib/seo/metadata';
 
-const InsightsSection = dynamic(() => import('@/components/home/InsightsSection'));
-
 const ServicesHomePreview = dynamic(() => import('@/components/home/ServicesHomePreview'));
 const AboutSection = dynamic(() => import('@/components/home/AboutSection'));
 const GoogleReviewsSection = dynamic(() => import('@/components/home/GoogleReviewsSection'));
@@ -86,10 +84,6 @@ export default async function HomePage() {
 
         <ScrollReveal>
           <ReplicaMediaSection />
-        </ScrollReveal>
-
-        <ScrollReveal>
-          <InsightsSection />
         </ScrollReveal>
 
         <ScrollReveal>
