@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
+import BookCallButton from '@/components/home/BookCallButton';
+import { OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 export default function CtaSection() {
   const { locale } = useI18n();
@@ -32,7 +34,11 @@ export default function CtaSection() {
               <div className="h-[1px] w-8 sm:w-12 bg-white/20"></div>
               <p className="text-white/60 text-xs sm:text-sm">
                 {isSpanish ? 'Consultados por ' : 'Featured in '}
-                <Link href="/prensa" className="text-white font-medium hover:text-white/80 transition-colors underline underline-offset-4 decoration-white/30">
+                <span className="lg:hidden text-white font-medium">Las Últimas Noticias</span>
+                <Link
+                  href="/prensa"
+                  className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} text-white font-medium hover:text-white/80 transition-colors underline underline-offset-4 decoration-white/30`}
+                >
                   Las Últimas Noticias
                 </Link>
                 {isSpanish ? ' en casos de sustracción internacional.' : ' on international child abduction cases.'}
@@ -41,10 +47,14 @@ export default function CtaSection() {
           </div>
 
           {/* Right Action */}
-          <div className="relative z-10 flex-shrink-0">
+          <div className="relative z-10 flex shrink-0 flex-col items-center gap-3 sm:flex-row lg:flex-col">
+            <BookCallButton
+              text={isSpanish ? 'Agendar Videollamada' : 'Book a video call'}
+              className="inline-flex min-h-[56px] w-full items-center justify-center whitespace-nowrap rounded-full bg-white px-8 text-base font-bold text-[#07234c] shadow-xl shadow-[#07234c]/20 transition-all hover:scale-[1.02] hover:bg-white/95 sm:w-auto sm:px-10 sm:text-lg lg:hidden"
+            />
             <Link
               href="/evalua-tu-caso"
-              className="inline-flex min-h-[56px] items-center justify-center whitespace-nowrap rounded-full bg-white px-8 text-base font-bold text-[#07234c] shadow-xl shadow-[#07234c]/20 transition-all hover:scale-[1.02] hover:bg-white/95 sm:px-10 sm:text-lg"
+              className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} min-h-[56px] items-center justify-center whitespace-nowrap rounded-full bg-white px-8 text-base font-bold text-[#07234c] shadow-xl shadow-[#07234c]/20 transition-all hover:scale-[1.02] hover:bg-white/95 sm:px-10 sm:text-lg`}
             >
               {isSpanish ? 'Evaluar mi caso' : 'Evaluate my case'}
               <ArrowUpRight className="ml-2 h-5 w-5" strokeWidth={2.5} aria-hidden />

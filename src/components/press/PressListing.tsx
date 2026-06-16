@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowUpRight, Newspaper, PlayCircle } from 'lucide-react';
 import { getFeaturedPressMention, getPressHubItems, type MediaMention } from '@/config/media-mentions';
+import MediaThumbnail from '@/components/media/MediaThumbnail';
+import { useIsLgViewport } from '@/lib/hooks/use-is-lg-viewport';
+import { OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 function formatMediaDate(date: string) {
   const parsed = new Date(`${date}T12:00:00`);
@@ -20,9 +25,98 @@ type PressListingProps = {
   showFeatured?: boolean;
   filterKind?: 'video' | 'press';
   limit?: number;
+  offPageLinks?: 'default' | 'desktop-only';
 };
 
-export default function PressListing({ showFeatured = true, filterKind, limit }: PressListingProps) {
+function PressListingCard({
+  item,
+  linkEnabled,
+}: {
+  item: MediaMention;
+  linkEnabled: boolean;
+}) {
+  const external = isExternalItem(item);
+  const href = getItemHref(item);
+  const cardClassName =
+    'group flex flex-col overflow-hidden rounded-[2.5rem] border border-neutral-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c]';
+
+  const cardContent = (
+    <>
+      <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden bg-[#07234c]">
+        {item.thumbnail ? (
+          <MediaThumbnail
+            src={item.thumbnail}
+            alt={item.title}
+            variant={item.kind === 'video' ? 'video' : 'press'}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#07234c] to-[#185365] opacity-90 transition-transform duration-500 group-hover:scale-105" />
+        )}
+        <div className="absolute inset-0 bg-black/20 transition-colors duration-300 group-hover:bg-black/10" />
+        {item.kind === 'video' ? (
+          <PlayCircle className="absolute h-12 w-12 text-white/90 drop-shadow-md transition-transform duration-300 group-hover:scale-110" />
+        ) : (
+          <Newspaper className="absolute h-12 w-12 text-white/90 drop-shadow-md transition-transform duration-300 group-hover:scale-110" />
+        )}
+      </div>
+
+      <div className="flex flex-grow flex-col justify-between p-8 lg:p-10">
+        <div>
+          <span className="mb-3 block text-[11px] font-bold uppercase tracking-widest text-[#07234c]">
+            {item.source}
+          </span>
+          <h3 className="mb-3 text-xl font-bold leading-tight text-[#1c1c1c] transition-colors group-hover:text-[#07234c]">
+            {item.title}
+          </h3>
+          <p className="mb-8 line-clamp-3 text-[15px] leading-relaxed text-neutral-600">{item.description}</p>
+        </div>
+
+        <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-5">
+          <span className="text-sm font-bold text-neutral-400 transition-colors group-hover:text-[#1c1c1c]">
+            {external ? (item.kind === 'video' ? 'Ver video' : 'Ver cobertura') : 'Leer análisis'}
+          </span>
+          <div
+            className={`flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-all group-hover:bg-neutral-50 group-hover:text-[#1c1c1c] ${linkEnabled ? '' : 'hidden lg:flex'}`}
+          >
+            <ArrowUpRight className="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  if (!linkEnabled) {
+    return <article className={cardClassName}>{cardContent}</article>;
+  }
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cardClassName}
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={cardClassName}>
+      {cardContent}
+    </Link>
+  );
+}
+
+export default function PressListing({
+  showFeatured = true,
+  filterKind,
+  limit,
+  offPageLinks = 'default',
+}: PressListingProps) {
+  const isLg = useIsLgViewport();
+  const linkEnabled = offPageLinks === 'default' || isLg;
   const featured = getFeaturedPressMention();
   let items = showFeatured && featured ? getPressHubItems().filter((item) => item.id !== featured.id) : getPressHubItems();
 
@@ -78,7 +172,7 @@ export default function PressListing({ showFeatured = true, filterKind, limit }:
                 {featured.detailPage ? (
                   <Link
                     href={`/prensa/${featured.slug}`}
-                    className="inline-flex items-center gap-2 rounded-full bg-[#07234c] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#051830]"
+                    className={`${offPageLinks === 'desktop-only' ? OFF_PAGE_LINK_DESKTOP_ONLY_CLASS : 'inline-flex'} items-center gap-2 rounded-full bg-[#07234c] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#051830]`}
                   >
                     Leer análisis completo
                     <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -88,7 +182,7 @@ export default function PressListing({ showFeatured = true, filterKind, limit }:
                   href={featured.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 py-3 text-sm font-bold text-[#07234c] transition-colors hover:bg-[#07234c] hover:text-white"
+                  className={`${offPageLinks === 'desktop-only' ? OFF_PAGE_LINK_DESKTOP_ONLY_CLASS : 'inline-flex'} items-center gap-2 rounded-full border border-neutral-200 px-5 py-3 text-sm font-bold text-[#07234c] transition-colors hover:bg-[#07234c] hover:text-white`}
                 >
                   Ver nota original
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -100,64 +194,9 @@ export default function PressListing({ showFeatured = true, filterKind, limit }:
       ) : null}
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => {
-          const external = isExternalItem(item);
-          const href = getItemHref(item);
-          const CardTag = external ? 'a' : Link;
-          const cardProps = external
-            ? { href, target: '_blank' as const, rel: 'noopener noreferrer' }
-            : { href };
-
-          return (
-            <CardTag
-              key={item.id}
-              {...cardProps}
-              className="group flex flex-col overflow-hidden rounded-[2.5rem] border border-neutral-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c]"
-            >
-              <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden bg-[#07234c]">
-                {item.thumbnail ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.thumbnail}
-                    alt={item.title}
-                    className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${
-                      item.kind === 'video' ? 'object-contain p-3' : 'object-cover'
-                    } opacity-80`}
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[#07234c] to-[#185365] opacity-90 transition-transform duration-500 group-hover:scale-105" />
-                )}
-                <div className="absolute inset-0 bg-black/20 transition-colors duration-300 group-hover:bg-black/10" />
-                {item.kind === 'video' ? (
-                  <PlayCircle className="absolute h-12 w-12 text-white/90 drop-shadow-md transition-transform duration-300 group-hover:scale-110" />
-                ) : (
-                  <Newspaper className="absolute h-12 w-12 text-white/90 drop-shadow-md transition-transform duration-300 group-hover:scale-110" />
-                )}
-              </div>
-
-              <div className="flex flex-grow flex-col justify-between p-8 lg:p-10">
-                <div>
-                  <span className="mb-3 block text-[11px] font-bold uppercase tracking-widest text-[#07234c]">
-                    {item.source}
-                  </span>
-                  <h3 className="mb-3 text-xl font-bold leading-tight text-[#1c1c1c] transition-colors group-hover:text-[#07234c]">
-                    {item.title}
-                  </h3>
-                  <p className="mb-8 line-clamp-3 text-[15px] leading-relaxed text-neutral-600">{item.description}</p>
-                </div>
-
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-5">
-                  <span className="text-sm font-bold text-neutral-400 transition-colors group-hover:text-[#1c1c1c]">
-                    {external ? (item.kind === 'video' ? 'Ver video' : 'Ver cobertura') : 'Leer análisis'}
-                  </span>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-all group-hover:bg-neutral-50 group-hover:text-[#1c1c1c]">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </div>
-                </div>
-              </div>
-            </CardTag>
-          );
-        })}
+        {items.map((item) => (
+          <PressListingCard key={item.id} item={item} linkEnabled={linkEnabled} />
+        ))}
       </div>
     </div>
   );

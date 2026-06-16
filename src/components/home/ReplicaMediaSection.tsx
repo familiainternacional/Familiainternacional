@@ -3,12 +3,14 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { pressOutletLogos } from '@/config/press-outlet-logos';
+import { useIsLgViewport } from '@/lib/hooks/use-is-lg-viewport';
 
 import PressListing from '@/components/press/PressListing';
 import PressCarouselBanner from '@/components/home/PressCarouselBanner';
 import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
 
 export default function ReplicaMediaSection() {
+  const isLg = useIsLgViewport();
   // Duplicamos los logos varias veces para crear el efecto infinito continuo
   const duplicatedLogos = [...pressOutletLogos, ...pressOutletLogos, ...pressOutletLogos, ...pressOutletLogos, ...pressOutletLogos, ...pressOutletLogos];
 
@@ -35,14 +37,9 @@ export default function ReplicaMediaSection() {
             animate={{ x: ["0%", "-50%"] }}
             transition={{ ease: "linear", duration: 40, repeat: Infinity }}
           >
-            {duplicatedLogos.map((media, index) => (
-              <Link
-                key={`${media.name}-${index}`}
-                href={media.href}
-                className="flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 hover:scale-105"
-                aria-label={`Ver cobertura en ${media.name}`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+            {duplicatedLogos.map((media, index) => {
+              const logo = (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={media.src}
                   alt={`Logo ${media.name}`}
@@ -51,8 +48,31 @@ export default function ReplicaMediaSection() {
                   loading="lazy"
                   className="h-7 sm:h-9 w-auto max-w-[140px] sm:max-w-[180px] object-contain"
                 />
-              </Link>
-            ))}
+              );
+
+              if (isLg) {
+                return (
+                  <Link
+                    key={`${media.name}-${index}`}
+                    href={media.href}
+                    className="flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 hover:scale-105"
+                    aria-label={`Ver cobertura en ${media.name}`}
+                  >
+                    {logo}
+                  </Link>
+                );
+              }
+
+              return (
+                <div
+                  key={`${media.name}-${index}`}
+                  className="flex items-center justify-center opacity-50 grayscale"
+                  aria-hidden
+                >
+                  {logo}
+                </div>
+              );
+            })}
           </motion.div>
         </div>
 

@@ -37,6 +37,11 @@ export type MediaMention = {
   };
   faqs?: MediaMentionFaq[];
   topics?: string[];
+  /** En móvil: imagen del recorte de prensa antes del resumen del artículo. */
+  mobilePressIntro?: {
+    image: string;
+    durationMs?: number;
+  };
 };
 
 /** Cobertura en prensa y medios — casos donde se consulta al estudio como experto. */
@@ -52,6 +57,11 @@ export const mediaMentions: MediaMention[] = [
       'LUN consultó a Jaime Soto, abogado especialista en derecho de familia internacional, sobre las opciones de apelación y el peso del Convenio de La Haya en casos de sustracción internacional.',
     url: 'https://www.lun.com/Pages/NewsDetail.aspx?BodyID=0&NewsID=529828&PaginaId=26&dt=2024-05-10',
     thumbnail: '/media/lun-mane-swett-2024-05-10.png',
+    mobilePressIntro: {
+      image:
+        'https://familiainternacional.cl/wp-content/uploads/2024/08/Las-Ultimas-Noticias_page-0001-1187x1536.jpg',
+      durationMs: 6000,
+    },
     featured: true,
     detailPage: true,
     expertName: 'Jaime Soto Silva',

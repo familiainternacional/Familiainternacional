@@ -91,15 +91,14 @@
 .fi-nav-logo {
   display: block;
   width: auto;
+  height: auto;
   max-width: min(420px, 60vw);
-  height: 110px;
   object-fit: contain;
   object-position: left center;
   flex-shrink: 0;
 }
 
 .fi-nav-logo--compact {
-  height: 85px;
   max-width: min(360px, 50vw);
 }
 

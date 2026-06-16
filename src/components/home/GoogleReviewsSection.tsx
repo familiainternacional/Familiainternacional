@@ -1,9 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, Star } from 'lucide-react';
+import { useState } from 'react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { googleBusinessProfile, googleReviews } from '@/config/google-reviews';
+import { OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 type GoogleReviewsSectionProps = {
   /** Máximo de tarjetas visibles. Por defecto todas. */
@@ -38,6 +41,42 @@ function GoogleBadge({ className = '' }: { className?: string }) {
       </svg>
       Google
     </span>
+  );
+}
+
+function ReviewAuthorAvatar({
+  name,
+  photoUrl,
+  initial,
+}: {
+  name: string;
+  photoUrl?: string;
+  initial: string;
+}) {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  if (!photoUrl || imageFailed) {
+    return (
+      <div
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-sm font-bold text-[#1c1c1c]"
+        aria-hidden={!photoUrl}
+      >
+        {initial}
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={photoUrl}
+      alt={`Foto de perfil de ${name}`}
+      width={40}
+      height={40}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      className="h-10 w-10 shrink-0 rounded-full border border-neutral-200 object-cover"
+      onError={() => setImageFailed(true)}
+    />
   );
 }
 
@@ -90,7 +129,7 @@ export default function GoogleReviewsSection({
           href={profileUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="fi-link-action group mb-10 text-[#1c1c1c] transition-colors hover:text-black/70"
+          className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} fi-link-action group mb-10 text-[#1c1c1c] transition-colors hover:text-black/70`}
         >
           {isSpanish ? 'Ver perfil en Google' : 'View Google profile'}
           <span className="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 transition-colors group-hover:bg-black/5">
@@ -108,23 +147,11 @@ export default function GoogleReviewsSection({
             >
               <div>
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  {review.authorPhotoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={review.authorPhotoUrl}
-                      alt={`Foto de perfil de ${review.author}`}
-                      width={40}
-                      height={40}
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                      className="h-10 w-10 rounded-full border border-neutral-200 object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-bold text-[#1c1c1c]">
-                      {review.initial}
-                    </div>
-                  )}
+                  <ReviewAuthorAvatar
+                    name={review.author}
+                    photoUrl={review.authorPhotoUrl}
+                    initial={review.initial}
+                  />
                   <GoogleBadge />
                 </div>
 
@@ -151,7 +178,7 @@ export default function GoogleReviewsSection({
                   href={profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-[#1c1c1c]"
+                  className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-[#1c1c1c]`}
                   aria-label={isSpanish ? `Ver reseña de ${review.author} en Google` : `View ${review.author}'s review on Google`}
                 >
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -164,7 +191,7 @@ export default function GoogleReviewsSection({
         {showViewAllLink ? (
           <Link
             href="/reseñas"
-            className="fi-link-action mt-10 text-[#07234c] hover:text-[#051830]"
+            className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} fi-link-action mt-10 text-[#07234c] hover:text-[#051830]`}
           >
             {isSpanish ? 'Ver página de reseñas' : 'View reviews page'}
             <ArrowUpRight className="h-4 w-4" aria-hidden />

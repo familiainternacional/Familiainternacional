@@ -39,11 +39,14 @@ export default function ServicesHomePreview() {
                 key={service.slug}
                 className="group flex flex-col rounded-[1.25rem] border border-white/40 bg-white/50 backdrop-blur-md p-8 sm:p-10 transition-all hover:shadow-xl hover:-translate-y-1 hover:bg-white/70"
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#07234c] text-white font-bold text-lg">
+                <div className="mb-4 flex items-baseline gap-3 sm:gap-4">
+                  <span
+                    className="shrink-0 text-[clamp(2rem,4.5vw,2.75rem)] font-extrabold leading-none tracking-[-0.04em] text-[#07234c] tabular-nums"
+                    aria-hidden
+                  >
                     {service.num}
                   </span>
-                  <h3 className="text-2xl font-bold text-[#1a1a1a] leading-tight">
+                  <h3 className="text-xl font-bold leading-tight text-[#1a1a1a] sm:text-2xl">
                     {isSpanish ? service.title.es : service.title.en}
                   </h3>
                 </div>

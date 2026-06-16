@@ -176,10 +176,86 @@ body {
   overflow-x: hidden;
 }
 
-@media (max-width: 768px) {
+@keyframes fi-press-intro-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.fi-press-intro-progress {
+  animation-name: fi-press-intro-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width: 1023px) {
   body {
     padding-bottom: 96px; /* Espacio para la tab bar inferior en móvil */
   }
+
+  /* Launchers flotantes de terceros: acciones en MobileTabBar */
+  #cliengo-button,
+  .clgo-chat-launcher,
+  #chat-launcher,
+  #wspIframe,
+  .whatsapp-widget-container {
+    display: none !important;
+  }
+
+  #popupIframe {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+  }
+
+  #chatIframe {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  body.fi-mobile-chat-open {
+    overflow: hidden;
+    padding-bottom: 0 !important;
+  }
+
+  .fi-mobile-chat-sheet__body #chatIframe {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body.fi-mobile-chat-open #popupIframe {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
   .pdp-main {
     padding-bottom: 8rem !important;
   }

@@ -22,3 +22,208 @@ export function getCliengoScriptUrl(): string | null {
 export function isCliengoEnabled(): boolean {
   return getCliengoScriptUrl() !== null;
 }
+
+export const MOBILE_FLOATING_LAUNCHER_SELECTORS = [
+  '#cliengo-button',
+  '.clgo-chat-launcher',
+  '#chat-launcher',
+  '#wspIframe',
+  '.whatsapp-widget-container',
+] as const;
+
+export function isMobileTabBarViewport() {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(max-width: 1023px)').matches;
+}
+
+function restoreHiddenLauncher(el: HTMLElement) {
+  el.removeAttribute('data-fi-mobile-launcher-hidden');
+  el.style.removeProperty('display');
+  el.style.removeProperty('opacity');
+  el.style.removeProperty('pointer-events');
+  el.style.removeProperty('width');
+  el.style.removeProperty('height');
+  el.style.removeProperty('min-width');
+  el.style.removeProperty('min-height');
+  el.style.removeProperty('border');
+  el.style.removeProperty('overflow');
+}
+
+export function syncMobileFloatingLaunchers(root: ParentNode = document) {
+  const isMobile = isMobileTabBarViewport();
+
+  document.querySelectorAll('[data-fi-mobile-launcher-hidden]').forEach((node) => {
+    restoreHiddenLauncher(node as HTMLElement);
+  });
+
+  if (!isMobile) return;
+
+  MOBILE_FLOATING_LAUNCHER_SELECTORS.forEach((selector) => {
+    root.querySelectorAll(selector).forEach((node) => {
+      const el = node as HTMLElement;
+      el.dataset.fiMobileLauncherHidden = 'true';
+      el.style.setProperty('display', 'none', 'important');
+    });
+  });
+
+  const popupIframe = root instanceof Document ? root.getElementById('popupIframe') : null;
+  if (popupIframe && !popupIframe.dataset.fiMobileLauncherHidden) {
+    popupIframe.dataset.fiMobileLauncherHidden = 'true';
+    popupIframe.style.setProperty('opacity', '0', 'important');
+    popupIframe.style.setProperty('pointer-events', 'none', 'important');
+    popupIframe.style.setProperty('width', '0', 'important');
+    popupIframe.style.setProperty('height', '0', 'important');
+    popupIframe.style.setProperty('border', 'none', 'important');
+    popupIframe.style.setProperty('overflow', 'hidden', 'important');
+  }
+}
+
+export const MOBILE_CHAT_OPEN_BODY_CLASS = 'fi-mobile-chat-open';
+
+export function setMobileCliengoChatOpen(open: boolean) {
+  if (typeof document === 'undefined') return;
+  document.body.classList.toggle(MOBILE_CHAT_OPEN_BODY_CLASS, open);
+  if (open) {
+    applyMobileCliengoChatLayout();
+  }
+}
+
+export function applyMobileCliengoChatLayout() {
+  if (!isMobileTabBarViewport()) return;
+
+  const chatIframe = document.getElementById('chatIframe') as HTMLElement | null;
+  if (!chatIframe) return;
+
+  const isOpen = document.body.classList.contains(MOBILE_CHAT_OPEN_BODY_CLASS);
+  const inSheet = Boolean(chatIframe.closest('.fi-mobile-chat-sheet__body'));
+
+  if (!isOpen || !inSheet) {
+    chatIframe.style.setProperty('opacity', '0', 'important');
+    chatIframe.style.setProperty('pointer-events', 'none', 'important');
+    chatIframe.style.setProperty('width', '0', 'important');
+    chatIframe.style.setProperty('height', '0', 'important');
+    chatIframe.style.setProperty('position', 'fixed', 'important');
+    chatIframe.style.setProperty('left', '-9999px', 'important');
+    chatIframe.style.setProperty('top', 'auto', 'important');
+    chatIframe.style.setProperty('border', 'none', 'important');
+    chatIframe.style.setProperty('box-shadow', 'none', 'important');
+  }
+}
+
+export function mountMobileCliengoChat(container: HTMLElement) {
+  if (!isMobileTabBarViewport()) return false;
+
+  const chatIframe = document.getElementById('chatIframe') as HTMLElement | null;
+  if (!chatIframe) return false;
+
+  if (chatIframe.parentElement !== container) {
+    container.appendChild(chatIframe);
+  }
+
+  chatIframe.style.setProperty('position', 'absolute', 'important');
+  chatIframe.style.setProperty('inset', '0', 'important');
+  chatIframe.style.setProperty('top', '0', 'important');
+  chatIframe.style.setProperty('right', '0', 'important');
+  chatIframe.style.setProperty('bottom', '0', 'important');
+  chatIframe.style.setProperty('left', '0', 'important');
+  chatIframe.style.setProperty('width', '100%', 'important');
+  chatIframe.style.setProperty('height', '100%', 'important');
+  chatIframe.style.setProperty('max-width', '100%', 'important');
+  chatIframe.style.setProperty('opacity', '1', 'important');
+  chatIframe.style.setProperty('pointer-events', 'auto', 'important');
+  chatIframe.style.setProperty('z-index', '1', 'important');
+  chatIframe.style.setProperty('border', 'none', 'important');
+  chatIframe.style.setProperty('outline', 'none', 'important');
+  chatIframe.style.setProperty('border-radius', '0', 'important');
+  chatIframe.style.setProperty('box-shadow', 'none', 'important');
+  chatIframe.style.setProperty('transform', 'none', 'important');
+  chatIframe.style.setProperty('touch-action', 'pan-y', 'important');
+  return true;
+}
+
+export function unmountMobileCliengoChat() {
+  const chatIframe = document.getElementById('chatIframe') as HTMLElement | null;
+  if (!chatIframe) return;
+
+  if (chatIframe.parentElement && chatIframe.parentElement !== document.body) {
+    document.body.appendChild(chatIframe);
+  }
+
+  chatIframe.style.setProperty('opacity', '0', 'important');
+  chatIframe.style.setProperty('pointer-events', 'none', 'important');
+  chatIframe.style.setProperty('height', '0', 'important');
+  chatIframe.style.setProperty('width', '0', 'important');
+  chatIframe.style.removeProperty('transform');
+}
+
+function waitForMobileChatIframe() {
+  let attempts = 0;
+  const interval = window.setInterval(() => {
+    applyMobileCliengoChatLayout();
+    attempts += 1;
+    if (attempts >= 24) {
+      window.clearInterval(interval);
+    }
+  }, 125);
+}
+
+export function closeMobileCliengoChat() {
+  setMobileCliengoChatOpen(false);
+  unmountMobileCliengoChat();
+
+  const cliengo = (window as Window & { Cliengo?: { close?: () => void; closeChat?: () => void } }).Cliengo;
+  if (typeof cliengo?.closeChat === 'function') {
+    cliengo.closeChat();
+    return;
+  }
+  if (typeof cliengo?.close === 'function') {
+    cliengo.close();
+  }
+}
+
+export function openCliengoChat() {
+  if (isMobileTabBarViewport()) {
+    setMobileCliengoChatOpen(true);
+  }
+
+  const launcher =
+    (document.querySelector('#cliengo-button') as HTMLElement | null)
+    ?? (document.querySelector('.clgo-chat-launcher') as HTMLElement | null);
+
+  if (launcher) {
+    launcher.click();
+    if (isMobileTabBarViewport()) waitForMobileChatIframe();
+    return true;
+  }
+
+  const popupIframe = document.getElementById('popupIframe') as HTMLElement | null;
+  if (popupIframe) {
+    popupIframe.style.removeProperty('opacity');
+    popupIframe.style.removeProperty('pointer-events');
+    popupIframe.style.removeProperty('width');
+    popupIframe.style.removeProperty('height');
+    popupIframe.style.removeProperty('border');
+    popupIframe.style.removeProperty('overflow');
+    popupIframe.click();
+    if (isMobileTabBarViewport()) waitForMobileChatIframe();
+    return true;
+  }
+
+  const cliengo = (window as Window & { Cliengo?: { open?: () => void; openChat?: () => void } }).Cliengo;
+  if (typeof cliengo?.openChat === 'function') {
+    cliengo.openChat();
+    if (isMobileTabBarViewport()) waitForMobileChatIframe();
+    return true;
+  }
+  if (typeof cliengo?.open === 'function') {
+    cliengo.open();
+    if (isMobileTabBarViewport()) waitForMobileChatIframe();
+    return true;
+  }
+
+  if (isMobileTabBarViewport()) {
+    setMobileCliengoChatOpen(false);
+  }
+
+  return false;
+}
