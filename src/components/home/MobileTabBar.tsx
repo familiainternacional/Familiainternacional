@@ -47,11 +47,16 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   const [hiddenByFormFocus, setHiddenByFormFocus] = useState(false);
   const [revealedByScroll, setRevealedByScroll] = useState(false);
   const [chatPromptActive, setChatPromptActive] = useState(false);
+  const [chatSession, setChatSession] = useState(0);
   const hiddenByFormFocusRef = useRef(false);
 
   const closeChat = () => {
     setChatOpen(false);
     closeMobileCliengoChat();
+    window.requestAnimationFrame(() => {
+      lenis?.start();
+      lenis?.resize();
+    });
   };
 
   useEffect(() => {
@@ -151,6 +156,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
     if (isCliengoEnabled() && openCliengoChat()) {
       setChatPromptActive(false);
+      setChatSession((session) => session + 1);
       setChatOpen(true);
       return;
     }
@@ -169,7 +175,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
   return (
     <>
-      <MobileChatSheet key={chatOpen ? 'open' : 'closed'} open={chatOpen} onClose={closeChat} locale={locale} />
+      <MobileChatSheet key={chatSession} open={chatOpen} onClose={closeChat} locale={locale} />
 
       <div
         className={`fixed bottom-4 left-4 right-4 z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${

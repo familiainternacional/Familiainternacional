@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import {
-  MOBILE_CHAT_OPEN_BODY_CLASS,
   getCliengoLauncherElement,
   mountMobileCliengoChat,
   mountMobileCliengoLauncher,
+  setMobileCliengoChatOpen,
   unmountMobileCliengoChat,
   unmountMobileCliengoLauncher,
 } from '@/lib/integrations/cliengo';
@@ -28,18 +28,15 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
 
   useEffect(() => {
     if (!open) {
-      document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
-      unmountMobileCliengoLauncher();
-      unmountMobileCliengoChat();
       return;
     }
 
-    document.body.classList.add(MOBILE_CHAT_OPEN_BODY_CLASS);
+    setMobileCliengoChatOpen(true);
 
     return () => {
-      document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
       unmountMobileCliengoLauncher();
       unmountMobileCliengoChat();
+      setMobileCliengoChatOpen(false);
     };
   }, [open]);
 

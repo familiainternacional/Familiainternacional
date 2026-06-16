@@ -13,13 +13,13 @@ export default function ReplicaHero() {
   const [showForm, setShowForm] = useState(false);
 
   return (
-    <section className="relative w-full pb-10 pt-[84px] sm:pt-[100px] lg:pt-[160px] xl:pb-12 xl:pt-[180px]">
+    <section className="relative w-full pb-10 pt-[112px] sm:pt-[120px] lg:pt-[160px] xl:pb-12 xl:pt-[180px]">
       <SectionBackgroundImage src={HERO_BG_SRC} priority className="-z-20" />
       <div className="absolute inset-0 -z-10 bg-[#07234c]/30" />
       <div className={`relative z-10 ${SITE_CONTAINER_CLASS}`}>
         <div
           id="home"
-          className={`relative w-full overflow-hidden rounded-card border border-white/50 bg-white/90 shadow-[0_30px_80px_rgba(0,0,0,0.2)] scroll-mt-[8.75rem] sm:scroll-mt-[9.5rem] lg:scroll-mt-[9rem] transition-all duration-700 ease-in-out`}
+          className={`relative w-full overflow-hidden rounded-card border border-white/50 bg-white/90 shadow-[0_30px_80px_rgba(0,0,0,0.2)] scroll-mt-[9.5rem] sm:scroll-mt-[10rem] lg:scroll-mt-[9rem] transition-all duration-700 ease-in-out`}
         >
           <div className={`grid transition-all duration-700 lg:min-h-[580px] xl:min-h-[620px] ${showForm ? 'lg:grid-cols-2 lg:items-stretch' : 'grid-cols-1 items-center'}`}>
             <div className={`flex h-full min-h-0 flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 transition-all duration-700 ${showForm ? 'lg:justify-between lg:px-10 lg:py-12 xl:px-14 xl:py-12 2xl:px-16' : 'items-center text-center max-w-5xl mx-auto py-12 lg:py-24'}`}>

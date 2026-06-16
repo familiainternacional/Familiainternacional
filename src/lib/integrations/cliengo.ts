@@ -79,6 +79,55 @@ export function syncMobileFloatingLaunchers(root: ParentNode = document) {
   }
 }
 
+const SCROLL_LOCK_STYLE_PROPS = [
+  'overflow',
+  'overflowY',
+  'overflowX',
+  'position',
+  'top',
+  'right',
+  'bottom',
+  'left',
+  'width',
+  'height',
+  'touchAction',
+  'paddingRight',
+] as const;
+
+const CHAT_IFRAME_LAYOUT_PROPS = [
+  'position',
+  'inset',
+  'top',
+  'right',
+  'bottom',
+  'left',
+  'width',
+  'height',
+  'max-width',
+  'opacity',
+  'pointer-events',
+  'z-index',
+  'border',
+  'outline',
+  'border-radius',
+  'box-shadow',
+  'transform',
+  'touch-action',
+] as const;
+
+function clearInlineStyles(element: HTMLElement, props: readonly string[]) {
+  props.forEach((prop) => element.style.removeProperty(prop));
+}
+
+function releaseMobileScrollLock() {
+  if (typeof document === 'undefined') return;
+
+  document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
+  document.documentElement.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
+  clearInlineStyles(document.documentElement, SCROLL_LOCK_STYLE_PROPS);
+  clearInlineStyles(document.body, SCROLL_LOCK_STYLE_PROPS);
+}
+
 export const MOBILE_CHAT_OPEN_BODY_CLASS = 'fi-mobile-chat-open';
 
 export function setMobileCliengoChatOpen(open: boolean) {
@@ -86,7 +135,11 @@ export function setMobileCliengoChatOpen(open: boolean) {
   document.body.classList.toggle(MOBILE_CHAT_OPEN_BODY_CLASS, open);
   if (open) {
     applyMobileCliengoChatLayout();
+    return;
   }
+
+  releaseMobileScrollLock();
+  applyMobileCliengoChatLayout();
 }
 
 export function applyMobileCliengoChatLayout() {
@@ -213,11 +266,8 @@ export function unmountMobileCliengoChat() {
     document.body.appendChild(chatIframe);
   }
 
-  chatIframe.style.setProperty('opacity', '0', 'important');
-  chatIframe.style.setProperty('pointer-events', 'none', 'important');
-  chatIframe.style.setProperty('height', '0', 'important');
-  chatIframe.style.setProperty('width', '0', 'important');
-  chatIframe.style.removeProperty('transform');
+  clearInlineStyles(chatIframe, CHAT_IFRAME_LAYOUT_PROPS);
+  applyMobileCliengoChatLayout();
 }
 
 function waitForMobileChatIframe() {
@@ -235,6 +285,8 @@ export function closeMobileCliengoChat() {
   setMobileCliengoChatOpen(false);
   unmountMobileCliengoLauncher();
   unmountMobileCliengoChat();
+  releaseMobileScrollLock();
+  syncMobileFloatingLaunchers();
 
   const cliengo = (window as Window & { Cliengo?: { close?: () => void; closeChat?: () => void } }).Cliengo;
   if (typeof cliengo?.closeChat === 'function') {
