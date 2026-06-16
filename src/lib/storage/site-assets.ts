@@ -1,7 +1,8 @@
 /** Logo tipográfico — textofamilia.png (800×133 px, fondo transparente). */
-export const LOCAL_LOGO_SRC = '/logo/textofamilia.png';
-export const LOCAL_LOGO_DARK_SRC = '/logo/textofamilia.png';
-export const LOCAL_LOGO_MASTER = '/logo/textofamilia.png';
+const LOCAL_LOGO_PATH = '/logo/textofamilia.png';
+export const LOCAL_LOGO_SRC = LOCAL_LOGO_PATH;
+export const LOCAL_LOGO_DARK_SRC = LOCAL_LOGO_PATH;
+export const LOCAL_LOGO_MASTER = LOCAL_LOGO_PATH;
 export const SUPABASE_LOGO_PATH = 'brand/textofamilia.png';
 export const SUPABASE_LOGO_URL =
   'https://cnyhhosxdzmrnyemiqic.supabase.co/storage/v1/object/public/rlu-assets/brand/textofamilia.png';
@@ -9,9 +10,7 @@ const PUBLIC_SUPABASE_SITE_ASSET_BUCKET =
   process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET?.trim() || 'rlu-assets';
 
 const LOCAL_PATH_OVERRIDES: Record<string, string> = {
-  [LOCAL_LOGO_SRC]: SUPABASE_LOGO_PATH,
-  [LOCAL_LOGO_DARK_SRC]: SUPABASE_LOGO_PATH,
-  [LOCAL_LOGO_MASTER]: SUPABASE_LOGO_PATH,
+  [LOCAL_LOGO_PATH]: SUPABASE_LOGO_PATH,
 };
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif', '.avif']);

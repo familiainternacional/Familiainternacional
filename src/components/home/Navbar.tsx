@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Briefcase,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Globe,
@@ -18,8 +17,8 @@ import {
   Scale,
   BookOpen,
 } from 'lucide-react';
-import type { CSSProperties, MouseEvent, ReactNode } from 'react';
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLenis } from 'lenis/react';
 import LocaleSelector from '@/components/i18n/LocaleSelector';
 import BookCallButton from '@/components/home/BookCallButton';
@@ -31,10 +30,8 @@ import { siteConfig } from '@/config/site';
 import {
   getMainNavItems,
   HOME_NAV_SECTIONS,
-  isNavDropdownActive,
   isNavPathActive,
-  type NavMenuDropdown,
-  type NavMenuItem,
+  type NavMenuLink,
   type NavSection,
 } from '@/config/nav';
 import { useI18n } from '@/lib/i18n/I18nProvider';
@@ -141,145 +138,6 @@ function FiLogo({
         event.currentTarget.src = encodeURI(LOCAL_LOGO_MASTER);
       }}
     />
-  );
-}
-
-function DesktopNavDropdown({
-  item,
-  isOpen,
-  onOpen,
-  onToggle,
-  onClose,
-  pathname,
-  activeSection,
-  locale,
-  scrollProgress,
-}: {
-  item: NavMenuDropdown;
-  isOpen: boolean;
-  onOpen: () => void;
-  onToggle: () => void;
-  onClose: () => void;
-  pathname: string;
-  activeSection: NavSection | null;
-  locale: 'es' | 'en';
-  scrollProgress: number;
-}) {
-  const menuId = useId();
-  const rootRef = useRef<HTMLDivElement>(null);
-  const isActive = isNavDropdownActive(pathname, item.href, item.entries, activeSection);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handlePointerDown(event: MouseEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) onClose();
-    }
-
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape') onClose();
-    }
-
-    document.addEventListener('mousedown', handlePointerDown);
-    document.addEventListener('keydown', handleEscape);
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown);
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, onClose]);
-
-  return (
-    <div
-      ref={rootRef}
-      className={`fi-nav-dropdown${isOpen ? ' is-open' : ''}${isActive ? ' is-active' : ''}`}
-      onMouseEnter={onOpen}
-      onMouseLeave={onClose}
-    >
-      <button
-        type="button"
-        className={`fi-nav-dropdown__trigger font-semibold tracking-[0.08em] uppercase transition-colors hover:text-[#07234c] ${isActive ? 'text-[#07234c]' : 'text-[#555555]'}`}
-        style={{ fontSize: lerp(11, 14, scrollProgress) }}
-        aria-expanded={isOpen}
-        aria-haspopup="menu"
-        aria-controls={menuId}
-        onClick={onToggle}
-      >
-        {item.label}
-        <ChevronDown size={16} className="fi-nav-dropdown__chevron" aria-hidden />
-      </button>
-      <div id={menuId} className="fi-nav-dropdown__panel" role="menu">
-        <ul className="fi-nav-dropdown__menu" role="list">
-          {item.entries.map((entry) => (
-            <li key={entry.href + entry.label} role="none">
-              <Link href={entry.href} className="fi-nav-dropdown__link" role="menuitem" onClick={onClose}>
-                {entry.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <Link href={item.href} className="fi-nav-dropdown__footer" onClick={onClose}>
-          {locale === 'en' ? 'View all' : 'Ver todo'}
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function MobileNavDropdown({
-  item,
-  order,
-  icon,
-  onNavigate,
-  pathname,
-  activeSection,
-  locale,
-}: {
-  item: NavMenuDropdown;
-  order: number;
-  icon: ReactNode;
-  onNavigate: () => void;
-  pathname: string;
-  activeSection: NavSection | null;
-  locale: 'es' | 'en';
-}) {
-  const [open, setOpen] = useState(false);
-  const isActive = isNavDropdownActive(pathname, item.href, item.entries, activeSection);
-
-  return (
-    <li className="mobile-nav-item" style={{ '--animation-order': order } as CSSProperties}>
-      <div className="mobile-nav-row">
-        <button
-          type="button"
-          className="mobile-nav-link-btn"
-          aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className={`mobile-nav-link-left${isActive ? ' is-active' : ''}`}>
-            <span className="mobile-nav-icon">{icon}</span>
-            <span>{item.label}</span>
-          </span>
-          <span className="mobile-nav-link-right">
-            <ChevronRight size={21} className={open ? 'is-rotated' : undefined} aria-hidden />
-          </span>
-        </button>
-      </div>
-      <div className={`mobile-nav-submenu-wrapper${open ? ' open' : ''}`}>
-        <ul className="mobile-nav-submenu">
-          {item.entries.map((entry) => (
-            <li key={entry.href + entry.label}>
-              <Link href={entry.href} className="mobile-nav-sub-link" onClick={onNavigate}>
-                {entry.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <Link href={item.href} className="mobile-nav-sub-link mobile-nav-sub-link--emphasis" onClick={onNavigate}>
-              {locale === 'en' ? 'View all' : 'Ver todo'}
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </li>
   );
 }
 
@@ -437,9 +295,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
     return true;
   }
 
-  function handleSectionNav(event: MouseEvent<HTMLAnchorElement>, item: NavMenuItem) {
-    if (item.type !== 'link') return;
-
+  function handleSectionNav(event: ReactMouseEvent<HTMLAnchorElement>, item: NavMenuLink) {
     if (pathname !== '/') return;
 
     const handled = scrollToSection(item.section, item.href, () => {
@@ -450,9 +306,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
     if (handled) event.preventDefault();
   }
 
-  function getMobileIcon(item: NavMenuItem) {
-    if (item.type === 'dropdown') return <Briefcase size={21} aria-hidden />;
-
+  function getMobileIcon(item: NavMenuLink) {
     switch (item.section) {
       case 'home':
         return <Home size={21} aria-hidden />;

@@ -20,7 +20,7 @@ const tabs: { key: TabKey; label: string }[] = [
 ];
 
 export default function AboutSection({ adminValues }: { adminValues?: AboutPageSettingsAdminValues | null }) {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const [activeDesktopTab, setActiveDesktopTab] = useState<TabKey>('bio');
   
   const [expandedMobileLawyer, setExpandedMobileLawyer] = useState<number | null>(null);

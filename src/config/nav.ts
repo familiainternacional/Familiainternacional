@@ -40,7 +40,7 @@ function homeSectionHref(section: NavSection) {
   return `/#${section}`;
 }
 
-export function getMainNavItems(locale: Locale): NavMenuItem[] {
+export function getMainNavItems(locale: Locale): NavMenuLink[] {
   const isSpanish = locale === 'es';
 
   return [
