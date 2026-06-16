@@ -41,4 +41,4 @@ npm run ci:verify
 
 - **Proyecto:** [jaime-soto-s-projects/familiainternacional](https://vercel.com/jaime-soto-s-projects/familiainternacional)
 - **URL temporal:** `https://familiainternacional-jaime-soto-s-projects.vercel.app`
-- **Rama de producción en Git:** `main` (sincronizada desde `master`)
+- **Rama de producción en Git:** `main`
