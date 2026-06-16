@@ -133,7 +133,6 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
   useEffect(() => {
     if (!isCliengoEnabled() || !isMobileTabBarViewport()) {
-      setChatPromptActive(false);
       return;
     }
 
@@ -170,7 +169,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
   return (
     <>
-      <MobileChatSheet open={chatOpen} onClose={closeChat} locale={locale} />
+      <MobileChatSheet key={chatOpen ? 'open' : 'closed'} open={chatOpen} onClose={closeChat} locale={locale} />
 
       <div
         className={`fixed bottom-4 left-4 right-4 z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${

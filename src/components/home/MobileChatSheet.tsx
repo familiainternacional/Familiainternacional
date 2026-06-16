@@ -28,7 +28,6 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
 
   useEffect(() => {
     if (!open) {
-      setChatActive(false);
       document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
       unmountMobileCliengoLauncher();
       unmountMobileCliengoChat();

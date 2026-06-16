@@ -17,14 +17,9 @@ export default function ReCaptchaWrapper({
   forceActive = false,
 }: ReCaptchaWrapperProps) {
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-  const [active, setActive] = useState(!lazy || forceActive);
+  const [lazyActivated, setLazyActivated] = useState(!lazy);
+  const active = lazyActivated || forceActive;
   const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (forceActive) {
-      setActive(true);
-    }
-  }, [forceActive]);
 
   useEffect(() => {
     if (!lazy || active || !siteKey) return;
@@ -32,7 +27,7 @@ export default function ReCaptchaWrapper({
     const root = rootRef.current;
     if (!root) return;
 
-    const enable = () => setActive(true);
+    const enable = () => setLazyActivated(true);
 
     const observer = new IntersectionObserver(
       (entries) => {

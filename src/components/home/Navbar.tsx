@@ -8,7 +8,6 @@ import {
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLenis } from 'lenis/react';
-import LocaleSelector from '@/components/i18n/LocaleSelector';
 import BookCallButton from '@/components/home/BookCallButton';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { SITE_CONTAINER_CLASS } from '@/lib/layout';
@@ -304,8 +303,6 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
   }
 
   const activeSectionForNav = pathname === '/' ? activeSection : null;
-  const localeTriggerClassName =
-    'inline-flex items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]';
 
   return (
     <>
