@@ -6,6 +6,8 @@ import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import CliengoWidget from '@/components/integrations/CliengoWidget';
+import MobileTabBar from '@/components/home/MobileTabBar';
+import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import './globals.css';
 import './fi-nav.css';
 
@@ -104,12 +106,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const fontVariables = `${fontSans.variable} ${fontAdmin.variable} ${fontSerif.variable}`;
+  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
 
   return (
     <html lang="es" className={fontVariables} suppressHydrationWarning>
@@ -117,6 +120,7 @@ export default function RootLayout({
         <I18nProvider>
           <LenisProvider>
             {children}
+            <MobileTabBar whatsappNumber={siteSettings?.whatsappNumber} />
           </LenisProvider>
         </I18nProvider>
         <GoogleAnalytics gaId="G-GSG9KGPXX3" />

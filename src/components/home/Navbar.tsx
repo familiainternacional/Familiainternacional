@@ -3,27 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Briefcase,
-  ChevronLeft,
-  ChevronRight,
-  Globe,
-  Home,
-  Info,
-  Mail,
-  MapPin,
-  Menu,
-  Newspaper,
   Phone,
-  Scale,
-  BookOpen,
 } from 'lucide-react';
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLenis } from 'lenis/react';
 import LocaleSelector from '@/components/i18n/LocaleSelector';
 import BookCallButton from '@/components/home/BookCallButton';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
-import { PRIMARY_BUTTON_CLASS, SITE_CONTAINER_CLASS } from '@/lib/layout';
+import { SITE_CONTAINER_CLASS } from '@/lib/layout';
 import { buildWhatsAppWidgetHref, digitsOnly } from '@/lib/contact/links';
 import { isCliengoEnabled } from '@/lib/integrations/cliengo';
 import { siteConfig } from '@/config/site';
@@ -82,21 +70,21 @@ type NavExpandMetrics = {
 
 function getNavExpandMetrics(t: number): NavExpandMetrics {
   return {
-    headerPaddingY: lerp(6, 28, t),
-    shellPaddingX: lerp(12, 38, t),
-    shellPaddingY: lerp(8, 22, t),
-    shellGap: lerp(7, 18, t),
-    logoHeight: lerp(NAV_LOGO_HEIGHT.min, NAV_LOGO_HEIGHT.max, t),
-    logoMaxWidth: lerp(NAV_LOGO_MAX_WIDTH.min, NAV_LOGO_MAX_WIDTH.max, t),
-    actionHeight: lerp(36, 56, t),
-    actionGap: lerp(6, 13, t),
-    navFontSize: lerp(11, 14, t),
-    navGap: lerp(20, 34, t),
-    dividerHeight: lerp(20, 34, t),
-    phoneIconSize: lerp(15, 21, t),
-    ctaFontSize: lerp(11, 14.5, t),
-    ctaPaddingX: lerp(12, 30, t),
-    boxShadow: `0 ${lerp(6, 22, t).toFixed(1)}px ${lerp(18, 52, t).toFixed(1)}px rgba(15,23,42,${lerp(0.05, 0.18, t).toFixed(3)})`,
+    headerPaddingY: lerp(28, 6, t),
+    shellPaddingX: lerp(38, 12, t),
+    shellPaddingY: lerp(22, 8, t),
+    shellGap: lerp(18, 7, t),
+    logoHeight: lerp(NAV_LOGO_HEIGHT.max, NAV_LOGO_HEIGHT.min, t),
+    logoMaxWidth: lerp(NAV_LOGO_MAX_WIDTH.max, NAV_LOGO_MAX_WIDTH.min, t),
+    actionHeight: lerp(56, 36, t),
+    actionGap: lerp(13, 6, t),
+    navFontSize: lerp(14, 11, t),
+    navGap: lerp(34, 20, t),
+    dividerHeight: lerp(34, 20, t),
+    phoneIconSize: lerp(21, 15, t),
+    ctaFontSize: lerp(14.5, 11, t),
+    ctaPaddingX: lerp(30, 12, t),
+    boxShadow: `0 ${lerp(22, 6, t).toFixed(1)}px ${lerp(52, 18, t).toFixed(1)}px rgba(15,23,42,${lerp(0.18, 0.05, t).toFixed(3)})`,
   };
 }
 
@@ -115,10 +103,10 @@ function FiLogo({
   variant?: 'light' | 'dark';
   compact?: boolean;
 }) {
-  const logoHeight = compact ? 54 : lerp(NAV_LOGO_HEIGHT.min, NAV_LOGO_HEIGHT.max, scrollProgress);
-  const logoMaxWidth = compact ? 320 : lerp(NAV_LOGO_MAX_WIDTH.min, NAV_LOGO_MAX_WIDTH.max, scrollProgress);
-  const logoOffsetX = compact ? 10 : lerp(12, 18, scrollProgress);
-  const logoOffsetY = compact ? 3 : lerp(3, 5, scrollProgress);
+  const logoHeight = compact ? 54 : lerp(NAV_LOGO_HEIGHT.max, NAV_LOGO_HEIGHT.min, scrollProgress);
+  const logoMaxWidth = compact ? 320 : lerp(NAV_LOGO_MAX_WIDTH.max, NAV_LOGO_MAX_WIDTH.min, scrollProgress);
+  const logoOffsetX = compact ? 10 : lerp(18, 12, scrollProgress);
+  const logoOffsetY = compact ? 3 : lerp(5, 3, scrollProgress);
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -143,27 +131,19 @@ function FiLogo({
 
 export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
   const pathname = usePathname();
-  const { locale, setLocale } = useI18n();
+  const { locale } = useI18n();
   const lenis = useLenis();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const scrollRafRef = useRef<number | null>(null);
   const [activeSection, setActiveSection] = useState<NavSection>('home');
-  const [navPathname, setNavPathname] = useState(pathname);
   const mainNavItems = useMemo(() => getMainNavItems(locale), [locale]);
   const isEnglish = locale === 'en';
   const isMobileOnly = variant === 'mobile-only';
   const contact = resolveSiteContact(adminValues);
-  const { primaryPhone, primaryPhoneHref, primaryEmail, officeAddressMultiline } = contact;
+  const { primaryPhone, primaryPhoneHref } = contact;
   const whatsappNumber = adminValues?.whatsappNumber || siteConfig.contact.whatsappNumber;
   const whatsappHref = buildWhatsAppWidgetHref(whatsappNumber, locale);
   const showWhatsApp = digitsOnly(whatsappNumber).length > 0 && !isCliengoEnabled();
-
-  if (pathname !== navPathname) {
-    setNavPathname(pathname);
-    if (mobileMenuOpen) setMobileMenuOpen(false);
-  }
-
   const navMetrics = useMemo(() => getNavExpandMetrics(scrollProgress), [scrollProgress]);
 
   useEffect(() => {
@@ -246,40 +226,6 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
     });
   }, [lenis, pathname]);
 
-  useEffect(() => {
-    if (!mobileMenuOpen) return undefined;
-
-    const scrollY = window.scrollY;
-    const { body, documentElement } = document;
-    const previousBodyStyles = {
-      overflow: body.style.overflow,
-      position: body.style.position,
-      top: body.style.top,
-      width: body.style.width,
-    };
-
-    body.classList.add('mobile-nav-lock');
-    documentElement.style.overflow = 'hidden';
-    body.style.overflow = 'hidden';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.width = '100%';
-
-    return () => {
-      documentElement.style.overflow = '';
-      body.style.overflow = previousBodyStyles.overflow;
-      body.style.position = previousBodyStyles.position;
-      body.style.top = previousBodyStyles.top;
-      body.style.width = previousBodyStyles.width;
-      body.classList.remove('mobile-nav-lock');
-      window.scrollTo(0, scrollY);
-    };
-  }, [mobileMenuOpen]);
-
-  function closeMobileMenu() {
-    setMobileMenuOpen(false);
-  }
-
   function scrollToSection(section: NavSection, href: string, onDone?: () => void) {
     const target = document.getElementById(section);
     if (!target) return false;
@@ -300,52 +246,32 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
 
     const handled = scrollToSection(item.section, item.href, () => {
       setActiveSection(item.section);
-      closeMobileMenu();
     });
 
     if (handled) event.preventDefault();
   }
 
-  function getMobileIcon(item: NavMenuLink) {
-    switch (item.section) {
-      case 'home':
-        return <Home size={21} aria-hidden />;
-      case 'services':
-        return <Briefcase size={21} aria-hidden />;
-      case 'about':
-        return <Info size={21} aria-hidden />;
-      case 'metodologia':
-        return <Scale size={21} aria-hidden />;
-      case 'prensa':
-        return <Newspaper size={21} aria-hidden />;
-      case 'perspectivas':
-        return <BookOpen size={21} aria-hidden />;
-      case 'contact':
-        return <Phone size={21} aria-hidden />;
-      default:
-        return <ChevronRight size={21} aria-hidden />;
-    }
-  }
-
   const activeSectionForNav = pathname === '/' ? activeSection : null;
+  const localeTriggerClassName =
+    'inline-flex items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]';
 
   return (
     <>
-      {!mobileMenuOpen ? (
-        <header
-          className={`fixed left-0 right-0 top-0 z-50 w-full bg-transparent ${isMobileOnly ? 'block lg:hidden' : 'block'}`}
-          style={{ paddingTop: navMetrics.headerPaddingY, paddingBottom: navMetrics.headerPaddingY }}
-        >
-          <div className={SITE_CONTAINER_CLASS}>
-            <div
-              className="flex w-full min-w-0 items-center justify-between rounded-full border border-black/10 bg-white/95 backdrop-blur"
-              style={{
-                gap: navMetrics.shellGap,
-                paddingInline: navMetrics.shellPaddingX,
-                paddingBlock: navMetrics.shellPaddingY,
-                boxShadow: navMetrics.boxShadow,
-              }}
-            >
+      {/* Desktop Floating Pill Navbar */}
+      <header
+        className={`fixed left-0 right-0 top-0 z-50 w-full bg-transparent hidden ${isMobileOnly ? '' : 'lg:block'}`}
+        style={{ paddingTop: navMetrics.headerPaddingY, paddingBottom: navMetrics.headerPaddingY }}
+      >
+        <div className={SITE_CONTAINER_CLASS}>
+          <div
+            className="flex w-full min-w-0 items-center justify-between rounded-full border border-black/10 bg-white/95 backdrop-blur"
+            style={{
+              gap: navMetrics.shellGap,
+              paddingInline: navMetrics.shellPaddingX,
+              paddingBlock: navMetrics.shellPaddingY,
+              boxShadow: navMetrics.boxShadow,
+            }}
+          >
             {/* Left: Brand */}
             <div className="min-w-0 flex-shrink">
               <Link
@@ -383,7 +309,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
             <div className="flex shrink-0 items-center" style={{ gap: navMetrics.actionGap }}>
               <div className="hidden lg:block">
                 <LocaleSelector
-                  triggerClassName="inline-flex items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]"
+                  triggerClassName={localeTriggerClassName}
                   triggerStyle={{ width: navMetrics.actionHeight, height: navMetrics.actionHeight }}
                 />
               </div>
@@ -396,7 +322,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
 
               <a
                 href={primaryPhoneHref}
-                className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]"
+                className="hidden lg:inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]"
                 style={{
                   width: navMetrics.actionHeight,
                   height: navMetrics.actionHeight,
@@ -411,7 +337,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#25D366]"
+                  className="hidden lg:inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#25D366]"
                   style={{
                     width: navMetrics.actionHeight,
                     height: navMetrics.actionHeight,
@@ -423,7 +349,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
               ) : null}
 
               <BookCallButton
-                className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]"
+                className="hidden lg:inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]"
                 style={{
                   width: navMetrics.actionHeight,
                   height: navMetrics.actionHeight,
@@ -433,150 +359,42 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
                 text=""
                 ariaLabel={isEnglish ? 'Book a video call' : 'Agendar videollamada'}
               />
-
-              <button
-                type="button"
-                className="inline-flex shrink-0 items-center justify-center rounded-full border border-transparent text-[#555555] transition-colors hover:border-black/10 hover:bg-black/5 lg:hidden"
-                style={{ width: navMetrics.actionHeight, height: navMetrics.actionHeight }}
-                aria-label={mobileMenuOpen ? (isEnglish ? 'Close menu' : 'Cerrar menú') : isEnglish ? 'Open menu' : 'Abrir menú'}
-                aria-expanded={mobileMenuOpen}
-                onClick={() => setMobileMenuOpen(true)}
-              >
-                <Menu size={22} aria-hidden />
-              </button>
-            </div>
             </div>
           </div>
-        </header>
-      ) : null}
+        </div>
+      </header>
 
-      <div
-        className={`mobile-nav-overlay${mobileMenuOpen ? ' open' : ''}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label={isEnglish ? 'Main menu' : 'Menú principal'}
-        aria-hidden={!mobileMenuOpen}
-      >
-        <div className="mobile-nav-header">
-          <Link href="/#home" className="fi-logo-link mobile-nav-logo-link" aria-label={siteConfig.name} onClick={closeMobileMenu}>
-            <FiLogo compact variant="light" />
+      {/* Mobile Stacked Header */}
+      <header className="fixed left-0 right-0 top-0 z-50 w-full flex flex-col shadow-sm bg-white lg:hidden">
+        {/* Top Bar */}
+        <div className="border-b border-black/5 text-[#555555] flex items-center justify-center py-2 text-xs font-semibold tracking-wider">
+          <a href={primaryPhoneHref} className="flex items-center gap-2 transition-colors hover:text-[#07234c]">
+            <Phone size={14} />
+            <span>{primaryPhone}</span>
+          </a>
+        </div>
+        {/* Bottom Bar */}
+        <div className="flex items-center justify-between px-4 py-3">
+          <Link
+            href="/#home"
+            className="inline-flex items-center max-w-[65%]"
+            aria-label={siteConfig.name}
+            onClick={(event) => {
+              if (pathname !== '/') return;
+              if (scrollToSection('home', '/#home', () => setActiveSection('home'))) event.preventDefault();
+            }}
+          >
+            <FiLogo compact variant="dark" />
           </Link>
-          <div className="mobile-nav-header-actions">
-            <button
-              type="button"
-              className="mobile-menu-close-btn"
-              onClick={closeMobileMenu}
-              aria-label={isEnglish ? 'Close menu' : 'Cerrar menú'}
-            >
-              <ChevronLeft size={34} strokeWidth={1.7} />
-            </button>
+          
+          <div className="flex shrink-0 items-center">
+            <LocaleSelector
+              triggerClassName={localeTriggerClassName}
+              triggerStyle={{ width: 40, height: 40 }}
+            />
           </div>
         </div>
-
-        <div className="mobile-nav-body">
-          <div className="mobile-nav-scroll">
-            <div className="mobile-nav-welcome">
-              <div className="mobile-nav-welcome-copy">
-                <h2>{siteConfig.name}</h2>
-                <p className="mobile-nav-welcome-subtitle">{siteConfig.copy.mobileMenuIntro.subtitle[locale]}</p>
-                <p className="mobile-nav-welcome-description">{siteConfig.copy.mobileMenuIntro.description[locale]}</p>
-              </div>
-              <div className="mobile-language-switch" aria-label={isEnglish ? 'Language' : 'Idioma'}>
-                <Globe size={20} aria-hidden />
-                <button
-                  type="button"
-                  className={locale === 'es' ? 'is-active' : ''}
-                  onClick={() => setLocale('es')}
-                  aria-pressed={locale === 'es'}
-                >
-                  ES
-                </button>
-                <button
-                  type="button"
-                  className={locale === 'en' ? 'is-active' : ''}
-                  onClick={() => setLocale('en')}
-                  aria-pressed={locale === 'en'}
-                >
-                  EN
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-col gap-3">
-              <BookCallButton className={`${PRIMARY_BUTTON_CLASS} w-full px-5 py-3.5 text-sm`}>
-                {isEnglish ? 'Book video call' : 'Agendar Videollamada'}
-              </BookCallButton>
-              <Link
-                href="/evalua-tu-caso"
-                className="inline-flex w-full items-center justify-center rounded-full border border-[#07234c]/15 bg-white px-5 py-3.5 text-sm font-semibold text-[#07234c] transition-colors hover:bg-[#07234c]/5"
-                onClick={closeMobileMenu}
-              >
-                {isEnglish ? 'Evaluate my case' : 'Evaluar mi caso'}
-              </Link>
-            </div>
-
-            <ul className="mobile-nav-links">
-              {mainNavItems.map((item, index) => (
-                <li key={item.href} className="mobile-nav-item" style={{ '--animation-order': index } as CSSProperties}>
-                  <Link
-                    href={item.href}
-                    className="mobile-nav-link-btn"
-                    onClick={(event) => handleSectionNav(event, item)}
-                  >
-                    <span
-                      className={`mobile-nav-link-left${
-                        isNavPathActive(pathname, item.href, activeSectionForNav) ? ' is-active' : ''
-                      }`}
-                    >
-                      <span className="mobile-nav-icon">{getMobileIcon(item)}</span>
-                      <span>{item.mobileLabel ?? item.label}</span>
-                    </span>
-                    <span className="mobile-nav-link-right">
-                      <ChevronRight size={21} aria-hidden />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mobile-nav-contact">
-            <a href={primaryPhoneHref} className="fi-contact-item" onClick={closeMobileMenu}>
-              <Phone size={22} aria-hidden />
-              <span>
-                <strong>{primaryPhone}</strong>
-              </span>
-            </a>
-            {showWhatsApp ? (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fi-contact-item"
-                onClick={closeMobileMenu}
-              >
-                <WhatsAppIcon size={22} />
-                <span>
-                  <strong>WhatsApp</strong>
-                </span>
-              </a>
-            ) : null}
-            <a href={`mailto:${primaryEmail}`} className="fi-contact-item" onClick={closeMobileMenu}>
-              <Mail size={22} aria-hidden />
-              <span>
-                <strong>{primaryEmail}</strong>
-              </span>
-            </a>
-            <span className="fi-contact-item">
-              <MapPin size={22} aria-hidden />
-              <span>
-                <strong>{isEnglish ? 'Main office' : 'Oficina principal'}</strong>
-                <small className="mobile-nav-contact-address">{officeAddressMultiline}</small>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
+      </header>
     </>
   );
 }
