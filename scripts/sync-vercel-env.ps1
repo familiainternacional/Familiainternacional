@@ -9,9 +9,9 @@ $ErrorActionPreference = "Stop"
 Set-Location (Split-Path $PSScriptRoot -Parent)
 
 $overrides = @{
-  "NEXT_PUBLIC_SITE_URL" = "https://familiainternacional-jaime-soto-s-projects.vercel.app"
-  "APP_ORIGIN" = "https://familiainternacional-jaime-soto-s-projects.vercel.app"
-  "AUTH_URL" = "https://familiainternacional-jaime-soto-s-projects.vercel.app"
+  "NEXT_PUBLIC_SITE_URL" = "https://familiainternacional.vercel.app"
+  "APP_ORIGIN" = "https://familiainternacional.vercel.app"
+  "AUTH_URL" = "https://familiainternacional.vercel.app"
 }
 
 $sensitive = @(
@@ -28,11 +28,14 @@ foreach ($line in $lines) {
   if ([string]::IsNullOrWhiteSpace($value)) { continue }
 
   $flag = if ($sensitive -contains $name) { "--sensitive" } else { "" }
+  $prevErrorAction = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
   foreach ($env in @("production", "preview", "development")) {
     $args = @("env", "add", $name, $env, "--value", $value, "--yes", "--force", "--scope", $Scope)
     if ($flag) { $args += $flag }
-    & vercel @args 2>&1 | Out-Null
+    & npx vercel @args 2>&1 | Out-Null
   }
+  $ErrorActionPreference = $prevErrorAction
   Write-Host "Synced $name"
 }
 
