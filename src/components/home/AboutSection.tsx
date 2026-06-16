@@ -8,7 +8,7 @@ import type { AboutPageSettingsAdminValues } from '@/app/admin/nosotros/actions'
 import ReactMarkdown from 'react-markdown';
 import { primaryContact } from '@/config/contact';
 import { siteConfig } from '@/config/site';
-import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
+import { HOME_CARD_TITLE_CLASS, HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_BRAND_CLASS } from '@/lib/layout';
 
 type TabKey = 'bio' | 'formacion' | 'experiencia' | 'contacto';
 
@@ -153,7 +153,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
           <p className="mb-3 text-base leading-relaxed text-[#555555] sm:mb-4">
             {t('team.subtitle')}
           </p>
-          <h2 id="about-title" className="fi-section-heading max-w-[32ch] text-[#07234c]">
+          <h2 id="about-title" className={`max-w-[32ch] ${HOME_SECTION_TITLE_BRAND_CLASS}`}>
             {t('team.title1')}
             {t('team.title2') ? (
               <>
@@ -167,11 +167,11 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
 
         {/* --- DESKTOP VIEW --- */}
         <div className="relative mt-8 hidden md:block">
-          <article className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[#07234c]/10 bg-white shadow-lg">
-            <div className="grid items-stretch md:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
+          <article className="relative w-full overflow-hidden rounded-card border border-[#07234c]/10 bg-white shadow-lg">
+            <div className="grid items-stretch md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_380px]">
               {/* Text Side */}
               <div className="relative z-10 flex h-full flex-col p-8 lg:p-10 xl:p-12">
-                <h3 className="fi-card-title mb-2 text-xl text-[#07234c] lg:text-2xl">
+                <h3 className={`mb-2 ${HOME_CARD_TITLE_CLASS} text-[#07234c]`}>
                   {activeProfile.name}
                 </h3>
                 <p className="fi-card-meta mb-6 max-w-[54ch] text-sm font-medium uppercase tracking-wide text-[var(--color-primary)] lg:text-base">
@@ -231,7 +231,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
                 ref={(node) => {
                   mobileCardRefs.current[lawyer.id] = node;
                 }}
-                className="flex scroll-mt-24 flex-col overflow-hidden rounded-[2rem] border border-[#07234c]/10 bg-white shadow-xl"
+                className="flex scroll-mt-24 flex-col overflow-hidden rounded-card border border-[#07234c]/10 bg-white shadow-xl"
               >
                 {/* Top Image Part */}
                 <div className="relative h-[240px] sm:h-[300px] w-full bg-[#f2f2f2]">

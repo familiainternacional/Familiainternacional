@@ -32,7 +32,7 @@ export default function ServicesScrollBanner() {
       aria-label={isSpanish ? 'Servicios del estudio' : 'Firm practice areas'}
       className="w-full pt-4"
     >
-      <div className="w-full overflow-hidden rounded-[1.75rem] border border-[#dbe4e2] shadow-[0_12px_40px_rgba(15,23,42,0.06)] sm:rounded-[2rem] xl:rounded-[2.25rem]">
+      <div className="w-full overflow-hidden rounded-card border border-[#dbe4e2] shadow-[0_12px_40px_rgba(15,23,42,0.06)] rounded-card">
         <div className="flex snap-x snap-mandatory gap-0 overflow-x-auto pb-0 hide-scrollbar sm:gap-0 lg:grid lg:grid-cols-6 lg:gap-0 lg:overflow-visible lg:snap-none">
           {familyServices.map((service) => {
             const Icon = serviceIcons[service.slug] ?? Scale;

@@ -18,7 +18,8 @@
     "db:push": "prisma db push",
     "db:seed": "tsx --env-file=.env.local prisma/seed.ts",
     "db:studio": "prisma studio",
-    "optimize:hero": "tsx scripts/optimize-hero-image.ts",
+    "optimize:hero": "tsx scripts/optimize-public-images.ts",
+    "optimize:images": "tsx scripts/optimize-public-images.ts",
     "assets:upload": "tsx --env-file=.env.local scripts/upload-site-assets-to-supabase.ts"
   },
   "prisma": {

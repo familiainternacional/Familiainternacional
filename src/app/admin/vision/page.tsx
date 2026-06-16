@@ -20,22 +20,22 @@ export default function VisionDashboardPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-[#07234c] border-b border-[#07234c]/10 pb-2">1. Arquitectura Base (Versión Actual)</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-[#07234c]/10">
+          <div className="bg-white p-5 rounded-card border border-[#07234c]/10">
             <Server className="w-8 h-8 text-[var(--color-primary)] mb-4" />
             <h3 className="font-bold text-lg mb-2">Next.js 15 App Router</h3>
             <p className="text-sm text-gray-600">Framework React de vanguardia. Renderizado en servidor (SSR) para SEO extremo y velocidades de carga ultrarrápidas.</p>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-[#07234c]/10">
+          <div className="bg-white p-5 rounded-card border border-[#07234c]/10">
             <Database className="w-8 h-8 text-[var(--color-primary)] mb-4" />
             <h3 className="font-bold text-lg mb-2">Supabase PostgreSQL</h3>
             <p className="text-sm text-gray-600">Base de datos relacional altamente escalable. Almacena de forma segura los leads y los artículos del blog.</p>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-[#07234c]/10">
+          <div className="bg-white p-5 rounded-card border border-[#07234c]/10">
             <Lock className="w-8 h-8 text-[var(--color-primary)] mb-4" />
             <h3 className="font-bold text-lg mb-2">Autenticación (JWT)</h3>
             <p className="text-sm text-gray-600">Sistema de acceso protegido mediante Supabase Auth y validación JWT a nivel de servidor (RLS).</p>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-[#07234c]/10">
+          <div className="bg-white p-5 rounded-card border border-[#07234c]/10">
             <BarChart3 className="w-8 h-8 text-[var(--color-primary)] mb-4" />
             <h3 className="font-bold text-lg mb-2">Prisma ORM</h3>
             <p className="text-sm text-gray-600">Capa de abstracción segura. Protege automáticamente contra inyecciones SQL y garantiza el tipado fuerte.</p>
@@ -47,7 +47,7 @@ export default function VisionDashboardPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-[#07234c] border-b border-[#07234c]/10 pb-2">2. Roadmap de Integraciones (Versión 1.1)</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 flex gap-4 items-start">
+          <div className="bg-white p-6 rounded-card border border-[#07234c]/10 flex gap-4 items-start">
             <div className="bg-[var(--color-primary)]/10 p-3 rounded-xl shrink-0">
               <Calendar className="w-6 h-6 text-[var(--color-primary)]" />
             </div>
@@ -60,7 +60,7 @@ export default function VisionDashboardPage() {
             </div>
           </div>
           
-          <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 flex gap-4 items-start">
+          <div className="bg-white p-6 rounded-card border border-[#07234c]/10 flex gap-4 items-start">
             <div className="bg-[var(--color-primary)]/10 p-3 rounded-xl shrink-0">
               <ShieldAlert className="w-6 h-6 text-[var(--color-primary)]" />
             </div>
@@ -73,7 +73,7 @@ export default function VisionDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 flex gap-4 items-start">
+          <div className="bg-white p-6 rounded-card border border-[#07234c]/10 flex gap-4 items-start">
             <div className="bg-[var(--color-primary)]/10 p-3 rounded-xl shrink-0">
               <CreditCard className="w-6 h-6 text-[var(--color-primary)]" />
             </div>
@@ -86,7 +86,7 @@ export default function VisionDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 flex gap-4 items-start">
+          <div className="bg-white p-6 rounded-card border border-[#07234c]/10 flex gap-4 items-start">
             <div className="bg-[var(--color-primary)]/10 p-3 rounded-xl shrink-0">
               <FolderKey className="w-6 h-6 text-[var(--color-primary)]" />
             </div>
@@ -113,7 +113,7 @@ export default function VisionDashboardPage() {
             <div className="relative flex items-center md:justify-center md:odd:justify-start md:even:justify-end group">
               <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-[var(--color-primary)] rounded-full border-4 border-[#07234c] -ml-2 z-10 group-hover:scale-125 transition-transform" />
               <div className="pl-12 md:pl-0 md:w-1/2 md:pr-12 md:text-right">
-                <div className="bg-white p-6 rounded-2xl border border-[var(--color-primary)]/30 shadow-[0_0_15px_rgba(230,57,70,0.1)]">
+                <div className="bg-white p-6 rounded-card border border-[var(--color-primary)]/30 shadow-[0_0_15px_rgba(230,57,70,0.1)]">
                   <span className="text-[var(--color-primary)] font-bold text-sm tracking-wider uppercase mb-2 block">Fase 1: Autoridad y Captura (Actual)</span>
                   <h4 className="font-bold text-lg mb-2 flex items-center gap-2 md:justify-end">
                     <Rocket className="w-5 h-5 text-gray-400" /> Presencia Digital
@@ -129,7 +129,7 @@ export default function VisionDashboardPage() {
             <div className="relative flex items-center md:justify-center md:even:justify-end md:odd:justify-start group">
               <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-gray-600 rounded-full border-4 border-[#07234c] -ml-2 z-10 group-hover:bg-[var(--color-primary)] transition-colors" />
               <div className="pl-12 md:pl-8 md:w-1/2">
-                <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 hover:border-gray-300 transition-colors">
+                <div className="bg-white p-6 rounded-card border border-[#07234c]/10 hover:border-gray-300 transition-colors">
                   <span className="text-gray-500 font-bold text-sm tracking-wider uppercase mb-2 block">Fase 2: Triage y Conversión (v1.1)</span>
                   <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
                     <Users className="w-5 h-5 text-gray-400" /> Agendamiento Directo
@@ -145,7 +145,7 @@ export default function VisionDashboardPage() {
             <div className="relative flex items-center md:justify-center md:odd:justify-start md:even:justify-end group">
               <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-gray-600 rounded-full border-4 border-[#07234c] -ml-2 z-10 group-hover:bg-[var(--color-primary)] transition-colors" />
               <div className="pl-12 md:pl-0 md:w-1/2 md:pr-12 md:text-right">
-                <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 hover:border-gray-300 transition-colors">
+                <div className="bg-white p-6 rounded-card border border-[#07234c]/10 hover:border-gray-300 transition-colors">
                   <span className="text-gray-500 font-bold text-sm tracking-wider uppercase mb-2 block">Fase 3: Operación Transparente</span>
                   <h4 className="font-bold text-lg mb-2 flex items-center gap-2 md:justify-end">
                     <TrendingUp className="w-5 h-5 text-gray-400" /> Portal del Cliente
@@ -161,7 +161,7 @@ export default function VisionDashboardPage() {
             <div className="relative flex items-center md:justify-center md:even:justify-end md:odd:justify-start group">
               <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-gray-600 rounded-full border-4 border-[#07234c] -ml-2 z-10 group-hover:bg-[var(--color-primary)] transition-colors" />
               <div className="pl-12 md:pl-8 md:w-1/2">
-                <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 hover:border-gray-300 transition-colors">
+                <div className="bg-white p-6 rounded-card border border-[#07234c]/10 hover:border-gray-300 transition-colors">
                   <span className="text-gray-500 font-bold text-sm tracking-wider uppercase mb-2 block">Fase 4: Modelo B2B Suscripción</span>
                   <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-gray-400" /> Servicios Productizados

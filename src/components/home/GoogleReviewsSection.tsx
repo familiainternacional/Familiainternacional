@@ -6,7 +6,7 @@ import { ArrowUpRight, Star } from 'lucide-react';
 import { useState } from 'react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { googleBusinessProfile, googleReviews } from '@/config/google-reviews';
-import { OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
+import { HOME_SECTION_TITLE_MUTED_CLASS, OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 type GoogleReviewsSectionProps = {
   /** Máximo de tarjetas visibles. Por defecto todas. */
@@ -102,7 +102,7 @@ export default function GoogleReviewsSection({
           <p className="fi-eyebrow text-[#07234c]">
             {isSpanish ? 'Reseñas verificadas' : 'Verified reviews'}
           </p>
-          <h2 id="google-reviews-title" className="fi-section-heading max-w-4xl text-[#1c1c1c]">
+          <h2 id="google-reviews-title" className={`max-w-4xl ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
             {isSpanish
               ? 'Experiencias reales de familias que confiaron en nosotros'
               : 'Real experiences from families who trusted us'}
@@ -141,7 +141,7 @@ export default function GoogleReviewsSection({
           {reviews.map((review) => (
             <article
               key={review.id}
-              className="flex flex-col justify-between rounded-[2rem] border border-neutral-200/80 bg-white p-8 transition-shadow hover:shadow-xl hover:shadow-black/[0.03] lg:p-10"
+              className="flex flex-col justify-between rounded-card border border-neutral-200/80 bg-white p-8 transition-shadow hover:shadow-xl hover:shadow-black/[0.03] lg:p-10"
               itemScope
               itemType="https://schema.org/Review"
             >

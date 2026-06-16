@@ -103,7 +103,7 @@ export default function HowWeWorkSection() {
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-10">
           {/* Carrusel automático de imágenes */}
           <div
-            className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-[#f8fafc] sm:aspect-[5/4] lg:sticky lg:top-28 lg:aspect-auto lg:min-h-[520px]"
+            className="relative aspect-[4/5] w-full overflow-hidden rounded-card bg-[#f8fafc] sm:aspect-[5/4] lg:sticky lg:top-28 lg:aspect-auto lg:min-h-[520px]"
             aria-live="polite"
             aria-atomic="true"
           >
@@ -161,7 +161,7 @@ export default function HowWeWorkSection() {
                   key={step.id}
                   type="button"
                   onClick={() => goToStep(index)}
-                  className={`group relative flex w-[280px] shrink-0 snap-center flex-col justify-end rounded-[2rem] p-6 text-left transition-all duration-500 ease-out sm:w-[320px] lg:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c] focus-visible:ring-offset-2 ${
+                  className={`group relative flex w-[280px] shrink-0 snap-center flex-col justify-end rounded-card p-6 text-left transition-all duration-500 ease-out sm:w-[320px] lg:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c] focus-visible:ring-offset-2 ${
                     isActive
                       ? 'bg-[#07234c] shadow-xl lg:min-h-[118px] lg:py-7'
                       : 'bg-[#f8fafc] hover:bg-[#f1f5f9] lg:min-h-[118px] lg:py-7'

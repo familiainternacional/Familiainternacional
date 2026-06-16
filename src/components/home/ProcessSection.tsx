@@ -124,7 +124,7 @@ export default function ProcessSection() {
                   key={item.title}
                   className="group flex flex-col shrink-0 basis-full snap-start md:rlu-card-base md:rlu-card-light md:min-h-[500px] md:p-2 md:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1.167rem)]"
                 >
-                  <div className="relative block aspect-square w-full overflow-hidden rounded-[2rem] bg-[#f2f2f2] md:aspect-[1.55] md:rounded-[1.75rem]">
+                  <div className="relative block aspect-square w-full overflow-hidden rounded-card bg-[#f2f2f2] md:aspect-[1.55] rounded-card">
                     <Image
                       src={item.image.startsWith('/') ? item.image : resolveSiteAssetSrc(item.image)}
                       alt={item.title}

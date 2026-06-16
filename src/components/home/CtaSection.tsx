@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import BookCallButton from '@/components/home/BookCallButton';
-import { OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
+import { HOME_SECTION_TITLE_INVERSE_CLASS, OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 export default function CtaSection() {
   const { locale } = useI18n();
@@ -13,7 +13,7 @@ export default function CtaSection() {
   return (
     <section className="w-full bg-white py-16 font-sans sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative flex w-full flex-col items-center justify-between gap-12 overflow-hidden rounded-[1.75rem] bg-[#07234c] px-5 py-14 shadow-2xl sm:rounded-[2rem] sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:px-10 lg:py-20 xl:rounded-[2.25rem] xl:px-14 xl:py-24">
+        <div className="relative flex w-full flex-col items-center justify-between gap-12 overflow-hidden rounded-card bg-[#07234c] px-5 py-14 shadow-2xl rounded-card sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:px-10 lg:py-20 rounded-card xl:px-14 xl:py-24">
           
           {/* Subtle background decoration */}
           <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
@@ -21,7 +21,7 @@ export default function CtaSection() {
 
           {/* Left Content */}
           <div className="relative z-10 flex-1 max-w-2xl text-center lg:text-left">
-            <h2 className="mb-6 text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem] xl:text-5xl">
+            <h2 className={`mb-6 ${HOME_SECTION_TITLE_INVERSE_CLASS}`}>
               {isSpanish ? '¿Necesitas asesoría legal experta?' : 'Need expert legal guidance?'}
             </h2>
             <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 xl:max-w-2xl">

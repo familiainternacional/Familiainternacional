@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@theme {
+  --radius-card: 2.5rem;
+}
+
 :root {
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -97,6 +101,7 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-card: 2.5rem;
   --radius-full: 9999px;
 
   /* Buttons â€” pill shape (fully rounded) */
@@ -429,6 +434,10 @@ input, textarea, select {
   line-height: var(--leading-relaxed);
   font-weight: 400;
   color: #555555;
+}
+
+.fi-card-surface {
+  border-radius: var(--radius-card);
 }
 
 .fi-link-action {
@@ -768,7 +777,7 @@ input, textarea, select {
 
 .rlu-card-base {
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
 }
 
@@ -2247,7 +2256,7 @@ input, textarea, select {
   justify-content: flex-end;
   min-height: 420px;
   /* Sin overflow:hidden aquÃ­: en iOS/Android rompe backdrop-filter del overlay glass */
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   background-color: var(--color-surface);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   text-decoration: none;
@@ -2338,7 +2347,7 @@ input, textarea, select {
   gap: 4px;
   margin: 12px;
   padding: 14px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-card);
   background: rgba(255, 255, 255, 0.70);
   backdrop-filter: blur(12px) saturate(1.15);
   -webkit-backdrop-filter: blur(12px) saturate(1.15);
@@ -2497,7 +2506,7 @@ input, textarea, select {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
@@ -2658,7 +2667,7 @@ input, textarea, select {
   min-height: 54px;
   padding: 9px 10px;
   border: 1px solid var(--color-border-light);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   background: #fafafa;
 }
 
@@ -3497,7 +3506,7 @@ input, textarea, select {
 
 .floating-contact-card {
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   padding: 24px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.06);
   border: 1px solid rgba(0,0,0,0.04);
@@ -3804,7 +3813,7 @@ input, textarea, select {
 .lead-form-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-card);
   padding: var(--space-xl);
   position: sticky;
   top: calc(var(--nav-height) + var(--secondary-header-height) + var(--space-lg));
@@ -3894,7 +3903,7 @@ input, textarea, select {
 .admin-stat-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-card);
   padding: var(--space-lg);
   text-decoration: none;
   color: inherit;
@@ -4315,7 +4324,7 @@ input, textarea, select {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   border: 1px solid var(--color-border-light);
 }
 
@@ -4444,7 +4453,7 @@ input, textarea, select {
 
 .guide-card {
   background: white;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-card);
   padding: var(--space-xl);
   text-align: left;
   border: 1px solid var(--color-border-light);
@@ -6863,7 +6872,7 @@ input:checked + .slider:before {
   gap: var(--space-md);
   padding: var(--space-2xl);
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-card);
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
 }
@@ -7177,7 +7186,7 @@ input:checked + .slider:before {
   width: 360px;
   max-width: calc(100vw - 2rem);
   background-color: #FFFFFF;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 8px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--color-border-light);
   overflow: hidden;
@@ -8064,7 +8073,7 @@ input:checked + .slider:before {
   display: block;
   min-height: 170px;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   background: var(--color-surface-2);
   text-decoration: none;
   isolation: isolate;

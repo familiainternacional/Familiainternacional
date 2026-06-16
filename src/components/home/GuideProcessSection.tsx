@@ -1,5 +1,5 @@
 import React from 'react';
-import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
+import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS, HOME_STEP_TITLE_CLASS } from '@/lib/layout';
 
 const processSteps = [
   {
@@ -35,7 +35,7 @@ export default function GuideProcessSection() {
         <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-16">
           <div>
             <p className="fi-eyebrow mb-4 text-[var(--color-primary)]">Cómo trabajamos</p>
-            <h2 id="process-guide-title" className="max-w-[18ch] text-3xl font-medium leading-[1.15] tracking-tight text-[#1a1a1a] sm:text-4xl lg:text-[2.75rem]">
+            <h2 id="process-guide-title" className={`max-w-[18ch] ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
               Un camino claro cuando el derecho cruza fronteras
             </h2>
           </div>
@@ -50,9 +50,9 @@ export default function GuideProcessSection() {
         <div className="mt-14 w-full sm:mt-20">
           <div className="space-y-4 lg:hidden">
             {processSteps.map((step, index) => (
-              <article key={step.title} className="rounded-2xl border border-[#07234c]/10 bg-white p-5 shadow-sm">
+              <article key={step.title} className="rounded-card border border-[#07234c]/10 bg-white p-5 shadow-sm">
                 <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#07234c]">Paso 0{index + 1}</p>
-                <h3 className="mb-2 text-lg font-semibold text-[#1a1a1a]">{step.title}</h3>
+                <h3 className={`mb-2 ${HOME_STEP_TITLE_CLASS}`}>{step.title}</h3>
                 <p className="text-sm leading-relaxed text-[#555555]">{step.description}</p>
               </article>
             ))}
@@ -76,9 +76,7 @@ export default function GuideProcessSection() {
                   >
                     Paso 0{index + 1}
                   </span>
-                  <h3
-                    className={`mb-2 text-base font-semibold leading-snug sm:text-lg ${isActive ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/70'}`}
-                  >
+                  <h3 className={`mb-2 ${HOME_STEP_TITLE_CLASS} ${isActive ? '' : 'text-[#1a1a1a]/70'}`}>
                     {step.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-[#555555]">{step.description}</p>

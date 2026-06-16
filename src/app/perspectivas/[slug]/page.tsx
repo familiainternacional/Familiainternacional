@@ -6,9 +6,19 @@ import ReactMarkdown from 'react-markdown';
 import { getPrismaClient } from '@/lib/db/prisma';
 import Navbar from '@/components/home/Navbar';
 import Footer from '@/components/home/Footer';
+import JsonLd from '@/components/seo/JsonLd';
+import { getRelatedServicesForBlogPost } from '@/config/blog-service-links';
 import { fallbackBlogPosts, getFallbackBlogPost } from '@/config/blog-fallback-posts';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
-import { getSiteLogoSrc } from '@/lib/storage/site-assets';
+import { siteConfig } from '@/config/site';
+import {
+  buildLanguageAlternates,
+  buildTwitterMetadata,
+  DEFAULT_OG_IMAGE_PATH,
+  NOINDEX_ROBOTS,
+} from '@/lib/seo/metadata';
+import { SLUG_PAGE_SECTION_DIVIDE_CLASS } from '@/lib/layout';
+import { buildPerspectivasArticleStructuredData } from '@/lib/seo/perspectivas-structured-data';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -34,7 +44,7 @@ type BlogPostView = {
 const siteUrl = getDefaultCanonicalBaseUrl();
 
 function toAbsoluteUrl(src: string | null | undefined) {
-  if (!src) return `${siteUrl}/opengraph-image`;
+  if (!src) return `${siteUrl}${DEFAULT_OG_IMAGE_PATH}`;
   if (/^https?:\/\//i.test(src)) return src;
   return `${siteUrl}${src.startsWith('/') ? src : `/${src}`}`;
 }
@@ -84,31 +94,30 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   if (!post) {
     return {
       title: 'Articulo no encontrado',
-      robots: {
-        index: false,
-        follow: false,
-      },
+      robots: NOINDEX_ROBOTS,
     };
   }
 
   const title = post.seoTitleEs ?? post.titleEs;
   const description = post.seoDescriptionEs ?? post.excerptEs ?? '';
-  const image = post.ogImage ?? post.coverImage ?? '/opengraph-image';
+  const image = post.ogImage ?? post.coverImage ?? DEFAULT_OG_IMAGE_PATH;
+  const openGraphTitle = `${title} | ${siteConfig.name}`;
 
   return {
     title,
     description,
     keywords: post.seoKeywords?.split(',').map((keyword) => keyword.trim()).filter(Boolean),
-    alternates: {
-      canonical: `/perspectivas/${post.slug}`,
-    },
+    alternates: buildLanguageAlternates(`/perspectivas/${post.slug}`),
     openGraph: {
-      title: `${title} | Familia Internacional`,
+      title: openGraphTitle,
       description,
       type: 'article',
       publishedTime: post.publishedAt?.toISOString(),
       authors: [post.authorName ?? 'Familia Internacional'],
       url: `/perspectivas/${post.slug}`,
+      locale: 'es_CL',
+      alternateLocale: ['en_US'],
+      siteName: siteConfig.name,
       images: [
         {
           url: image,
@@ -118,12 +127,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
         },
       ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${title} | Familia Internacional`,
+    twitter: buildTwitterMetadata({
+      title: openGraphTitle,
       description,
-      images: [image],
-    },
+      images: image,
+    }),
     robots: {
       index: true,
       follow: true,
@@ -145,43 +153,41 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const publishedAt = post.publishedAt ?? new Date();
   const updatedAt = post.updatedAt ?? publishedAt;
   const authorName = post.authorName ?? 'Familia Internacional';
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `${siteUrl}/perspectivas/${post.slug}`,
-    },
-    headline: title,
-    description,
-    image,
-    author: {
-      '@type': 'Organization',
-      name: authorName,
-    },
-    publisher: {
-      '@type': 'LegalService',
-      name: 'Familia Internacional',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${siteUrl}${getSiteLogoSrc()}`,
-      },
-    },
-    datePublished: publishedAt.toISOString(),
-    dateModified: updatedAt.toISOString(),
-    inLanguage: 'es-CL',
-  };
+  const relatedServices = getRelatedServicesForBlogPost(slug);
 
   return (
     <>
-      <Navbar />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        data={buildPerspectivasArticleStructuredData({
+          slug: post.slug,
+          title,
+          description,
+          image,
+          publishedAt,
+          updatedAt,
+          authorName,
+        })}
       />
+      <Navbar />
       <main className="min-h-screen bg-white pb-24 pt-[120px]">
-        <article className="container mx-auto max-w-4xl px-6">
+        <article className={`container mx-auto max-w-4xl ${SLUG_PAGE_SECTION_DIVIDE_CLASS} px-6`}>
+          <div className="pb-10">
+          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-neutral-500">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-[#07234c]">
+                  Inicio
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>
+                <Link href="/perspectivas" className="hover:text-[#07234c]">
+                  Perspectivas
+                </Link>
+              </li>
+            </ol>
+          </nav>
+
           <Link
             href="/perspectivas"
             className="mb-8 inline-flex items-center text-sm font-semibold text-[var(--color-primary-dark)] transition-colors hover:text-brand"
@@ -193,7 +199,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.titleEs}
           </h1>
 
-          <div className="mb-10 flex flex-wrap items-center gap-4 border-b border-gray-100 pb-8 text-sm font-medium text-[#767576]">
+          <div className="flex flex-wrap items-center gap-4 pb-2 text-sm font-medium text-[#767576]">
             <span>{authorName}</span>
             <span aria-hidden="true">/</span>
             <time dateTime={publishedAt.toISOString()}>
@@ -204,9 +210,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               }).format(publishedAt)}
             </time>
           </div>
+          </div>
 
           {post.coverImage && (
-            <div className="relative mb-12 h-[360px] w-full overflow-hidden rounded-2xl shadow-sm md:h-[500px]">
+            <div className="py-10">
+            <div className="relative h-[360px] w-full overflow-hidden rounded-card shadow-sm md:h-[500px]">
               <Image
                 src={post.coverImage}
                 alt={post.titleEs}
@@ -216,11 +224,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 priority
               />
             </div>
+            </div>
           )}
 
+          <div className="py-10">
           <div className="prose prose-lg max-w-none text-[#333333] prose-headings:font-serif prose-headings:font-bold prose-headings:text-[#051830] prose-a:text-brand prose-a:no-underline hover:prose-a:underline md:prose-xl">
             <ReactMarkdown>{post.contentEs}</ReactMarkdown>
           </div>
+          </div>
+
+          {relatedServices.length > 0 ? (
+            <section aria-labelledby="related-services-title" className="py-10">
+              <h2 id="related-services-title" className="mb-5 text-2xl font-bold tracking-tight text-[#07234c]">
+                Servicios relacionados
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {relatedServices.map((service) => (
+                  <Link
+                    key={service.slug}
+                    href={`/servicios/${service.slug}`}
+                    className="rounded-card border border-[#07234c]/10 bg-[#f8fafc] p-5 transition-colors hover:border-[#07234c]/25 hover:bg-white"
+                  >
+                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[#07234c]/70">
+                      {service.eyebrow}
+                    </p>
+                    <h3 className="text-lg font-bold leading-tight text-[#07234c]">{service.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-neutral-600">{service.shortTitle}</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </article>
       </main>
       <Footer />

@@ -7,7 +7,7 @@ import { useIsLgViewport } from '@/lib/hooks/use-is-lg-viewport';
 
 import PressListing from '@/components/press/PressListing';
 import PressCarouselBanner from '@/components/home/PressCarouselBanner';
-import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
+import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS } from '@/lib/layout';
 
 export default function ReplicaMediaSection() {
   const isLg = useIsLgViewport();
@@ -16,13 +16,13 @@ export default function ReplicaMediaSection() {
 
   return (
     <section id="prensa" className={`w-full bg-white py-16 font-sans sm:py-24 ${HOME_SECTION_ANCHOR_CLASS}`}>
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 sm:px-6 lg:px-8">
-        <div className="flex w-full flex-col items-center">
-          <h2 className="mb-4 text-3xl font-medium leading-tight text-[#1a1a1a] sm:text-4xl lg:text-[2.5rem]">
+      <div className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
+        <div className="fi-section-header w-full text-left">
+          <h2 className={`mb-4 ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
             Menciones en Medios y Publicaciones
           </h2>
 
-          <p className="mx-auto mb-12 max-w-2xl text-sm text-[#555555] sm:mb-16 sm:text-base">
+          <p className="fi-section-intro mb-0 max-w-2xl">
             Cobertura verificable en medios chilenos donde Jaime Soto Silva ha sido consultado como experto en
             derecho de familia internacional.
           </p>

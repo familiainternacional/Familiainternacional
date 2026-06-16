@@ -93,7 +93,7 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
                         <div className="pb-8">
                           
                           {/* Mobile Image (Only visible on small screens inside accordion) */}
-                          <div className="block lg:hidden relative w-full h-56 mb-6 rounded-2xl overflow-hidden bg-slate-100">
+                          <div className="block lg:hidden relative w-full h-56 mb-6 rounded-card overflow-hidden bg-slate-100">
                             <Image 
                               src={service.image} 
                               fill 
@@ -126,7 +126,7 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
 
           {/* Right Column: Sticky Image Display (Desktop only) */}
           <div className="hidden lg:block relative lg:pl-10 xl:pl-20">
-            <div className="sticky top-32 h-[550px] xl:h-[650px] w-full rounded-[2rem] overflow-hidden bg-slate-50">
+            <div className="sticky top-32 h-[550px] xl:h-[650px] w-full rounded-card overflow-hidden bg-slate-50">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}

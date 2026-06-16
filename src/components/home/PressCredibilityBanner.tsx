@@ -38,7 +38,7 @@ export default function PressCredibilityBanner({
   const quoteClass = variant === 'dark' ? 'text-white/85' : 'text-neutral-700';
 
   return (
-    <aside className={`rounded-2xl border px-4 py-4 md:px-5 md:py-5 ${shellClass}`}>
+    <aside className={`rounded-card border px-4 py-4 md:px-5 md:py-5 ${shellClass}`}>
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <div className="mb-2 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em]">

@@ -112,7 +112,7 @@ function OfficeMapSectionInner({ showPageHeader = true }: { showPageHeader?: boo
 
       {/* MIDDLE: Contained Map */}
       <div className={`mx-auto max-w-[1440px] px-5 md:px-12 lg:px-24 ${showPageHeader ? 'mb-16 md:mb-28' : 'mb-12 md:mb-16'}`}>
-        <div className="relative h-[360px] overflow-hidden rounded-[18px] bg-[#f2f2f2] md:h-[560px]">
+        <div className="relative h-[360px] overflow-hidden rounded-card bg-[#f2f2f2] md:h-[560px]">
           <iframe
             title={isSpanish ? 'Mapa de Familia Internacional' : 'Familia Internacional map'}
             src={MAP_EMBED_SRC}
@@ -151,7 +151,7 @@ function OfficeMapSectionInner({ showPageHeader = true }: { showPageHeader?: boo
         </div>
         
         {status === 'success' ? (
-          <div className="flex flex-col items-center justify-center rounded-[20px] bg-white p-10 text-center border border-[#07234c]/5 min-h-[400px]">
+          <div className="flex flex-col items-center justify-center rounded-card bg-white p-10 text-center border border-[#07234c]/5 min-h-[400px]">
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)]/10">
               <CheckCircle2 className="h-8 w-8 text-[var(--color-primary)]" />
             </div>

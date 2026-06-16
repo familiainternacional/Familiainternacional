@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { fallbackBlogPosts } from '@/config/blog-fallback-posts';
-import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
+import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_BRAND_CLASS } from '@/lib/layout';
 
 export default function InsightsSection() {
   const formatMonthYear = (date: Date) => {
@@ -27,7 +27,7 @@ export default function InsightsSection() {
         <div className="fi-section-header flex flex-col md:flex-row md:items-end md:justify-between">
           <div className="max-w-[34ch]">
             <span className="fi-eyebrow block text-[var(--color-primary)]">Perspectivas</span>
-            <h2 className="fi-section-heading text-[#07234c]">Conocimiento jurídico</h2>
+            <h2 className={HOME_SECTION_TITLE_BRAND_CLASS}>Conocimiento jurídico</h2>
           </div>
 
           <Link href="/perspectivas" className="fi-link-action mt-6 hidden text-[#333333] md:mt-0 md:inline-flex">
@@ -41,7 +41,7 @@ export default function InsightsSection() {
             <Link
               key={insight.id}
               href={`/perspectivas/${insight.slug}`}
-              className="flex flex-col justify-between overflow-hidden rounded-[20px] border border-[#07234c]/5 bg-white p-6 lg:p-8"
+              className="flex flex-col justify-between overflow-hidden rounded-card border border-[#07234c]/5 bg-white p-6 lg:p-8"
             >
               <div>
                 <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">

@@ -12,6 +12,7 @@ import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import { buildTeamMemberStructuredData } from '@/lib/seo/team-structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { notFound } from 'next/navigation';
+import { buildLanguageAlternates, buildTwitterMetadata } from '@/lib/seo/metadata';
 
 const member = getTeamMemberBySlug('jaime-soto-silva');
 
@@ -20,14 +21,22 @@ export const metadata: Metadata = member
       title: member.seo.title,
       description: member.seo.description,
       keywords: member.seo.keywords,
-      alternates: { canonical: `/equipo/${member.slug}` },
+      alternates: buildLanguageAlternates(`/equipo/${member.slug}`),
       openGraph: {
         title: `${member.seo.title} | ${siteConfig.name}`,
         description: member.seo.description,
         url: `/equipo/${member.slug}`,
         type: 'profile',
-        images: [{ url: member.image, alt: member.imageAlt }],
+        locale: 'es_CL',
+        alternateLocale: ['en_US'],
+        siteName: siteConfig.name,
+        images: [{ url: member.image, alt: member.imageAlt, width: 1200, height: 630 }],
       },
+      twitter: buildTwitterMetadata({
+        title: `${member.seo.title} | ${siteConfig.name}`,
+        description: member.seo.description,
+        images: member.image,
+      }),
     }
   : {};
 
@@ -62,7 +71,7 @@ export default async function TeamMemberPage() {
           </nav>
 
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#07234c]/5 lg:sticky lg:top-32">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-card bg-[#07234c]/5 lg:sticky lg:top-32">
               <Image
                 src={resolveSiteAssetSrc(member.image)}
                 alt={member.imageAlt}

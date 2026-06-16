@@ -90,7 +90,7 @@ export default function AdminSidebar({ adminEmail }: { adminEmail: string }) {
           <form action={logoutAdmin}>
             <button
               type="submit"
-              className="flex w-full items-center gap-2 rounded-xl border border-[#07234c]/15 px-3 py-2 text-left text-gray-600 transition-colors hover:border-brand hover:bg-brand-soft hover:text-[#07234c]"
+              className="flex w-full items-center gap-2 rounded-card border border-[#07234c]/15 px-3 py-2 text-left text-gray-600 transition-colors hover:border-brand hover:bg-brand-soft hover:text-[#07234c]"
             >
               <LogOut className="h-4 w-4" />
               Cerrar sesión

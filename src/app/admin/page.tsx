@@ -41,7 +41,7 @@ export default async function AdminIndexPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Metric 1 */}
-        <div className="bg-white rounded-xl border border-[#07234c]/10 p-6 shadow-sm">
+        <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
               <Inbox className="w-6 h-6" />
@@ -60,7 +60,7 @@ export default async function AdminIndexPage() {
         </div>
 
         {/* Metric 2 */}
-        <div className="bg-white rounded-xl border border-[#07234c]/10 p-6 shadow-sm">
+        <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
               <FileText className="w-6 h-6" />
@@ -79,7 +79,7 @@ export default async function AdminIndexPage() {
         </div>
 
         {/* Metric 3 */}
-        <div className="bg-white rounded-xl border border-[#07234c]/10 p-6 shadow-sm">
+        <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center">
               <MessageSquare className="w-6 h-6" />
@@ -98,7 +98,7 @@ export default async function AdminIndexPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-brand text-white rounded-xl border border-black p-6 shadow-sm flex flex-col justify-between">
+        <div className="bg-brand text-white rounded-card border border-black p-6 shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="text-lg font-bold mb-2">Editor del Sitio</h3>
             <p className="text-sm text-gray-400">Modifica la portada, textos e imágenes al instante.</p>
@@ -114,7 +114,7 @@ export default async function AdminIndexPage() {
       </div>
 
       {/* Recent Leads Table */}
-      <div className="bg-white rounded-xl border border-[#07234c]/10 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-card border border-[#07234c]/10 shadow-sm overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
           <h2 className="text-lg font-bold text-gray-900">Leads Recientes</h2>
           <Link href="/admin/leads" className="text-sm font-medium text-brand hover:underline">

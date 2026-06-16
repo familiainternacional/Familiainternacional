@@ -31,7 +31,7 @@ export default async function TestimonialsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-[#07234c]/10 overflow-hidden">
+      <div className="bg-white rounded-card shadow-sm border border-[#07234c]/10 overflow-hidden">
         {testimonials.length === 0 ? (
           <div className="p-12 text-center">
             <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-4" />

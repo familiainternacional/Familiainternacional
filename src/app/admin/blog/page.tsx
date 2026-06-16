@@ -29,7 +29,7 @@ export default async function AdminBlogPage() {
         </Link>
       </div>
 
-      <div className="bg-white border border-[#07234c]/10 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-[#07234c]/10 rounded-card overflow-hidden">
         {posts.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
             No hay artículos publicados todavía.

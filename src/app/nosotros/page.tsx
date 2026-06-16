@@ -12,25 +12,21 @@ import ScrollReveal from '@/components/home/ScrollReveal';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const nosotrosDescription =
+  'Conoce Familia Internacional: el primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia, liderado por Jaime Soto Silva.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/nosotros',
   title: 'Nosotros',
-  description:
-    'Conoce Familia Internacional: el primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia, liderado por Jaime Soto Silva.',
-  alternates: { canonical: '/nosotros' },
-  openGraph: {
-    title: `Nosotros | ${siteConfig.name}`,
-    description:
-      'Misión, equipo y diferenciales de Familia Internacional en divorcios internacionales, sustracción de menores y exequátur.',
-    url: '/nosotros',
-  },
-};
+  description: nosotrosDescription,
+});
 
 export default async function NosotrosPage() {
   const aboutValues = await getAboutPageAdminValues().catch(() => null);
   const siteUrl = getDefaultCanonicalBaseUrl();
-  const pageDescription =
-    'Conoce Familia Internacional: el primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia, liderado por Jaime Soto Silva.';
+  const pageDescription = nosotrosDescription;
 
   return (
     <MarketingPageLayout>

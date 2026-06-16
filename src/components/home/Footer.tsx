@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +20,7 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
     href: `/servicios/${service.slug}`,
   }));
 
-  const instagramUrl = adminValues?.instagramUrl || siteConfig.contact.social.instagram;
+  const instagramUrl = siteConfig.contact.social.instagram;
   const linkedinUrl = adminValues?.linkedinUrl || siteConfig.contact.social.linkedin;
   const xUrl = siteConfig.contact.social.x;
 

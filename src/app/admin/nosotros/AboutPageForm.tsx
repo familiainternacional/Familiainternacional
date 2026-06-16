@@ -57,7 +57,7 @@ export default function AboutPageForm({ initialValues }: { initialValues: AboutP
 
   return (
     <form action={action} className="space-y-8 max-w-4xl">
-      <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm mb-8">
+      <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm mb-8">
         <label className="block text-sm font-medium text-gray-700 mb-2">Introducción Principal</label>
         <RichTextEditor
           name="aboutIntro"
@@ -69,7 +69,7 @@ export default function AboutPageForm({ initialValues }: { initialValues: AboutP
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         {/* Lawyer 1 */}
-        <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+        <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
           <h2 className="text-xl font-bold text-gray-900 mb-6">Abogado 1</h2>
           <div className="space-y-5">
             <div>
@@ -100,7 +100,7 @@ export default function AboutPageForm({ initialValues }: { initialValues: AboutP
         </div>
 
         {/* Lawyer 2 */}
-        <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+        <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
           <h2 className="text-xl font-bold text-gray-900 mb-6">Abogado 2</h2>
           <div className="space-y-5">
             <div>

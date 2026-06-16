@@ -59,6 +59,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
     serverActions: {
       allowedOrigins: serverActionOrigins,
     },

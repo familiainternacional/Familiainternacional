@@ -38,7 +38,7 @@ export default function CliengoWidget() {
     <Script
       id="cliengo-weboptimizer"
       src={scriptUrl}
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       onLoad={() => syncMobileFloatingLaunchers()}
     />
   );

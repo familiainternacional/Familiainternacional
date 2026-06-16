@@ -8,23 +8,20 @@ import ScrollReveal from '@/components/home/ScrollReveal';
 import { siteConfig } from '@/config/site';
 import { homeFaqItems } from '@/config/home-faq';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const faqDescription =
+  'Respuestas sobre derecho de familia internacional, Convenio de La Haya, sustracción de menores, exequátur y cómo evaluar su caso con Familia Internacional.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/preguntas-frecuentes',
   title: 'Preguntas frecuentes',
-  description:
-    'Respuestas sobre derecho de familia internacional, Convenio de La Haya, sustracción de menores, exequátur y cómo evaluar su caso con Familia Internacional.',
-  alternates: { canonical: '/preguntas-frecuentes' },
-  openGraph: {
-    title: `Preguntas frecuentes | ${siteConfig.name}`,
-    description: 'FAQ sobre familia internacional, La Haya y evaluación de casos.',
-    url: '/preguntas-frecuentes',
-  },
-};
+  description: faqDescription,
+});
 
 export default function PreguntasFrecuentesPage() {
   const siteUrl = getDefaultCanonicalBaseUrl();
-  const pageDescription =
-    'Respuestas sobre derecho de familia internacional, Convenio de La Haya, sustracción de menores, exequátur y cómo evaluar su caso con Familia Internacional.';
+  const pageDescription = faqDescription;
 
   return (
     <MarketingPageLayout>

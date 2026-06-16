@@ -30,8 +30,8 @@ import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 const SCROLL_OFFSET = 12;
 const SCROLL_RANGE = 180;
 
-const NAV_LOGO_HEIGHT = { min: 42, max: 72 } as const;
-const NAV_LOGO_MAX_WIDTH = { min: 260, max: 460 } as const;
+const NAV_LOGO_HEIGHT = { min: 42, max: 54 } as const;
+const NAV_LOGO_MAX_WIDTH = { min: 220, max: 300 } as const;
 const MOBILE_NAV_LOGO_HEIGHT = { min: 34, max: 54 } as const;
 const MOBILE_NAV_LOGO_MAX_WIDTH = { min: 180, max: 280 } as const;
 
@@ -73,19 +73,19 @@ type NavExpandMetrics = {
 function getNavExpandMetrics(t: number): NavExpandMetrics {
   return {
     headerPaddingY: lerp(28, 6, t),
-    shellPaddingX: lerp(38, 12, t),
-    shellPaddingY: lerp(22, 8, t),
-    shellGap: lerp(18, 7, t),
+    shellPaddingX: lerp(24, 12, t), // Reduced from 38
+    shellPaddingY: lerp(16, 8, t),  // Reduced from 22
+    shellGap: lerp(12, 6, t),       // Reduced from 18
     logoHeight: lerp(NAV_LOGO_HEIGHT.max, NAV_LOGO_HEIGHT.min, t),
     logoMaxWidth: lerp(NAV_LOGO_MAX_WIDTH.max, NAV_LOGO_MAX_WIDTH.min, t),
-    actionHeight: lerp(56, 36, t),
-    actionGap: lerp(13, 6, t),
-    navFontSize: lerp(14, 11, t),
-    navGap: lerp(34, 20, t),
-    dividerHeight: lerp(34, 20, t),
-    phoneIconSize: lerp(21, 15, t),
-    ctaFontSize: lerp(14.5, 11, t),
-    ctaPaddingX: lerp(30, 12, t),
+    actionHeight: lerp(44, 34, t),  // Reduced from 56
+    actionGap: lerp(8, 4, t),       // Reduced from 13
+    navFontSize: lerp(12, 10, t),   // Reduced from 14
+    navGap: lerp(16, 10, t),        // Reduced from 34
+    dividerHeight: lerp(24, 16, t), // Reduced from 34
+    phoneIconSize: lerp(18, 14, t), // Reduced from 21
+    ctaFontSize: lerp(12, 10, t),
+    ctaPaddingX: lerp(20, 12, t),
     boxShadow: `0 ${lerp(22, 6, t).toFixed(1)}px ${lerp(52, 18, t).toFixed(1)}px rgba(15,23,42,${lerp(0.18, 0.05, t).toFixed(3)})`,
   };
 }
@@ -360,10 +360,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
             {/* Right: acciones (utilidad → contacto → conversión) */}
             <div className="flex shrink-0 items-center" style={{ gap: desktopNavMetrics.actionGap }}>
               <div className="hidden lg:block">
-                <LocaleSelector
-                  triggerClassName={localeTriggerClassName}
-                  triggerStyle={{ width: desktopNavMetrics.actionHeight, height: desktopNavMetrics.actionHeight }}
-                />
+                {/* LocaleSelector removed for more space */}
               </div>
 
               <span
@@ -464,13 +461,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
           </Link>
 
           <div className="flex shrink-0 items-center">
-            <LocaleSelector
-              triggerClassName={localeTriggerClassName}
-              triggerStyle={{
-                width: mobileNavMetrics.localeSize,
-                height: mobileNavMetrics.localeSize,
-              }}
-            />
+            {/* LocaleSelector removed for more space */}
           </div>
         </div>
       </header>

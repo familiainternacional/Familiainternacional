@@ -6,7 +6,7 @@ import { Phone, Mail, MapPin, CheckCircle2, AlertCircle } from 'lucide-react';
 import ReCaptchaWrapper from '@/components/forms/ReCaptchaWrapper';
 import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { resolveSiteContact } from '@/lib/site-contact';
-import { HOME_SECTION_ANCHOR_CLASS } from '@/lib/layout';
+import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS } from '@/lib/layout';
 
 function ReplicaContactFormInner() {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -65,7 +65,7 @@ function ReplicaContactFormInner() {
 
   if (status === 'success') {
     return (
-      <div className="bg-white p-8 rounded-[2rem] shadow-sm text-center h-full flex flex-col justify-center items-center">
+      <div className="bg-white p-8 rounded-card shadow-sm text-center h-full flex flex-col justify-center items-center">
         <CheckCircle2 className="mb-4 h-12 w-12 text-[#07234c]" />
         <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">¡Mensaje Enviado!</h3>
         <p className="text-[#555555]">Nuestro equipo se pondrá en contacto a la brevedad.</p>
@@ -80,7 +80,7 @@ function ReplicaContactFormInner() {
   }
 
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-[1.5rem] shadow-md border border-black/5">
+    <div className="bg-white p-6 sm:p-8 rounded-card shadow-md border border-black/5">
       {status === 'error' && (
         <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 flex items-start gap-3 text-sm">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
@@ -162,7 +162,7 @@ export default function ReplicaContactSection({ adminValues }: { adminValues?: S
             {/* Left Info */}
             <div>
               <p className="fi-eyebrow mb-4 text-[var(--color-primary)]">Contacto</p>
-              <h2 className="mb-6 max-w-sm text-3xl font-medium leading-[1.15] tracking-tight text-[#1a1a1a] sm:text-4xl lg:text-[2.75rem]">
+              <h2 className={`mb-6 max-w-sm ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
                 Cuéntenos su situación
               </h2>
               <p className="mb-12 max-w-md text-sm text-[#555555] sm:text-base">
@@ -172,12 +172,16 @@ export default function ReplicaContactSection({ adminValues }: { adminValues?: S
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <Phone className="w-5 h-5 text-[#1a1a1a] mt-0.5" />
-                  <span className="text-[#1a1a1a] font-medium text-sm sm:text-base">{contact.primaryPhone}</span>
+                  <Phone className="w-5 h-5 text-[#1a1a1a] mt-0.5 shrink-0" />
+                  <a href={contact.primaryPhoneHref} className="text-[#1a1a1a] font-medium text-sm sm:text-base hover:text-[var(--color-primary)] transition-colors hover:underline underline-offset-4 decoration-black/20">
+                    {contact.primaryPhone}
+                  </a>
                 </div>
                 <div className="flex items-start gap-4">
-                  <Mail className="w-5 h-5 text-[#1a1a1a] mt-0.5" />
-                  <span className="text-[#1a1a1a] font-medium text-sm sm:text-base">{contact.primaryEmail}</span>
+                  <Mail className="w-5 h-5 text-[#1a1a1a] mt-0.5 shrink-0" />
+                  <a href={`mailto:${contact.primaryEmail}`} className="text-[#1a1a1a] font-medium text-sm sm:text-base hover:text-[var(--color-primary)] transition-colors hover:underline underline-offset-4 decoration-black/20">
+                    {contact.primaryEmail}
+                  </a>
                 </div>
                 <div className="flex items-start gap-4">
                   <MapPin className="w-5 h-5 text-[#1a1a1a] mt-0.5 shrink-0" />
@@ -190,7 +194,7 @@ export default function ReplicaContactSection({ adminValues }: { adminValues?: S
 
             {/* Right Form */}
             <div className="w-full lg:max-w-lg lg:ml-auto mx-auto">
-              <ReCaptchaWrapper>
+              <ReCaptchaWrapper lazy>
                 <ReplicaContactFormInner />
               </ReCaptchaWrapper>
             </div>

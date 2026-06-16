@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import { getPrismaClient } from '@/lib/db/prisma';
 import { requireAdminSession } from '@/lib/supabase/auth';
 import { revalidatePath } from 'next/cache';
@@ -10,7 +11,7 @@ export type SiteSeoSettingsAdminValues = {
   defaultOgImage: string;
 };
 
-export async function getSiteSeoSettingsAdminValues(): Promise<SiteSeoSettingsAdminValues> {
+export const getSiteSeoSettingsAdminValues = cache(async (): Promise<SiteSeoSettingsAdminValues> => {
   const prisma = getPrismaClient();
   const data = await prisma.siteSeoSettings.findUnique({
     where: { id: 'main' },
@@ -29,7 +30,7 @@ export async function getSiteSeoSettingsAdminValues(): Promise<SiteSeoSettingsAd
     defaultDescriptionEs: data.defaultDescriptionEs || '',
     defaultOgImage: data.defaultOgImage || '',
   };
-}
+});
 
 export async function updateSiteSeoSettingsAdminValues(values: SiteSeoSettingsAdminValues) {
   await requireAdminSession();

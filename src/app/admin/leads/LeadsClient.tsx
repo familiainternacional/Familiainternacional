@@ -25,7 +25,7 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
   };
 
   return (
-    <div className="bg-white border border-[#07234c]/10 rounded-2xl overflow-hidden">
+    <div className="bg-white border border-[#07234c]/10 rounded-card overflow-hidden">
       {initialLeads.length === 0 ? (
         <div className="p-8 text-center text-gray-500">
           No se han recibido solicitudes todavía.

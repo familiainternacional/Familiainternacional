@@ -7,18 +7,16 @@ import CtaSection from '@/components/home/CtaSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const metodologiaDescription =
+  'Así trabaja Familia Internacional: consulta inicial, diagnóstico estratégico, propuesta clara y ejecución rigurosa en casos de familia internacional.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/metodologia',
   title: 'Metodología',
-  description:
-    'Así trabaja Familia Internacional: consulta inicial, diagnóstico estratégico, propuesta clara y ejecución rigurosa en casos de familia internacional.',
-  alternates: { canonical: '/metodologia' },
-  openGraph: {
-    title: `Metodología | ${siteConfig.name}`,
-    description: 'Proceso de trabajo en cuatro etapas para casos de derecho de familia internacional.',
-    url: '/metodologia',
-  },
-};
+  description: metodologiaDescription,
+});
 
 export default function MetodologiaPage() {
   const siteUrl = getDefaultCanonicalBaseUrl();

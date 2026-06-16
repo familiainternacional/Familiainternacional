@@ -38,7 +38,7 @@ export default function SiteSettingsForm({ initialValues }: { initialValues: Sit
   return (
     <form action={action} className="space-y-8 max-w-4xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+        <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
           <h2 className="text-xl font-bold text-gray-900 mb-6">Información de Contacto</h2>
           
           <div className="space-y-5">
@@ -83,7 +83,7 @@ export default function SiteSettingsForm({ initialValues }: { initialValues: Sit
           </div>
         </div>
 
-        <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+        <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
           <h2 className="text-xl font-bold text-gray-900 mb-6">Redes Sociales</h2>
           
           <div className="space-y-5">

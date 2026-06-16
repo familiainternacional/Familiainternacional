@@ -20,6 +20,13 @@ import {
 import { getServiceSeoCopy } from '@/config/service-seo-copy';
 import { siteConfig } from '@/config/site';
 import { buildServiceLandingStructuredData } from '@/lib/seo/structured-data';
+import { buildLanguageAlternates, buildTwitterMetadata, NOINDEX_ROBOTS } from '@/lib/seo/metadata';
+import {
+  SLUG_PAGE_HERO_DIVIDER_CLASS,
+  SLUG_PAGE_SECTION_CLASS,
+  SLUG_PAGE_SECTION_DIVIDER_CLASS,
+  SLUG_PAGE_SECTION_SHELL_CLASS,
+} from '@/lib/layout';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 
 type ServicePageProps = {
@@ -41,42 +48,41 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   if (!landing) {
     return {
       title: 'Servicio no encontrado',
-      robots: {
-        index: false,
-        follow: false,
-      },
+      robots: NOINDEX_ROBOTS,
     };
   }
 
   const seoCopy = getServiceSeoCopy(landing.slug);
+  const ogImage = `/servicios/${landing.slug}/opengraph-image`;
+  const openGraphTitle = `${landing.seoTitle} | ${siteConfig.name}`;
 
   return {
     title: landing.seoTitle,
     description: landing.seoDescription,
     keywords: seoCopy.keywords,
-    alternates: {
-      canonical: `/servicios/${landing.slug}`,
-    },
+    alternates: buildLanguageAlternates(`/servicios/${landing.slug}`),
     openGraph: {
-      title: `${landing.seoTitle} | ${siteConfig.name}`,
+      title: openGraphTitle,
       description: landing.seoDescription,
       url: `/servicios/${landing.slug}`,
       type: 'website',
+      locale: 'es_CL',
+      alternateLocale: ['en_US'],
+      siteName: siteConfig.name,
       images: [
         {
-          url: `/servicios/${landing.slug}/opengraph-image`,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: `${landing.title} - ${siteConfig.name}`,
         },
       ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${landing.seoTitle} | ${siteConfig.name}`,
+    twitter: buildTwitterMetadata({
+      title: openGraphTitle,
       description: landing.seoDescription,
-      images: [`/servicios/${landing.slug}/opengraph-image`],
-    },
+      images: ogImage,
+    }),
   };
 }
 
@@ -114,7 +120,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
       <main>
         <section
           aria-labelledby="service-hero-title"
-          className="relative z-10 min-h-[620px] w-full max-w-full overflow-hidden bg-white lg:h-screen lg:min-h-[800px] lg:overflow-visible"
+          className={`relative z-10 min-h-[620px] w-full max-w-full overflow-hidden bg-white lg:h-screen lg:min-h-[800px] lg:overflow-visible ${SLUG_PAGE_HERO_DIVIDER_CLASS}`}
         >
           <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
             <Image
@@ -207,7 +213,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </section>
 
         <ScrollReveal>
-          <section className="border-t border-[#07234c]/5 bg-white px-5 py-20 text-[#07234c] md:px-12 md:py-28 lg:px-24">
+          <section className={`${SLUG_PAGE_SECTION_CLASS} py-20 md:py-28`}>
             <div className="mx-auto max-w-7xl">
               <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
                 Enfoque
@@ -242,7 +248,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
 
         <ScrollReveal>
-          <section className="bg-white px-5 py-20 text-[#07234c] md:px-12 md:py-28 lg:px-24">
+          <section className={`${SLUG_PAGE_SECTION_CLASS} py-20 md:py-28`}>
             <div className="mx-auto max-w-7xl">
               <Scale className="h-10 w-10 text-[#07234c]" strokeWidth={1.7} />
               <h2 className="mt-6 max-w-[18ch] font-serif text-h2 font-bold tracking-tight">
@@ -283,9 +289,9 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
 
         <ScrollReveal>
-          <section className="border-t border-[#07234c]/5 bg-white text-[#07234c]">
-            <div className="px-5 py-16 md:px-12 md:py-24 lg:px-24">
-              <div className="mx-auto max-w-7xl">
+          <section className={SLUG_PAGE_SECTION_SHELL_CLASS}>
+            <div className={`${SLUG_PAGE_SECTION_DIVIDER_CLASS} px-0 py-16 md:py-24 lg:px-0`}>
+              <div className="mx-auto max-w-7xl px-5 md:px-12 lg:px-24">
                 <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
                   Guia estrategica
                 </span>
@@ -312,7 +318,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
               </div>
             </div>
 
-            <div className="bg-white px-5 py-20 md:px-12 md:py-28 lg:px-24">
+            <div className={`${SLUG_PAGE_SECTION_DIVIDER_CLASS} px-5 py-20 md:px-12 md:py-28 lg:px-24`}>
               <div className="mx-auto max-w-7xl">
                 <h2 className="max-w-[18ch] font-serif text-h2 font-bold tracking-tight">
                   {seoCopy.decisionTitle}
@@ -337,7 +343,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                   ))}
                 </div>
 
-                <section className="mt-16 border-t border-[#07234c]/10 pt-12">
+                <section className={`mt-16 ${SLUG_PAGE_SECTION_DIVIDER_CLASS} pt-12`}>
                   <h2 className="font-serif text-h3 tracking-tight text-[#07234c]">
                     {seoCopy.localTitle}
                   </h2>
@@ -366,7 +372,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
 
         <ScrollReveal>
-          <section className="border-t border-[#07234c]/5 bg-white px-5 py-16 md:px-12 md:py-24 lg:px-24">
+          <section className={`${SLUG_PAGE_SECTION_CLASS} py-16 md:py-24`}>
             <div className="mx-auto max-w-7xl">
               <div className="mb-10 max-w-[65ch]">
                 <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
@@ -386,7 +392,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                       key={item}
                       className="group flex flex-col md:rlu-card-base md:rlu-card-light md:min-h-[360px] md:p-2"
                     >
-                      <div className="relative block aspect-square w-full overflow-hidden rounded-[16px] bg-[#f2f2f2] md:aspect-[1.35] md:rounded-[14px]">
+                      <div className="relative block aspect-square w-full overflow-hidden rounded-card bg-[#f2f2f2] md:aspect-[1.35] md:rounded-card">
                         <Image
                           src={resolveSiteAssetSrc(landing.image)}
                           alt={`${landing.title} - ${item}`}
@@ -431,7 +437,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
 
         <ScrollReveal>
-          <section className="border-t border-[#07234c]/5 bg-white px-5 py-20 text-[#07234c] md:px-12 md:py-28 lg:px-24">
+          <section className={`${SLUG_PAGE_SECTION_CLASS} py-20 md:py-28`}>
             <div className="mx-auto max-w-7xl">
               <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
                 Preguntas frecuentes
@@ -448,7 +454,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
 
         <ScrollReveal>
-          <section className="border-t border-[#07234c]/5 bg-white px-5 py-16 text-[#07234c] md:px-12 md:py-24 lg:px-24">
+          <section className={`${SLUG_PAGE_SECTION_CLASS} py-16 md:py-24`}>
             <div className="mx-auto max-w-7xl">
               <div className="max-w-[760px]">
                 <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
@@ -473,7 +479,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
         </ScrollReveal>
 
         <ScrollReveal>
-          <section className="border-t border-[#07234c]/5 bg-white px-5 py-16 md:px-12 md:py-20 lg:px-24">
+          <section className={`${SLUG_PAGE_SECTION_CLASS} py-16 md:py-20`}>
             <div className="mx-auto max-w-7xl">
               <h2 className="font-serif text-h2 font-bold tracking-tight">
                 Otros servicios
@@ -488,7 +494,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                     href={`/servicios/${service.slug}`}
                     className="rlu-card-base rlu-card-light group p-3 transition-transform hover:-translate-y-1"
                   >
-                    <div className="relative aspect-[1.55] overflow-hidden rounded-[14px] bg-[#f2f2f2]">
+                    <div className="relative aspect-[1.55] overflow-hidden rounded-card bg-[#f2f2f2]">
                       <Image
                         src={resolveSiteAssetSrc(service.image)}
                         alt=""

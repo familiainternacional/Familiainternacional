@@ -135,7 +135,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             : 'pointer-events-none translate-y-[calc(100%+1.5rem)] opacity-0'
         }`}
       >
-        <nav className="mx-auto flex w-full max-w-sm items-center justify-between rounded-[2rem] bg-white px-4 py-3 pointer-events-auto">
+        <nav className="mx-auto flex w-full max-w-sm items-center justify-between rounded-card bg-white px-4 py-3 pointer-events-auto">
           <Link href="/#home" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'home', '/#home')}>
             <Home size={22} strokeWidth={2} />
             <span className="text-[10px] font-bold tracking-wide">Inicio</span>
@@ -166,7 +166,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             onClick={handleChatClick}
             aria-expanded={chatOpen}
             aria-label={locale === 'en' ? 'Open chat' : 'Abrir chat'}
-            className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-1 transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
               chatOpen
                 ? 'bg-[#07234c] text-white'
                 : 'text-[#07234c] hover:text-[#0a3169]'

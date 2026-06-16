@@ -41,7 +41,7 @@ export function buildGoogleReviewsStructuredData(pagePath: '/' | '/reseñas' = '
         '@type': 'WebPage',
         '@id': `${pageUrl}#reviews`,
         url: pageUrl,
-        name: pagePath === '/' ? siteConfig.metadata.title : `Reseñas de Google | ${siteConfig.name}`,
+        name: pagePath === '/' ? siteConfig.metadata.seoTitle : `Reseñas de Google | ${siteConfig.name}`,
         isPartOf: { '@id': `${siteUrl}/#website` },
         about: { '@id': `${siteUrl}/#legal-service` },
       },

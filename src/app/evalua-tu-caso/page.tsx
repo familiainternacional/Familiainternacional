@@ -5,24 +5,18 @@ import EvaluaTuCasoForm from '@/components/forms/EvaluaTuCasoForm';
 import GoogleCalendarBooking from '@/components/calendar/GoogleCalendarBooking';
 import JsonLd from '@/components/seo/JsonLd';
 import { buildEvaluaTuCasoStructuredData } from '@/lib/seo/structured-data';
-import { siteConfig } from '@/config/site';
 import { resolveSiteContact } from '@/lib/site-contact';
 import { Scale, Clock, ShieldCheck } from 'lucide-react';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const evaluaDescription =
+  'Cuéntanos tu situación en derecho de familia nacional o internacional. Un abogado de Familia Internacional analizará tu caso para definir la mejor estrategia.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/evalua-tu-caso',
   title: 'Evalúa tu caso',
-  description:
-    'Cuéntanos tu situación en derecho de familia nacional o internacional. Un abogado de Familia Internacional analizará tu caso para definir la mejor estrategia.',
-  alternates: {
-    canonical: '/evalua-tu-caso',
-  },
-  openGraph: {
-    title: `Evalúa tu caso | ${siteConfig.name}`,
-    description:
-      'Solicita una evaluación inicial en derecho de familia internacional: divorcios, sustracción de menores, exequátur y más.',
-    url: '/evalua-tu-caso',
-  },
-};
+  description: evaluaDescription,
+});
 
 export default async function EvaluaTuCasoPage() {
   const googleCalendarBookingUrl = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL;
@@ -54,7 +48,7 @@ export default async function EvaluaTuCasoPage() {
                 <h2 className="mb-8 text-h3">¿Por qué elegirnos?</h2>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#07234c]/10 bg-[#07234c]/[0.03]">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-card border border-[#07234c]/10 bg-[#07234c]/[0.03]">
                       <Scale className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
@@ -66,7 +60,7 @@ export default async function EvaluaTuCasoPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#07234c]/10 bg-[#07234c]/[0.03]">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-card border border-[#07234c]/10 bg-[#07234c]/[0.03]">
                       <Clock className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
@@ -78,7 +72,7 @@ export default async function EvaluaTuCasoPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#07234c]/10 bg-[#07234c]/[0.03]">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-card border border-[#07234c]/10 bg-[#07234c]/[0.03]">
                       <ShieldCheck className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <div className="min-w-0">
@@ -91,7 +85,7 @@ export default async function EvaluaTuCasoPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#07234c]/10 bg-[#07234c]/[0.03] p-6">
+              <div className="rounded-card border border-[#07234c]/10 bg-[#07234c]/[0.03] p-6">
                 <h2 className="mb-2 font-semibold">Contacto directo</h2>
                 <p className="mb-4 max-w-[65ch] text-body text-neutral-600">
                   Si prefieres, también puedes escribirnos directamente a nuestro correo.

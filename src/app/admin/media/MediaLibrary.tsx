@@ -82,7 +82,7 @@ export default function MediaLibrary() {
 
   return (
     <div className="space-y-6 max-w-6xl">
-      <div className="bg-white p-6 rounded-xl border border-[#07234c]/10 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white p-6 rounded-card border border-[#07234c]/10 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Galería de Medios</h2>
           <p className="text-sm text-gray-500 mt-1">
@@ -109,7 +109,7 @@ export default function MediaLibrary() {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl border border-[#07234c]/10 shadow-sm min-h-[400px]">
+      <div className="bg-white p-6 rounded-card border border-[#07234c]/10 shadow-sm min-h-[400px]">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-500">
             <Loader2 className="w-8 h-8 animate-spin mb-4" />
@@ -124,7 +124,7 @@ export default function MediaLibrary() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {files.map((file) => (
-              <div key={file.id} className="group relative border border-gray-200 rounded-xl overflow-hidden bg-gray-50 flex flex-col">
+              <div key={file.id} className="group relative border border-gray-200 rounded-card overflow-hidden bg-gray-50 flex flex-col">
                 <div className="relative aspect-square w-full flex items-center justify-center bg-gray-100 overflow-hidden">
                   {isImage(file.metadata.mimetype) ? (
                     <img 

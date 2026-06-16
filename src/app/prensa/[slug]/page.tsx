@@ -8,6 +8,8 @@ import { getMediaMentionBySlug, getPressDetailPages } from '@/config/media-menti
 import { siteConfig } from '@/config/site';
 import { buildPressArticleStructuredData } from '@/lib/seo/press-structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { buildLanguageAlternates, buildTwitterMetadata, NOINDEX_ROBOTS } from '@/lib/seo/metadata';
+import { SLUG_PAGE_SECTION_DIVIDE_CLASS } from '@/lib/layout';
 import { ArrowUpRight } from 'lucide-react';
 
 type PageProps = {
@@ -23,34 +25,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const mention = getMediaMentionBySlug(slug);
 
   if (!mention?.detailPage) {
-    return { title: 'Cobertura no encontrada' };
+    return {
+      title: 'Cobertura no encontrada',
+      robots: NOINDEX_ROBOTS,
+    };
   }
 
   const title = mention.seo?.title ?? mention.title;
   const description = mention.seo?.description ?? mention.description;
+  const openGraphTitle = `${title} | ${siteConfig.name}`;
 
   return {
     title,
     description,
     keywords: mention.seo?.keywords,
-    alternates: {
-      canonical: `/prensa/${mention.slug}`,
-    },
+    alternates: buildLanguageAlternates(`/prensa/${mention.slug}`),
     openGraph: {
-      title: `${title} | ${siteConfig.name}`,
+      title: openGraphTitle,
       description,
       url: `/prensa/${mention.slug}`,
       type: 'article',
       publishedTime: mention.date,
+      locale: 'es_CL',
+      alternateLocale: ['en_US'],
       siteName: siteConfig.name,
       images: mention.thumbnail ? [{ url: mention.thumbnail, alt: mention.title }] : undefined,
     },
-    twitter: {
-      card: 'summary_large_image',
-      title,
+    twitter: buildTwitterMetadata({
+      title: openGraphTitle,
       description,
-      images: mention.thumbnail ? [mention.thumbnail] : undefined,
-    },
+      images: mention.thumbnail ?? undefined,
+    }),
   };
 }
 
@@ -75,8 +80,8 @@ export default async function PrensaDetailPage({ params }: PageProps) {
       <JsonLd data={buildPressArticleStructuredData(mention)} />
       <Navbar adminValues={siteSettings} />
 
-      <article className="px-5 pb-24 pt-32 md:px-12 md:pb-32 md:pt-40 lg:px-24">
-        <div className="mx-auto max-w-4xl">
+      <article className={`${SLUG_PAGE_SECTION_DIVIDE_CLASS} px-5 pb-24 pt-32 md:px-12 md:pb-32 md:pt-40 lg:px-24`}>
+        <div className="mx-auto max-w-4xl pb-10">
           <nav aria-label="Breadcrumb" className="mb-6 text-sm text-neutral-500">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
@@ -118,9 +123,11 @@ export default async function PrensaDetailPage({ params }: PageProps) {
               </ul>
             ) : null}
           </header>
+        </div>
 
           {mention.thumbnail ? (
-            <figure className="mb-10 overflow-hidden rounded-[2rem] border border-neutral-200/80">
+            <div className="mx-auto max-w-4xl py-10">
+            <figure className="overflow-hidden rounded-card border border-neutral-200/80">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={mention.thumbnail}
@@ -134,8 +141,10 @@ export default async function PrensaDetailPage({ params }: PageProps) {
                 </a>
               </figcaption>
             </figure>
+            </div>
           ) : null}
 
+          <div className="mx-auto max-w-4xl py-10">
           <div className="prose prose-lg max-w-none text-neutral-700">
             {mention.body?.es.map((paragraph) => (
               <p key={paragraph.slice(0, 40)} className="leading-relaxed">
@@ -143,18 +152,21 @@ export default async function PrensaDetailPage({ params }: PageProps) {
               </p>
             ))}
           </div>
+          </div>
 
           {mention.expertQuote ? (
-            <blockquote className="my-10 rounded-[1.5rem] border border-[#07234c]/10 bg-[#07234c]/[0.03] px-6 py-6 md:px-8">
+            <div className="mx-auto max-w-4xl py-10">
+            <blockquote className="rounded-card border border-[#07234c]/10 bg-[#07234c]/[0.03] px-6 py-6 md:px-8">
               <p className="text-xl italic leading-relaxed text-[#07234c]">“{mention.expertQuote.es}”</p>
               <footer className="mt-4 text-sm font-semibold text-neutral-600">
                 — {mention.expertName ?? 'Jaime Soto Silva'}, consultado por {mention.source}
               </footer>
             </blockquote>
+            </div>
           ) : null}
 
           {mention.faqs?.length ? (
-            <section aria-labelledby="press-faq-title" className="mt-14 border-t border-neutral-100 pt-10">
+            <section aria-labelledby="press-faq-title" className="mx-auto max-w-4xl py-10">
               <h2 id="press-faq-title" className="mb-6 text-2xl font-bold text-[#07234c]">
                 Preguntas frecuentes
               </h2>
@@ -162,7 +174,7 @@ export default async function PrensaDetailPage({ params }: PageProps) {
                 {mention.faqs.map((faq) => (
                   <details
                     key={faq.question}
-                    className="group rounded-2xl border border-neutral-200/80 bg-[#f8fafc] px-5 py-4 open:bg-white"
+                    className="group rounded-card border border-neutral-200/80 bg-[#f8fafc] px-5 py-4 open:bg-white"
                   >
                     <summary className="cursor-pointer list-none font-semibold text-[#07234c] marker:content-none">
                       {faq.question}
@@ -174,7 +186,8 @@ export default async function PrensaDetailPage({ params }: PageProps) {
             </section>
           ) : null}
 
-          <aside className="mt-14 flex flex-col gap-4 rounded-[2rem] border border-[#07234c]/10 bg-white p-6 text-[#07234c] shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
+          <div className="mx-auto max-w-4xl py-10">
+          <aside className="flex flex-col gap-4 rounded-card border border-[#07234c]/10 bg-white p-6 text-[#07234c] shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
             <div>
               <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-[#07234c]/60">¿Tu familia enfrenta un caso similar?</p>
               <p className="max-w-xl text-base leading-relaxed text-neutral-700">
@@ -190,7 +203,7 @@ export default async function PrensaDetailPage({ params }: PageProps) {
             </Link>
           </aside>
 
-          <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold">
+          <div className="flex flex-wrap gap-4 text-sm font-semibold">
             <a
               href={mention.url}
               target="_blank"
@@ -204,7 +217,7 @@ export default async function PrensaDetailPage({ params }: PageProps) {
               ← Volver a prensa
             </Link>
           </div>
-        </div>
+          </div>
       </article>
 
       <Footer adminValues={siteSettings} />

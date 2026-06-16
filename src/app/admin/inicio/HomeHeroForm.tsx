@@ -34,7 +34,7 @@ export default function HomeHeroForm({ initialValues }: { initialValues: HomeHer
 
   return (
     <form action={action} className="space-y-8 max-w-4xl">
-      <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+      <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
         <h2 className="text-xl font-bold text-gray-900 mb-6">Textos Principales</h2>
         
         <div className="space-y-5">

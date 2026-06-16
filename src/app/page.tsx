@@ -1,31 +1,46 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/home/Navbar';
 import ReplicaHero from '@/components/ReplicaHero';
-import ServicesHomePreview from '@/components/home/ServicesHomePreview';
-import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
-import AboutSection from '@/components/home/AboutSection';
-import CtaSection from '@/components/home/CtaSection';
-import Footer from '@/components/home/Footer';
+import GuideProcessSection from '@/components/home/GuideProcessSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import JsonLd from '@/components/seo/JsonLd';
 import { siteConfig } from '@/config/site';
 import { buildHomeStructuredData } from '@/lib/seo/structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
 import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
-import GuideProcessSection from '@/components/home/GuideProcessSection';
-import ReplicaContactSection from '@/components/home/ReplicaContactSection';
-import ReplicaMediaSection from '@/components/home/ReplicaMediaSection';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: {
-    absolute: siteConfig.metadata.title,
-  },
-  description: siteConfig.metadata.description,
-  alternates: {
-    canonical: '/',
-  },
-};
+const InsightsSection = dynamic(() => import('@/components/home/InsightsSection'));
+
+const ServicesHomePreview = dynamic(() => import('@/components/home/ServicesHomePreview'));
+const AboutSection = dynamic(() => import('@/components/home/AboutSection'));
+const GoogleReviewsSection = dynamic(() => import('@/components/home/GoogleReviewsSection'));
+const CtaSection = dynamic(() => import('@/components/home/CtaSection'));
+const ReplicaMediaSection = dynamic(() => import('@/components/home/ReplicaMediaSection'));
+const ReplicaContactSection = dynamic(() => import('@/components/home/ReplicaContactSection'));
+const PaymentMethodsBanner = dynamic(() => import('@/components/home/PaymentMethodsBanner'));
+const Footer = dynamic(() => import('@/components/home/Footer'));
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seoSettings = await getSiteSeoSettingsAdminValues().catch(() => null);
+  const seoTitle = seoSettings?.defaultTitleEs?.trim() || siteConfig.metadata.seoTitle;
+  const description =
+    seoSettings?.defaultDescriptionEs?.trim() || siteConfig.metadata.description;
+  const ogImage = seoSettings?.defaultOgImage?.trim() || undefined;
+
+  return createPageMetadata({
+    pathname: '/',
+    title: siteConfig.metadata.documentTitle,
+    openGraphTitle: seoTitle,
+    description,
+    absoluteTitle: true,
+    images: ogImage,
+    keywords: [...siteConfig.metadata.keywords],
+  });
+}
 
 export default async function HomePage() {
   const [siteSettings, aboutSettings] = await Promise.all([
@@ -74,10 +89,15 @@ export default async function HomePage() {
         </ScrollReveal>
 
         <ScrollReveal>
+          <InsightsSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
           <ReplicaContactSection adminValues={siteSettings} />
         </ScrollReveal>
       </main>
 
+      <PaymentMethodsBanner />
       <Footer adminValues={siteSettings} />
     </>
   );

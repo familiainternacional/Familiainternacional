@@ -5,21 +5,17 @@ import InnerPageHero from '@/components/marketing/InnerPageHero';
 import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
 import CtaSection from '@/components/home/CtaSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
-import { siteConfig } from '@/config/site';
-import { googleBusinessProfile } from '@/config/google-reviews';
 import { buildGoogleReviewsStructuredData } from '@/lib/seo/google-reviews-structured-data';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const resenasDescription =
+  'Reseñas verificadas de clientes de Familia Internacional en Google Business Profile. Experiencias en derecho de familia internacional.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/reseñas',
   title: 'Reseñas de Google',
-  description:
-    'Reseñas verificadas de clientes de Familia Internacional en Google Business Profile. Experiencias en derecho de familia internacional.',
-  alternates: { canonical: '/reseñas' },
-  openGraph: {
-    title: `Reseñas de Google | ${siteConfig.name}`,
-    description: `Valoración ${googleBusinessProfile.aggregateRating.ratingValue} en Google Business Profile.`,
-    url: '/reseñas',
-  },
-};
+  description: resenasDescription,
+});
 
 export default function ResenasPage() {
   return (

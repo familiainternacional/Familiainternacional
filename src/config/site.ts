@@ -32,7 +32,10 @@ export const siteConfig = {
   adminName: 'Familia Internacional Admin',
   storageKeyPrefix: 'familia',
   metadata: {
-    title: 'Familia Internacional | Estudio Jurídico de Derecho Internacional de Familia',
+    /** Título visible en la pestaña del navegador (home y fallback del layout). */
+    documentTitle: 'Familia Internacional',
+    /** Meta title para Google y redes sociales. */
+    seoTitle: 'Familia Internacional | Estudio Jurídico de Derecho Internacional de Familia',
     description:
       'Primer estudio jurídico en Chile dedicado exclusivamente al Derecho Internacional de Familia: divorcios, sustracción de menores, exequátur, alimentos y más.',
     keywords: [

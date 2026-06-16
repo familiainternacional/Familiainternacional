@@ -5,7 +5,7 @@ import { ArrowUpRight, Newspaper, PlayCircle } from 'lucide-react';
 import { getFeaturedPressMention, getPressHubItems, type MediaMention } from '@/config/media-mentions';
 import MediaThumbnail from '@/components/media/MediaThumbnail';
 import { useIsLgViewport } from '@/lib/hooks/use-is-lg-viewport';
-import { OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
+import { HOME_CARD_TITLE_CLASS, OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 function formatMediaDate(date: string) {
   const parsed = new Date(`${date}T12:00:00`);
@@ -38,7 +38,7 @@ function PressListingCard({
   const external = isExternalItem(item);
   const href = getItemHref(item);
   const cardClassName =
-    'group flex flex-col overflow-hidden rounded-[2.5rem] border border-neutral-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c]';
+    'group flex flex-col overflow-hidden rounded-card border border-neutral-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c]';
 
   const cardContent = (
     <>
@@ -65,7 +65,7 @@ function PressListingCard({
           <span className="mb-3 block text-[11px] font-bold uppercase tracking-widest text-[#07234c]">
             {item.source}
           </span>
-          <h3 className="mb-3 text-xl font-bold leading-tight text-[#1c1c1c] transition-colors group-hover:text-[#07234c]">
+          <h3 className={`mb-3 ${HOME_CARD_TITLE_CLASS} text-[#1c1c1c] transition-colors group-hover:text-[#07234c]`}>
             {item.title}
           </h3>
           <p className="mb-8 line-clamp-3 text-[15px] leading-relaxed text-neutral-600">{item.description}</p>
@@ -130,7 +130,7 @@ export default function PressListing({
   return (
     <div className="mx-auto flex max-w-7xl flex-col">
       {showFeatured && featured ? (
-        <article className="mb-10 w-full overflow-hidden rounded-[2.5rem] border border-neutral-200/80 bg-white shadow-sm">
+        <article className="mb-10 w-full overflow-hidden rounded-card border border-neutral-200/80 bg-white shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <div className="relative min-h-[260px] overflow-hidden bg-[#07234c] lg:min-h-[420px]">
               {featured.thumbnail ? (
@@ -154,7 +154,7 @@ export default function PressListing({
                   <span className="text-neutral-300">·</span>
                   <time dateTime={featured.date}>{formatMediaDate(featured.date)}</time>
                 </div>
-                <h2 className="mb-4 text-2xl font-bold leading-tight text-[#1c1c1c] lg:text-[1.75rem]">
+                <h2 className={`mb-4 ${HOME_CARD_TITLE_CLASS} text-[#1c1c1c]`}>
                   {featured.title}
                 </h2>
                 <p className="mb-6 text-[15px] leading-relaxed text-neutral-600">{featured.description}</p>

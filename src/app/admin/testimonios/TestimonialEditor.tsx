@@ -85,7 +85,7 @@ export default function TestimonialEditor({ testimonial }: { testimonial?: Testi
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+      <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">

@@ -1,5 +1,6 @@
 'use server';
 
+import { cache } from 'react';
 import { revalidatePath } from 'next/cache';
 import { getPrismaClient } from '@/lib/db/prisma';
 
@@ -13,7 +14,7 @@ export type SiteSettingsAdminValues = {
   linkedinUrl: string;
 };
 
-export async function getSiteSettingsAdminValues(): Promise<SiteSettingsAdminValues> {
+export const getSiteSettingsAdminValues = cache(async (): Promise<SiteSettingsAdminValues> => {
   const prisma = await getPrismaClient();
   const settings = await prisma.siteSettings.findUnique({
     where: { id: 'main' },
@@ -28,7 +29,7 @@ export async function getSiteSettingsAdminValues(): Promise<SiteSettingsAdminVal
     facebookUrl: settings?.facebookUrl ?? '',
     linkedinUrl: settings?.linkedinUrl ?? '',
   };
-}
+});
 
 export async function updateSiteSettingsAdminValues(values: SiteSettingsAdminValues) {
   const prisma = await getPrismaClient();

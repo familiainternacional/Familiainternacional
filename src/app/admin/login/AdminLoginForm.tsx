@@ -15,7 +15,7 @@ export default function AdminLoginForm() {
         <span className="mb-2 block text-small font-semibold text-gray-700">
           Correo administrador
         </span>
-        <span className="flex items-center gap-3 rounded-2xl border border-[#07234c]/15 bg-white px-4">
+        <span className="flex items-center gap-3 rounded-card border border-[#07234c]/15 bg-white px-4">
           <Mail className="h-4 w-4 text-[var(--color-primary)]" />
           <input
             type="email"
@@ -32,7 +32,7 @@ export default function AdminLoginForm() {
         <span className="mb-2 block text-small font-semibold text-gray-700">
           Contraseña
         </span>
-        <span className="flex items-center gap-3 rounded-2xl border border-[#07234c]/15 bg-white px-4">
+        <span className="flex items-center gap-3 rounded-card border border-[#07234c]/15 bg-white px-4">
           <Lock className="h-4 w-4 text-[var(--color-primary)]" />
           <input
             type="password"
@@ -46,7 +46,7 @@ export default function AdminLoginForm() {
       </label>
 
       {state.error && (
-        <p className="rounded-2xl border border-red-300 bg-red-50 px-4 py-3 text-small text-red-700">
+        <p className="rounded-card border border-red-300 bg-red-50 px-4 py-3 text-small text-red-700">
           {state.error}
         </p>
       )}

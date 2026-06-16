@@ -8,27 +8,14 @@ import { pressHubSeo } from '@/config/media-mentions';
 import { siteConfig } from '@/config/site';
 import { buildPressHubStructuredData } from '@/lib/seo/press-structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/prensa',
   title: pressHubSeo.title,
   description: pressHubSeo.description,
   keywords: pressHubSeo.keywords,
-  alternates: {
-    canonical: '/prensa',
-  },
-  openGraph: {
-    title: pressHubSeo.title,
-    description: pressHubSeo.description,
-    url: '/prensa',
-    type: 'website',
-    siteName: siteConfig.name,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: pressHubSeo.title,
-    description: pressHubSeo.description,
-  },
-};
+});
 
 export default async function PrensaPage() {
   const siteSettings = await getSiteSettingsAdminValues().catch(() => null);

@@ -30,9 +30,9 @@ export default function WhyChooseUsSection() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 lg:gap-6">
           
           {/* Card 1: Tall Left */}
-          <div className="flex flex-col overflow-hidden rounded-[24px] bg-[#051830] p-5 md:rounded-[2rem] md:p-6 lg:col-span-1 lg:row-span-2 lg:p-8">
+          <div className="flex flex-col overflow-hidden rounded-card bg-[#051830] p-5 rounded-card md:p-6 lg:col-span-1 lg:row-span-2 lg:p-8">
             {/* Inner box simulating light box from photo */}
-            <div className="relative mb-6 flex h-[220px] w-full items-center justify-center overflow-hidden rounded-2xl bg-[#051830] md:mb-8 md:h-[350px] lg:h-[400px]">
+            <div className="relative mb-6 flex h-[220px] w-full items-center justify-center overflow-hidden rounded-card bg-[#051830] md:mb-8 md:h-[350px] lg:h-[400px]">
               <div className="relative h-full w-full">
                 <Image
                   src={resolveSiteAssetSrc('/bento_strategy.png')}
@@ -62,7 +62,7 @@ export default function WhyChooseUsSection() {
           </div>
 
           {/* Card 2: Top Middle */}
-          <div className="flex flex-col overflow-hidden rounded-[24px] bg-[#051830] md:rounded-[2rem] lg:col-span-1 lg:row-span-1">
+          <div className="flex flex-col overflow-hidden rounded-card bg-[#051830] rounded-card lg:col-span-1 lg:row-span-1">
             <div className="relative h-[55%] min-h-[160px] w-full">
               <Image
                 src={resolveSiteAssetSrc('/handshake_distinct_execs.png')}
@@ -85,7 +85,7 @@ export default function WhyChooseUsSection() {
           </div>
 
           {/* Card 3: Top Right */}
-          <div className="relative flex min-h-[240px] items-center overflow-hidden rounded-[24px] bg-[#051830] p-5 md:rounded-[2rem] md:p-6 lg:col-span-1 lg:row-span-1 lg:p-8">
+          <div className="relative flex min-h-[240px] items-center overflow-hidden rounded-card bg-[#051830] p-5 rounded-card md:p-6 lg:col-span-1 lg:row-span-1 lg:p-8">
             <div className="relative z-10 w-[68%] sm:w-[60%]">
               <h3 className="mb-2 font-serif text-h2 font-bold leading-tight tracking-tight text-white">
                 {isSpanish ? 'Precisión' : 'Precision'}
@@ -107,7 +107,7 @@ export default function WhyChooseUsSection() {
           </div>
 
           {/* Card 4: Bottom Right (Wide) */}
-          <div className="relative flex flex-col overflow-hidden rounded-[24px] bg-[#051830] md:flex-row md:rounded-[2rem] lg:col-span-2 lg:row-span-1">
+          <div className="relative flex flex-col overflow-hidden rounded-card bg-[#051830] md:flex-row rounded-card lg:col-span-2 lg:row-span-1">
             <div className="z-10 flex flex-col justify-center p-6 md:w-[65%] lg:p-10">
               <h3 className="max-w-[40ch] text-h3 leading-snug tracking-tight">
                 <span className="font-bold text-white block mb-2">{isSpanish ? 'Comunicación clara.' : 'Clear communication.'}</span>

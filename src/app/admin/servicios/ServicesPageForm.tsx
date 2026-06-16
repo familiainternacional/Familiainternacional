@@ -67,7 +67,7 @@ export default function ServicesPageForm({ initialValues }: { initialValues: Ser
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         {serviceKeys.map((key, i) => (
-          <div key={key} className="bg-white p-6 rounded-xl border border-[#07234c]/10 shadow-sm">
+          <div key={key} className="bg-white p-6 rounded-card border border-[#07234c]/10 shadow-sm">
             <h2 className="text-lg font-bold text-gray-900 mb-4">Servicio {i + 1}</h2>
             <div className="space-y-4">
               <div>

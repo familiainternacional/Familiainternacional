@@ -10,22 +10,16 @@ import { familyServices } from '@/config/family-services';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { getServicesPageAdminValues } from '@/app/admin/servicios/actions';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const servicesDescription =
+  'Divorcios internacionales, sustracción de menores, exequátur, alimentos, herencias y trámites consulares. Familia Internacional, especialistas en Chile.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/servicios',
   title: 'Servicios de derecho de familia internacional',
-  description:
-    'Divorcios internacionales, sustracción de menores, exequátur, alimentos, herencias y trámites consulares. Familia Internacional, especialistas en Chile.',
-  alternates: {
-    canonical: '/servicios',
-  },
-  openGraph: {
-    title: `Servicios | ${siteConfig.name}`,
-    description:
-      'Áreas de práctica en derecho de familia internacional: La Haya, exequátur, divorcios y más.',
-    url: '/servicios',
-    type: 'website',
-  },
-};
+  description: servicesDescription,
+});
 
 export default async function ServicesIndexPage() {
   const servicesValues = await getServicesPageAdminValues().catch(() => null);
@@ -42,7 +36,7 @@ export default async function ServicesIndexPage() {
               '@id': `${siteUrl}/servicios#webpage`,
               url: `${siteUrl}/servicios`,
               name: `Servicios | ${siteConfig.name}`,
-              description: metadata.description,
+              description: servicesDescription,
               inLanguage: 'es-CL',
               mainEntity: {
                 '@type': 'ItemList',

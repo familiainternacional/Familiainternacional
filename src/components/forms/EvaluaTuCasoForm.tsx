@@ -82,7 +82,7 @@ function EvaluaTuCasoFormInner({
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`${isLight ? 'border border-black/10 bg-transparent p-6 text-[#111827]' : 'bg-[#051830] p-8 border border-white/10 text-white'} rounded-2xl text-center`}
+        className={`${isLight ? 'border border-black/10 bg-transparent p-6 text-[#111827]' : 'bg-[#051830] p-8 border border-white/10 text-white'} rounded-card text-center`}
       >
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)]/20">
           <CheckCircle2 className="w-8 h-8 text-[var(--color-primary)]" />
@@ -93,7 +93,7 @@ function EvaluaTuCasoFormInner({
         </p>
         <button 
           onClick={() => setStatus('idle')}
-          className={`${isLight ? 'border-black/10 bg-black/[0.03] text-[#111827] hover:bg-black/[0.06]' : 'border-white/10 bg-white/5 text-white hover:bg-white/10'} rounded-xl border px-8 py-3 text-small font-medium transition-colors`}
+          className={`${isLight ? 'border-black/10 bg-black/[0.03] text-[#111827] hover:bg-black/[0.06]' : 'border-white/10 bg-white/5 text-white hover:bg-white/10'} rounded-card border px-8 py-3 text-small font-medium transition-colors`}
         >
           Enviar otra consulta
         </button>
@@ -102,7 +102,7 @@ function EvaluaTuCasoFormInner({
   }
 
   return (
-    <div className={`${isLight ? 'bg-transparent p-0 md:p-0 border-0 shadow-none' : 'bg-[#051830] p-5 min-[380px]:p-6 md:p-10 border border-white/10'} relative overflow-hidden ${isLight ? 'rounded-none' : 'rounded-2xl md:rounded-3xl'} ${fillHeight ? 'lg:flex lg:h-full lg:flex-col' : ''}`}>
+    <div className={`${isLight ? 'bg-transparent p-0 md:p-0 border-0 shadow-none' : 'bg-[#051830] p-5 min-[380px]:p-6 md:p-10 border border-white/10'} relative overflow-hidden ${isLight ? 'rounded-none' : 'rounded-card'} ${fillHeight ? 'lg:flex lg:h-full lg:flex-col' : ''}`}>
       {!isLight ? (
         <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full bg-[var(--color-primary)]/10 blur-[100px]" />
       ) : null}
@@ -129,7 +129,7 @@ function EvaluaTuCasoFormInner({
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
+              className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
               placeholder="Ej. Juan Pérez"
             />
           </div>
@@ -144,7 +144,7 @@ function EvaluaTuCasoFormInner({
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
+              className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
               placeholder="ejemplo@correo.com"
             />
           </div>
@@ -160,7 +160,7 @@ function EvaluaTuCasoFormInner({
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
+            className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
             placeholder="+56 9 ..."
           />
         </div>
@@ -176,7 +176,7 @@ function EvaluaTuCasoFormInner({
             value={formData.message}
             onChange={handleChange}
             rows={isLight ? 4 : 5}
-            className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full resize-none rounded-xl border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
+            className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full resize-none rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
             placeholder="Describa brevemente la situación legal en la que necesita asesoría..."
           />
         </div>
@@ -209,12 +209,14 @@ function EvaluaTuCasoFormInner({
 export default function EvaluaTuCasoForm({
   variant = 'default',
   fillHeight = false,
+  lazyRecaptcha = true,
 }: {
   variant?: EvaluaTuCasoFormVariant;
   fillHeight?: boolean;
+  lazyRecaptcha?: boolean;
 }) {
   return (
-    <ReCaptchaWrapper>
+    <ReCaptchaWrapper lazy={lazyRecaptcha} forceActive={!lazyRecaptcha}>
       <EvaluaTuCasoFormInner variant={variant} fillHeight={fillHeight} />
     </ReCaptchaWrapper>
   );

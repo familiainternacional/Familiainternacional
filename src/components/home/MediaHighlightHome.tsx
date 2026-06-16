@@ -25,7 +25,7 @@ export default function MediaHighlightHome() {
           </Link>
         </div>
 
-        <article className="grid overflow-hidden rounded-[2rem] border border-neutral-200/80 bg-white md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <article className="grid overflow-hidden rounded-card border border-neutral-200/80 bg-white md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
           {featured.thumbnail ? (
             <div className="relative min-h-[220px] bg-[#07234c] md:min-h-[280px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}

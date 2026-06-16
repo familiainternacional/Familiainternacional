@@ -31,7 +31,7 @@ export default function SeoSettingsForm({ initialValues }: { initialValues: Site
 
   return (
     <form action={action} className="space-y-8 max-w-4xl">
-      <div className="bg-white p-6 md:p-8 rounded-xl border border-[#07234c]/10 shadow-sm">
+      <div className="bg-white p-6 md:p-8 rounded-card border border-[#07234c]/10 shadow-sm">
         <div className="flex items-start gap-4 mb-6">
           <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
             <Info className="w-6 h-6" />

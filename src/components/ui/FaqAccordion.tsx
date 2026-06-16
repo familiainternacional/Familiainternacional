@@ -28,7 +28,7 @@ export default function FaqAccordion({
         return (
           <div
             key={item.question}
-            className={`overflow-hidden rounded-[1.5rem] transition-all duration-300 ease-in-out ${
+            className={`overflow-hidden rounded-card transition-all duration-300 ease-in-out ${
               isExpanded
                 ? 'bg-[#111827] text-white shadow-lg'
                 : 'bg-[#f8fafc] text-[#0f172a] hover:bg-[#f1f5f9]'

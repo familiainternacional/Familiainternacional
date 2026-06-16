@@ -6,18 +6,16 @@ import OfficeMapSection from '@/components/home/OfficeMapSection';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { primaryContact } from '@/config/contact';
+import { createPageMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+const contactoDescription =
+  'Contacte a Familia Internacional en Lo Barnechea, Santiago. Teléfono, correo, mapa y formulario para evaluar su caso de familia internacional.';
+
+export const metadata: Metadata = createPageMetadata({
+  pathname: '/contacto',
   title: 'Contacto',
-  description:
-    'Contacte a Familia Internacional en Lo Barnechea, Santiago. Teléfono, correo, mapa y formulario para evaluar su caso de familia internacional.',
-  alternates: { canonical: '/contacto' },
-  openGraph: {
-    title: `Contacto | ${siteConfig.name}`,
-    description: 'Oficina, teléfono, correo y formulario de contacto.',
-    url: '/contacto',
-  },
-};
+  description: contactoDescription,
+});
 
 export default function ContactoPage() {
   const siteUrl = getDefaultCanonicalBaseUrl();

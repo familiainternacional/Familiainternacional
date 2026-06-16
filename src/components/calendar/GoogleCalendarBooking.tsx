@@ -69,7 +69,7 @@ export default function GoogleCalendarBooking({ bookingUrl }: GoogleCalendarBook
             href={normalizedUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 text-small font-semibold text-white transition-colors hover:bg-white/10 sm:w-fit"
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-card border border-white/10 bg-white/5 px-6 text-small font-semibold text-white transition-colors hover:bg-white/10 sm:w-fit"
           >
             Abrir en {providerLabel}
             <ExternalLink className="h-4 w-4" />

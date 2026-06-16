@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Newspaper } from 'lucide-react';
 import { getPressHubItems, type MediaMention } from '@/config/media-mentions';
 import { useI18n } from '@/lib/i18n/I18nProvider';
+import { HOME_CARD_TITLE_CLASS } from '@/lib/layout';
 
 const MOBILE_INTRO_MAX_WIDTH_PX = 1023;
 const DEFAULT_INTRO_DURATION_MS = 6000;
@@ -102,7 +103,7 @@ function PressArticleSlide({
       <div className="absolute inset-0 bg-gradient-to-r from-[#07234c]/55 via-transparent to-transparent" />
 
       <div className="relative z-10 flex h-full min-h-[420px] flex-col justify-end p-4 sm:min-h-[460px] sm:p-6 xl:min-h-[500px] xl:p-8">
-        <article className="w-full max-w-xl rounded-[1.25rem] border border-white/15 bg-white/95 p-5 shadow-[0_20px_50px_rgba(15,23,42,0.18)] backdrop-blur-sm sm:rounded-[1.5rem] sm:p-6 lg:max-w-lg xl:max-w-xl xl:p-7">
+        <article className="w-full max-w-xl rounded-card border border-white/15 bg-white/95 p-5 shadow-[0_20px_50px_rgba(15,23,42,0.18)] backdrop-blur-sm rounded-card sm:p-6 lg:max-w-lg xl:max-w-xl xl:p-7">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#07234c]/8 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#07234c] sm:text-[11px]">
             <Newspaper className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
             {isEnglish ? 'Featured press' : 'Prensa destacada'}
@@ -116,7 +117,7 @@ function PressArticleSlide({
             <time dateTime={item.date}>{formatMediaDate(item.date, locale)}</time>
           </div>
 
-          <h3 className="mb-3 text-lg font-bold leading-snug tracking-tight text-[#1a1a1a] sm:text-xl lg:text-[1.35rem]">
+          <h3 className={`mb-3 ${HOME_CARD_TITLE_CLASS}`}>
             {item.title}
           </h3>
 
@@ -206,7 +207,7 @@ export default function PressCarouselBanner() {
 
   return (
     <div className="relative mb-12 w-full sm:mb-16">
-      <div className="relative min-h-[420px] overflow-hidden rounded-[1.75rem] border border-[#dbe4e2] shadow-[0_16px_48px_rgba(15,23,42,0.1)] sm:min-h-[460px] sm:rounded-[2rem] xl:min-h-[500px] xl:rounded-[2.25rem]">
+      <div className="relative min-h-[420px] overflow-hidden rounded-card border border-[#dbe4e2] shadow-[0_16px_48px_rgba(15,23,42,0.1)] sm:min-h-[460px] rounded-card xl:min-h-[500px] rounded-card">
         <PressCarouselSlide
           key={item.id}
           item={item}

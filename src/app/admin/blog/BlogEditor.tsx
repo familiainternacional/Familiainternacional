@@ -66,7 +66,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 space-y-6">
+            <div className="bg-white p-6 rounded-card border border-[#07234c]/10 space-y-6">
               <div>
                 <label htmlFor="titleEs" className="block text-sm font-medium text-gray-700 mb-2">
                   Título del Artículo *
@@ -133,7 +133,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
 
           {/* Sidebar / Settings Column */}
           <div className="space-y-6">
-            <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 space-y-6">
+            <div className="bg-white p-6 rounded-card border border-[#07234c]/10 space-y-6">
               <h3 className="font-bold text-lg border-b border-[#07234c]/10 pb-4">Publicación</h3>
               
               <div>
@@ -193,7 +193,7 @@ export default function BlogEditor({ post }: { post?: BlogEditorPost }) {
               </button>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-[#07234c]/10 space-y-6">
+            <div className="bg-white p-6 rounded-card border border-[#07234c]/10 space-y-6">
               <h3 className="font-bold text-lg border-b border-[#07234c]/10 pb-4">SEO (Google)</h3>
               
               <div>

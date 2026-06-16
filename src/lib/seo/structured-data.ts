@@ -155,7 +155,7 @@ export function buildHomeStructuredData() {
         '@type': 'WebPage',
         '@id': `${absoluteUrl('/')}#webpage`,
         url: absoluteUrl('/'),
-        name: siteConfig.metadata.title,
+        name: siteConfig.metadata.seoTitle,
         description: siteConfig.metadata.description,
         inLanguage: 'es-CL',
         isPartOf: {
