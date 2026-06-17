@@ -1,9 +1,16 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import Navbar from '@/components/home/Navbar';
 import ReplicaHero from '@/components/ReplicaHero';
 import GuideProcessSection from '@/components/home/GuideProcessSection';
+import ServicesHomePreview from '@/components/home/ServicesHomePreview';
+import AboutSection from '@/components/home/AboutSection';
+import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
+import CtaSection from '@/components/home/CtaSection';
+import ReplicaMediaSection from '@/components/home/ReplicaMediaSection';
+import ReplicaContactSection from '@/components/home/ReplicaContactSection';
+import PaymentMethodsBanner from '@/components/home/PaymentMethodsBanner';
+import Footer from '@/components/home/Footer';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import JsonLd from '@/components/seo/JsonLd';
 import { siteConfig } from '@/config/site';
@@ -13,15 +20,6 @@ import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
 import { resolveSiteSeoDescription, resolveSiteSeoTitle } from '@/lib/seo/resolve-site-seo';
 import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
 import { createPageMetadata } from '@/lib/seo/metadata';
-
-const ServicesHomePreview = dynamic(() => import('@/components/home/ServicesHomePreview'));
-const AboutSection = dynamic(() => import('@/components/home/AboutSection'));
-const GoogleReviewsSection = dynamic(() => import('@/components/home/GoogleReviewsSection'));
-const CtaSection = dynamic(() => import('@/components/home/CtaSection'));
-const ReplicaMediaSection = dynamic(() => import('@/components/home/ReplicaMediaSection'));
-const ReplicaContactSection = dynamic(() => import('@/components/home/ReplicaContactSection'));
-const PaymentMethodsBanner = dynamic(() => import('@/components/home/PaymentMethodsBanner'));
-const Footer = dynamic(() => import('@/components/home/Footer'));
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoSettings = await getSiteSeoSettingsAdminValues().catch(() => null);

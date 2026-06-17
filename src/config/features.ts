@@ -1,2 +1,2 @@
-/** Desactivar temporalmente el botón Chat en la tab bar móvil. */
-export const MOBILE_TAB_BAR_CHAT_ENABLED = false;
+/** Chat Cliengo en la tab bar móvil (pantalla completa al abrir). */
+export const MOBILE_TAB_BAR_CHAT_ENABLED = true;

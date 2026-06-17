@@ -1,7 +1,7 @@
 export const premiumEase = [0.16, 1, 0.3, 1] as const;
 
 export const premiumTransition = {
-  duration: 0.65,
+  duration: 0.42,
   ease: premiumEase,
 } as const;
 

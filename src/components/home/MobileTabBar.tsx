@@ -13,7 +13,6 @@ import {
   closeMobileCliengoChat,
   isCliengoEnabled,
   isMobileTabBarViewport,
-  openCliengoChat,
   subscribeCliengoProactivePrompt,
 } from '@/lib/integrations/cliengo';
 import MobileChatSheet from '@/components/home/MobileChatSheet';
@@ -155,7 +154,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
       return;
     }
 
-    if (isCliengoEnabled() && openCliengoChat()) {
+    if (isCliengoEnabled()) {
       setChatPromptActive(false);
       setChatSession((session) => session + 1);
       setChatOpen(true);

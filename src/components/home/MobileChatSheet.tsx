@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
 import {
+  activateCliengoChatFromLauncher,
   getCliengoLauncherElement,
   mountMobileCliengoChat,
   mountMobileCliengoLauncher,
@@ -18,12 +19,14 @@ type MobileChatSheetProps = {
 };
 
 const DISMISS_THRESHOLD_PX = 96;
+const CHAT_ACTIVATION_MAX_ATTEMPTS = 48;
 
 export default function MobileChatSheet({ open, onClose, locale }: MobileChatSheetProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const launcherHostRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const [chatActive, setChatActive] = useState(false);
+  const [showLauncherFallback, setShowLauncherFallback] = useState(false);
   const isEnglish = locale === 'en';
 
   useEffect(() => {
@@ -33,7 +36,44 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
 
     setMobileCliengoChatOpen(true);
 
+    let attempts = 0;
+    let cancelled = false;
+    let launcherActivated = false;
+
+    const tryActivateChat = () => {
+      if (cancelled || !bodyRef.current) {
+        return false;
+      }
+
+      if (!launcherActivated) {
+        launcherActivated = activateCliengoChatFromLauncher();
+      }
+
+      if (mountMobileCliengoChat(bodyRef.current)) {
+        setChatActive(true);
+        setShowLauncherFallback(false);
+        return true;
+      }
+
+      return false;
+    };
+
+    tryActivateChat();
+
+    const interval = window.setInterval(() => {
+      attempts += 1;
+
+      if (tryActivateChat() || attempts >= CHAT_ACTIVATION_MAX_ATTEMPTS) {
+        window.clearInterval(interval);
+        if (!cancelled && attempts >= CHAT_ACTIVATION_MAX_ATTEMPTS) {
+          setShowLauncherFallback(true);
+        }
+      }
+    }, 150);
+
     return () => {
+      cancelled = true;
+      window.clearInterval(interval);
       unmountMobileCliengoLauncher();
       unmountMobileCliengoChat();
       setMobileCliengoChatOpen(false);
@@ -41,7 +81,9 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
   }, [open]);
 
   useEffect(() => {
-    if (!open || chatActive) return;
+    if (!open || !showLauncherFallback || chatActive) {
+      return;
+    }
 
     let attempts = 0;
     const mountLauncher = () => {
@@ -62,58 +104,49 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
     return () => {
       window.clearInterval(interval);
     };
-  }, [open, chatActive]);
+  }, [open, showLauncherFallback, chatActive]);
 
   useEffect(() => {
-    if (!open || chatActive) return;
+    if (!open || !showLauncherFallback || chatActive) {
+      return;
+    }
 
     let waitInterval: number | null = null;
 
     const activateChat = () => {
-      if (waitInterval !== null) return;
+      if (waitInterval !== null || !bodyRef.current) {
+        return;
+      }
 
       waitInterval = window.setInterval(() => {
         if (!bodyRef.current) return;
         if (mountMobileCliengoChat(bodyRef.current)) {
           setChatActive(true);
+          setShowLauncherFallback(false);
           if (waitInterval !== null) {
             window.clearInterval(waitInterval);
             waitInterval = null;
           }
         }
       }, 150);
-
-      window.setTimeout(() => {
-        if (waitInterval !== null) {
-          window.clearInterval(waitInterval);
-          waitInterval = null;
-        }
-      }, 12000);
     };
 
     const host = launcherHostRef.current;
     const launcher = host?.querySelector('#cliengo-button, .clgo-chat-launcher, #popupIframe');
     launcher?.addEventListener('click', activateChat);
 
-    const observer = new MutationObserver(() => {
-      const iframe = document.getElementById('chatIframe');
-      if (iframe && iframe.offsetHeight > 0) {
-        activateChat();
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
-
     return () => {
       launcher?.removeEventListener('click', activateChat);
-      observer.disconnect();
       if (waitInterval !== null) {
         window.clearInterval(waitInterval);
       }
     };
-  }, [open, chatActive]);
+  }, [open, showLauncherFallback, chatActive]);
 
   useEffect(() => {
-    if (!open || !chatActive || !bodyRef.current) return;
+    if (!open || !chatActive || !bodyRef.current) {
+      return;
+    }
 
     unmountMobileCliengoLauncher();
 
@@ -226,7 +259,7 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
         ref={bodyRef}
         className="fi-mobile-chat-sheet__body relative min-h-0 flex-1 overflow-hidden bg-white pb-[env(safe-area-inset-bottom)]"
       >
-        {!chatActive ? (
+        {!chatActive && showLauncherFallback ? (
           <div className="flex h-full flex-col items-center justify-center gap-5 px-8 text-center">
             <div
               ref={launcherHostRef}
@@ -234,6 +267,14 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
             />
             <p className="max-w-xs text-sm leading-relaxed text-neutral-600">
               {isEnglish ? 'Tap the icon to start chatting' : 'Haz click en el icono para chatear'}
+            </p>
+          </div>
+        ) : null}
+        {!chatActive && !showLauncherFallback ? (
+          <div className="flex h-full flex-col items-center justify-center gap-3 px-8 text-center text-neutral-600">
+            <Loader2 className="h-8 w-8 animate-spin text-[#07234c]" aria-hidden />
+            <p className="text-sm">
+              {isEnglish ? 'Opening chat…' : 'Abriendo chat…'}
             </p>
           </div>
         ) : null}
