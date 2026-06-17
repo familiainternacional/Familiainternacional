@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { familyServices } from '@/config/family-services';
 import {
@@ -11,7 +9,7 @@ import {
 } from '@/lib/layout';
 import SectionBackgroundImage from '@/components/ui/SectionBackgroundImage';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
-import { localizedHref } from '@/lib/i18n/localized-href';
+
 const SERVICES_BG_SRC = resolveSiteAssetSrc('/internacionales-bg.webp');
 
 export default function ServicesHomePreview() {
@@ -45,10 +43,9 @@ export default function ServicesHomePreview() {
 
           <div className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-2">
             {familyServices.map((service) => (
-              <Link
+              <article
                 key={service.slug}
-                href={localizedHref(`/servicios/${service.slug}`, locale)}
-                className="group flex flex-col rounded-card border border-white/40 bg-white/60 p-8 transition-all hover:-translate-y-1 hover:bg-white/80 hover:shadow-xl sm:p-10"
+                className="flex flex-col rounded-card border border-white/40 bg-white/60 p-8 sm:p-10"
               >
                 <div className="mb-4 flex items-baseline gap-3 sm:gap-4">
                   <span
@@ -79,12 +76,7 @@ export default function ServicesHomePreview() {
                     ))}
                   </ul>
                 </div>
-
-                <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-[#07234c] transition-colors group-hover:text-[#051830]">
-                  {isSpanish ? 'Ver servicio' : 'View service'}
-                  <ArrowUpRight className="h-4 w-4" aria-hidden />
-                </span>
-              </Link>
+              </article>
             ))}
           </div>
       </div>

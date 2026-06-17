@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import type { ServicesPageSettingsAdminValues } from '@/app/admin/servicios/actions';
@@ -106,13 +105,6 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
                           <p className="text-[15px] leading-[1.7] text-slate-500 max-w-xl">
                             {service.desc}
                           </p>
-                          
-                          <Link 
-                            href={`/servicios/${service.slug}`} 
-                            className="mt-8 inline-block text-[11px] font-bold tracking-widest uppercase text-[#0f172a] hover:text-slate-500 transition-colors underline decoration-slate-300 underline-offset-4 hover:decoration-slate-400"
-                          >
-                            {locale === 'es' ? 'LEER MÁS' : 'READ MORE'}
-                          </Link>
                           
                         </div>
                       </div>

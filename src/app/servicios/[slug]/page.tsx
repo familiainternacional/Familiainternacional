@@ -489,10 +489,9 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
               </p>
               <div className="mt-8 grid gap-6 md:grid-cols-3">
                 {relatedServices.map((service) => (
-                  <Link
+                  <article
                     key={service.slug}
-                    href={`/servicios/${service.slug}`}
-                    className="rlu-card-base rlu-card-light group p-3 transition-transform hover:-translate-y-1"
+                    className="rlu-card-base rlu-card-light p-3"
                   >
                     <div className="relative aspect-[1.55] overflow-hidden rounded-card bg-[#f2f2f2]">
                       <Image
@@ -500,7 +499,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                         alt=""
                         fill
                         sizes="(min-width: 768px) 30vw, 92vw"
-                        className="object-cover grayscale-[15%] transition duration-500 group-hover:scale-[1.03]"
+                        className="object-cover grayscale-[15%]"
                       />
                       <div className="absolute inset-0 bg-white/35" />
                       <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
@@ -516,7 +515,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                         {service.seoDescription}
                       </p>
                     </div>
-                  </Link>
+                  </article>
                 ))}
               </div>
             </div>
