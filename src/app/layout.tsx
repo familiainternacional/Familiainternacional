@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import LenisProvider from '@/components/providers/LenisProvider';
+import HomeReturnScroll from '@/components/navigation/HomeReturnScroll';
 import { I18nProvider } from '@/lib/i18n/I18nProvider';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
@@ -9,6 +10,7 @@ import CliengoWidget from '@/components/integrations/CliengoWidget';
 import MobileTabBar from '@/components/home/MobileTabBar';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
+import { resolveSiteSeoDescription, resolveSiteSeoTitle } from '@/lib/seo/resolve-site-seo';
 import {
   buildLanguageAlternates,
   buildTwitterMetadata,
@@ -35,9 +37,8 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoSettings = await getSiteSeoSettingsAdminValues().catch(() => null);
-  const seoTitle = seoSettings?.defaultTitleEs?.trim() || siteConfig.metadata.seoTitle;
-  const defaultDescription =
-    seoSettings?.defaultDescriptionEs?.trim() || siteConfig.metadata.description;
+  const seoTitle = resolveSiteSeoTitle(seoSettings?.defaultTitleEs);
+  const defaultDescription = resolveSiteSeoDescription(seoSettings?.defaultDescriptionEs);
   const defaultOgImage = seoSettings?.defaultOgImage?.trim() || DEFAULT_OG_IMAGE_PATH;
   const ogImages = resolveOgImages(defaultOgImage);
 
@@ -111,6 +112,7 @@ export default async function RootLayout({
       <body suppressHydrationWarning>
         <I18nProvider>
           <LenisProvider>
+            <HomeReturnScroll />
             {children}
             <MobileTabBar whatsappNumber={siteSettings?.whatsappNumber} />
           </LenisProvider>

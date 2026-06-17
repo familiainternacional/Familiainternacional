@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { updateSiteSeoSettingsAdminValues, type SiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
+import { FAMILIA_INTERNACIONAL_SEO_DEFAULTS } from '@/lib/seo/resolve-site-seo';
 import { Save, Loader2, Info } from 'lucide-react';
 
 export default function SeoSettingsForm({ initialValues }: { initialValues: SiteSeoSettingsAdminValues }) {
@@ -49,7 +50,7 @@ export default function SeoSettingsForm({ initialValues }: { initialValues: Site
             <label className="block text-sm font-medium text-gray-700 mb-1">Título de la Página (Meta Title)</label>
             <input
               name="defaultTitleEs"
-              defaultValue={initialValues.defaultTitleEs || 'Familia Internacional | Derecho Internacional de Familia'}
+              defaultValue={initialValues.defaultTitleEs || FAMILIA_INTERNACIONAL_SEO_DEFAULTS.defaultTitleEs}
               placeholder="Ej: Familia Internacional"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
             />
@@ -60,9 +61,9 @@ export default function SeoSettingsForm({ initialValues }: { initialValues: Site
             <label className="block text-sm font-medium text-gray-700 mb-1">Descripción de la Página (Meta Description)</label>
             <textarea
               name="defaultDescriptionEs"
-              defaultValue={initialValues.defaultDescriptionEs || 'Asesoría jurídica de alto estándar para empresas y empresarios en litigación civil, derecho corporativo, derecho administrativo, compliance y resolución de conflictos.'}
+              defaultValue={initialValues.defaultDescriptionEs || FAMILIA_INTERNACIONAL_SEO_DEFAULTS.defaultDescriptionEs}
               rows={3}
-              placeholder="Ej: Estudio jurídico enfocado en empresas..."
+              placeholder="Ej: Primer estudio jurídico en Chile dedicado al Derecho Internacional de Familia..."
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all resize-none"
             />
             <p className="text-xs text-gray-500 mt-1">Aparece debajo del título en Google. Recomendado: 150-160 caracteres.</p>

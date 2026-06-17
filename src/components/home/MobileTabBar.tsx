@@ -18,6 +18,7 @@ import {
 } from '@/lib/integrations/cliengo';
 import MobileChatSheet from '@/components/home/MobileChatSheet';
 import { siteConfig } from '@/config/site';
+import { MOBILE_TAB_BAR_CHAT_ENABLED } from '@/config/features';
 
 function isEditableFormField(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
@@ -137,7 +138,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   }, [isTabBarVisible]);
 
   useEffect(() => {
-    if (!isCliengoEnabled() || !isMobileTabBarViewport()) {
+    if (!MOBILE_TAB_BAR_CHAT_ENABLED || !isCliengoEnabled() || !isMobileTabBarViewport()) {
       return;
     }
 
@@ -175,7 +176,9 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
   return (
     <>
-      <MobileChatSheet key={chatSession} open={chatOpen} onClose={closeChat} locale={locale} />
+      {MOBILE_TAB_BAR_CHAT_ENABLED ? (
+        <MobileChatSheet key={chatSession} open={chatOpen} onClose={closeChat} locale={locale} />
+      ) : null}
 
       <div
         className={`fixed bottom-4 left-4 right-4 z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${
@@ -201,22 +204,24 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             <Info size={22} strokeWidth={2} />
             <span className="text-[10px] font-bold tracking-wide">Nosotros</span>
           </Link>
-          <button
-            type="button"
-            onClick={handleChatClick}
-            aria-expanded={chatOpen}
-            aria-label={locale === 'en' ? 'Open chat' : 'Abrir chat'}
-            className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
-              chatOpen
-                ? 'bg-[#07234c] text-white'
-                : chatPromptActive
-                  ? 'text-[#1a9e4b] hover:text-[#25D366]'
-                  : 'text-[#07234c] hover:text-[#0a3169]'
-            }`}
-          >
-            <MessageCircle size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">Chat</span>
-          </button>
+          {MOBILE_TAB_BAR_CHAT_ENABLED ? (
+            <button
+              type="button"
+              onClick={handleChatClick}
+              aria-expanded={chatOpen}
+              aria-label={locale === 'en' ? 'Open chat' : 'Abrir chat'}
+              className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
+                chatOpen
+                  ? 'bg-[#07234c] text-white'
+                  : chatPromptActive
+                    ? 'text-[#1a9e4b] hover:text-[#25D366]'
+                    : 'text-[#07234c] hover:text-[#0a3169]'
+              }`}
+            >
+              <MessageCircle size={22} strokeWidth={2} />
+              <span className="text-[10px] font-bold tracking-wide">Chat</span>
+            </button>
+          ) : null}
           <a
             href={whatsappHref}
             target="_blank"

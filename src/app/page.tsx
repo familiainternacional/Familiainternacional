@@ -10,6 +10,7 @@ import { siteConfig } from '@/config/site';
 import { buildHomeStructuredData } from '@/lib/seo/structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
+import { resolveSiteSeoDescription, resolveSiteSeoTitle } from '@/lib/seo/resolve-site-seo';
 import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
 import { createPageMetadata } from '@/lib/seo/metadata';
 
@@ -24,9 +25,8 @@ const Footer = dynamic(() => import('@/components/home/Footer'));
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoSettings = await getSiteSeoSettingsAdminValues().catch(() => null);
-  const seoTitle = seoSettings?.defaultTitleEs?.trim() || siteConfig.metadata.seoTitle;
-  const description =
-    seoSettings?.defaultDescriptionEs?.trim() || siteConfig.metadata.description;
+  const seoTitle = resolveSiteSeoTitle(seoSettings?.defaultTitleEs);
+  const description = resolveSiteSeoDescription(seoSettings?.defaultDescriptionEs);
   const ogImage = seoSettings?.defaultOgImage?.trim() || undefined;
 
   return createPageMetadata({

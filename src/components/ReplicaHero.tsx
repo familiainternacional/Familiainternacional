@@ -46,7 +46,7 @@ export default function ReplicaHero() {
               <div className={`mt-8 w-full sm:mt-10 lg:mb-8 lg:mt-10 flex flex-row gap-2 sm:gap-4 items-stretch ${showForm ? 'justify-center lg:justify-start' : 'justify-center'}`}>
                 <BookCallButton
                   text="Agendar Videollamada"
-                  className={`${PRIMARY_BUTTON_XL_CLASS} flex-1 sm:flex-none sm:!w-[280px] !rounded-full !px-1 sm:!px-6 !text-[12px] sm:!text-base leading-tight [&_svg]:h-4 [&_svg]:w-4 sm:[&_svg]:h-5 sm:[&_svg]:w-5`}
+                  className={`${PRIMARY_BUTTON_XL_CLASS} flex-1 sm:flex-none sm:!w-[280px] !rounded-full !gap-2 !px-3 sm:!px-6 !text-[12px] sm:!text-base leading-tight [&_svg]:h-4 [&_svg]:w-4 sm:[&_svg]:h-5 sm:[&_svg]:w-5`}
                 />
                 
                 <button
