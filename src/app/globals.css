@@ -214,28 +214,18 @@ body {
     display: none !important;
   }
 
-  /* Cliengo flotante compacto sobre el contenido principal */
-  #cliengo-button,
-  .clgo-chat-launcher,
-  #chat-launcher,
-  #popupIframe {
+  #cliengo-button {
     position: fixed !important;
     right: 0.75rem !important;
     bottom: var(--fi-cliengo-launcher-bottom) !important;
     left: auto !important;
     top: auto !important;
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
+    transform: scale(0.65) !important;
+    transform-origin: bottom right !important;
     margin: 0 !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     z-index: 45 !important;
-    border: none !important;
-    border-radius: 9999px !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 14px rgba(7, 35, 76, 0.22) !important;
   }
 }
 

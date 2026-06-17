@@ -67,17 +67,8 @@ function applySmallMobileFloatingLauncherStyles(el: HTMLElement) {
   el.style.setProperty('display', 'block', 'important');
   el.style.setProperty('opacity', '1', 'important');
   el.style.setProperty('pointer-events', 'auto', 'important');
-  el.style.setProperty('width', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
-  el.style.setProperty('height', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
-  el.style.setProperty('min-width', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
-  el.style.setProperty('min-height', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
   el.style.setProperty('margin', '0', 'important');
-  el.style.setProperty('border', 'none', 'important');
-  el.style.setProperty('overflow', 'hidden', 'important');
-  el.style.setProperty('transform', 'none', 'important');
   el.style.setProperty('z-index', '45', 'important');
-  el.style.setProperty('border-radius', '9999px', 'important');
-  el.style.setProperty('box-shadow', '0 4px 14px rgba(7, 35, 76, 0.22)', 'important');
 }
 
 function hideDuplicateMobileWidget(el: HTMLElement) {
