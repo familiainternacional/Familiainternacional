@@ -9,8 +9,14 @@ export const SUPABASE_LOGO_URL =
 const PUBLIC_SUPABASE_SITE_ASSET_BUCKET =
   process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET?.trim() || 'rlu-assets';
 
+/** Isotipo — isotipo-05.png (cuadrado, azul marino). */
+const LOCAL_ISOTYPE_PATH = '/logo/isotipo-05.png';
+export const LOCAL_ISOTYPE_SRC = LOCAL_ISOTYPE_PATH;
+export const SUPABASE_ISOTYPE_PATH = 'brand/isotipo-05.png';
+
 const LOCAL_PATH_OVERRIDES: Record<string, string> = {
   [LOCAL_LOGO_PATH]: SUPABASE_LOGO_PATH,
+  [LOCAL_ISOTYPE_PATH]: SUPABASE_ISOTYPE_PATH,
 };
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif', '.avif']);
@@ -75,6 +81,15 @@ export function getSiteLogoSrc(variant: 'light' | 'dark' = 'light') {
   }
 
   return getPublicSupabaseAssetUrl(SUPABASE_LOGO_PATH) ?? local;
+}
+
+/** Isotipo del sitio (globo + figuras). */
+export function getSiteIsotypeSrc() {
+  if (!shouldUseSupabaseSiteImages()) {
+    return LOCAL_ISOTYPE_SRC;
+  }
+
+  return getPublicSupabaseAssetUrl(SUPABASE_ISOTYPE_PATH) ?? LOCAL_ISOTYPE_SRC;
 }
 
 export function isSiteImageExtension(fileName: string) {

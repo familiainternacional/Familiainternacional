@@ -257,13 +257,15 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
       </div>
       <div
         ref={bodyRef}
-        className="fi-mobile-chat-sheet__body relative min-h-0 flex-1 overflow-hidden bg-white pb-[env(safe-area-inset-bottom)]"
+        className={`fi-mobile-chat-sheet__body relative min-h-0 flex-1 overflow-hidden bg-white pb-[env(safe-area-inset-bottom)] ${
+          chatActive ? 'fi-mobile-chat-sheet__body--chat-active' : ''
+        }`}
       >
         {!chatActive && showLauncherFallback ? (
           <div className="flex h-full flex-col items-center justify-center gap-5 px-8 text-center">
             <div
               ref={launcherHostRef}
-              className="fi-mobile-chat-sheet__launcher-host flex min-h-[5.5rem] min-w-[5.5rem] items-center justify-center"
+              className="fi-mobile-chat-sheet__launcher-host relative flex h-full w-full items-center justify-center"
             />
             <p className="max-w-xs text-sm leading-relaxed text-neutral-600">
               {isEnglish ? 'Tap the icon to start chatting' : 'Haz click en el icono para chatear'}

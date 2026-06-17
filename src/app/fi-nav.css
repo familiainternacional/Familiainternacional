@@ -98,6 +98,14 @@
   flex-shrink: 0;
 }
 
+.fi-nav-isotype {
+  display: block;
+  width: auto;
+  height: auto;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
 .fi-nav-logo--compact {
   max-width: min(360px, 50vw);
 }

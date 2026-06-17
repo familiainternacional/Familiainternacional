@@ -7,4 +7,5 @@ export const logoImageSizes = {
   footer: { width: 361, height: 60 },
   admin: { width: 289, height: 48 },
   hero: { width: 505, height: 84 },
+  isotype: { navbar: 46, footer: 56, admin: 36, mobile: 40 },
 } as const;

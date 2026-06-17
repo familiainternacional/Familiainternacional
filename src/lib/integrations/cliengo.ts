@@ -142,6 +142,48 @@ export function setMobileCliengoChatOpen(open: boolean) {
   applyMobileCliengoChatLayout();
 }
 
+function applyCenteredMobileChatIframeStyles(chatIframe: HTMLElement) {
+  chatIframe.style.setProperty('position', 'relative', 'important');
+  chatIframe.style.setProperty('inset', 'auto', 'important');
+  chatIframe.style.setProperty('top', 'auto', 'important');
+  chatIframe.style.setProperty('right', 'auto', 'important');
+  chatIframe.style.setProperty('bottom', 'auto', 'important');
+  chatIframe.style.setProperty('left', 'auto', 'important');
+  chatIframe.style.setProperty('width', 'min(100%, 22.5rem)', 'important');
+  chatIframe.style.setProperty('height', 'min(calc(100dvh - 12rem), 40rem)', 'important');
+  chatIframe.style.setProperty('max-width', '100%', 'important');
+  chatIframe.style.setProperty('margin', '0 auto', 'important');
+  chatIframe.style.setProperty('opacity', '1', 'important');
+  chatIframe.style.setProperty('pointer-events', 'auto', 'important');
+  chatIframe.style.setProperty('z-index', '1', 'important');
+  chatIframe.style.setProperty('border', 'none', 'important');
+  chatIframe.style.setProperty('outline', 'none', 'important');
+  chatIframe.style.setProperty('border-radius', '1rem', 'important');
+  chatIframe.style.setProperty('box-shadow', '0 16px 48px rgba(15, 23, 42, 0.18)', 'important');
+  chatIframe.style.setProperty('transform', 'none', 'important');
+  chatIframe.style.setProperty('touch-action', 'pan-y', 'important');
+}
+
+function applyCenteredMobileLauncherStyles(launcher: HTMLElement) {
+  launcher.style.setProperty('position', 'absolute', 'important');
+  launcher.style.setProperty('left', '50%', 'important');
+  launcher.style.setProperty('top', '50%', 'important');
+  launcher.style.setProperty('right', 'auto', 'important');
+  launcher.style.setProperty('bottom', 'auto', 'important');
+  launcher.style.setProperty('display', 'block', 'important');
+  launcher.style.setProperty('opacity', '1', 'important');
+  launcher.style.setProperty('pointer-events', 'auto', 'important');
+  launcher.style.setProperty('width', '72px', 'important');
+  launcher.style.setProperty('height', '72px', 'important');
+  launcher.style.setProperty('min-width', '72px', 'important');
+  launcher.style.setProperty('min-height', '72px', 'important');
+  launcher.style.setProperty('margin', '0', 'important');
+  launcher.style.setProperty('border', 'none', 'important');
+  launcher.style.setProperty('overflow', 'visible', 'important');
+  launcher.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
+  launcher.style.setProperty('box-shadow', 'none', 'important');
+}
+
 export function applyMobileCliengoChatLayout() {
   if (!isMobileTabBarViewport()) return;
 
@@ -150,6 +192,11 @@ export function applyMobileCliengoChatLayout() {
 
   const isOpen = document.body.classList.contains(MOBILE_CHAT_OPEN_BODY_CLASS);
   const inSheet = Boolean(chatIframe.closest('.fi-mobile-chat-sheet__body'));
+
+  if (isOpen && inSheet) {
+    applyCenteredMobileChatIframeStyles(chatIframe);
+    return;
+  }
 
   if (!isOpen || !inSheet) {
     chatIframe.style.setProperty('opacity', '0', 'important');
@@ -186,19 +233,7 @@ export function mountMobileCliengoLauncher(container: HTMLElement) {
     container.appendChild(launcher);
   }
 
-  launcher.style.setProperty('position', 'relative', 'important');
-  launcher.style.setProperty('display', 'block', 'important');
-  launcher.style.setProperty('opacity', '1', 'important');
-  launcher.style.setProperty('pointer-events', 'auto', 'important');
-  launcher.style.setProperty('width', '72px', 'important');
-  launcher.style.setProperty('height', '72px', 'important');
-  launcher.style.setProperty('min-width', '72px', 'important');
-  launcher.style.setProperty('min-height', '72px', 'important');
-  launcher.style.setProperty('margin', '0', 'important');
-  launcher.style.setProperty('border', 'none', 'important');
-  launcher.style.setProperty('overflow', 'visible', 'important');
-  launcher.style.setProperty('transform', 'none', 'important');
-  launcher.style.setProperty('box-shadow', 'none', 'important');
+  applyCenteredMobileLauncherStyles(launcher);
   return true;
 }
 
@@ -237,24 +272,7 @@ export function mountMobileCliengoChat(container: HTMLElement) {
     container.appendChild(chatIframe);
   }
 
-  chatIframe.style.setProperty('position', 'absolute', 'important');
-  chatIframe.style.setProperty('inset', '0', 'important');
-  chatIframe.style.setProperty('top', '0', 'important');
-  chatIframe.style.setProperty('right', '0', 'important');
-  chatIframe.style.setProperty('bottom', '0', 'important');
-  chatIframe.style.setProperty('left', '0', 'important');
-  chatIframe.style.setProperty('width', '100%', 'important');
-  chatIframe.style.setProperty('height', '100%', 'important');
-  chatIframe.style.setProperty('max-width', '100%', 'important');
-  chatIframe.style.setProperty('opacity', '1', 'important');
-  chatIframe.style.setProperty('pointer-events', 'auto', 'important');
-  chatIframe.style.setProperty('z-index', '1', 'important');
-  chatIframe.style.setProperty('border', 'none', 'important');
-  chatIframe.style.setProperty('outline', 'none', 'important');
-  chatIframe.style.setProperty('border-radius', '0', 'important');
-  chatIframe.style.setProperty('box-shadow', 'none', 'important');
-  chatIframe.style.setProperty('transform', 'none', 'important');
-  chatIframe.style.setProperty('touch-action', 'pan-y', 'important');
+  applyCenteredMobileChatIframeStyles(chatIframe);
   return true;
 }
 

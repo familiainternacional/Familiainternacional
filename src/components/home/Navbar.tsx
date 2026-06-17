@@ -22,7 +22,7 @@ import {
   type NavSection,
 } from '@/config/nav';
 import { useI18n } from '@/lib/i18n/I18nProvider';
-import { LOCAL_LOGO_MASTER, getSiteLogoSrc } from '@/lib/storage/site-assets';
+import { LOCAL_LOGO_MASTER, getSiteIsotypeSrc, getSiteLogoSrc } from '@/lib/storage/site-assets';
 import { resolveSiteContact } from '@/lib/site-contact';
 import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 
@@ -31,8 +31,10 @@ const SCROLL_RANGE = 180;
 
 const NAV_LOGO_HEIGHT = { min: 42, max: 54 } as const;
 const NAV_LOGO_MAX_WIDTH = { min: 220, max: 300 } as const;
+const NAV_ISOTYPE_HEIGHT = { min: 38, max: 48 } as const;
 const MOBILE_NAV_LOGO_HEIGHT = { min: 34, max: 54 } as const;
 const MOBILE_NAV_LOGO_MAX_WIDTH = { min: 180, max: 280 } as const;
+const MOBILE_NAV_ISOTYPE_HEIGHT = { min: 32, max: 44 } as const;
 
 function clamp01(value: number) {
   return Math.min(1, Math.max(0, value));
@@ -139,27 +141,44 @@ function FiLogo({
   const logoMaxWidth = compact
     ? lerp(MOBILE_NAV_LOGO_MAX_WIDTH.max, MOBILE_NAV_LOGO_MAX_WIDTH.min, collapseProgress)
     : lerp(NAV_LOGO_MAX_WIDTH.max, NAV_LOGO_MAX_WIDTH.min, collapseProgress);
-  const logoOffsetX = compact ? lerp(10, 6, collapseProgress) : lerp(18, 12, collapseProgress);
+  const isotypeHeight = compact
+    ? lerp(MOBILE_NAV_ISOTYPE_HEIGHT.max, MOBILE_NAV_ISOTYPE_HEIGHT.min, collapseProgress)
+    : lerp(NAV_ISOTYPE_HEIGHT.max, NAV_ISOTYPE_HEIGHT.min, collapseProgress);
+  const logoOffsetX = compact ? lerp(4, 2, collapseProgress) : lerp(6, 4, collapseProgress);
   const logoOffsetY = compact ? lerp(3, 1, collapseProgress) : lerp(5, 3, collapseProgress);
+  const isotypeGap = compact ? 6 : 8;
+  const variantClass = variant === 'light' ? 'brightness-0 invert' : '';
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={getSiteLogoSrc(variant)}
-      alt={siteConfig.name}
-      className={`fi-nav-logo w-auto object-contain object-left ${compact ? 'fi-nav-logo--compact' : ''} ${variant === 'light' ? 'brightness-0 invert' : ''}`}
-      style={{
-        height: logoHeight,
-        maxWidth: logoMaxWidth,
-        transform: `translate(${logoOffsetX}px, ${logoOffsetY}px)`,
-      }}
-      decoding="async"
-      fetchPriority="high"
-      onError={(event) => {
-        event.currentTarget.onerror = null;
-        event.currentTarget.src = encodeURI(LOCAL_LOGO_MASTER);
-      }}
-    />
+    <span className="inline-flex items-center" style={{ gap: isotypeGap }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={getSiteIsotypeSrc()}
+        alt=""
+        aria-hidden
+        className={`fi-nav-isotype w-auto shrink-0 object-contain object-center ${variantClass}`}
+        style={{ height: isotypeHeight }}
+        decoding="async"
+        fetchPriority="high"
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={getSiteLogoSrc(variant)}
+        alt={siteConfig.name}
+        className={`fi-nav-logo w-auto object-contain object-left ${compact ? 'fi-nav-logo--compact' : ''} ${variantClass}`}
+        style={{
+          height: logoHeight,
+          maxWidth: logoMaxWidth,
+          transform: `translate(${logoOffsetX}px, ${logoOffsetY}px)`,
+        }}
+        decoding="async"
+        fetchPriority="high"
+        onError={(event) => {
+          event.currentTarget.onerror = null;
+          event.currentTarget.src = encodeURI(LOCAL_LOGO_MASTER);
+        }}
+      />
+    </span>
   );
 }
 
@@ -447,7 +466,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
         >
           <Link
             href="/#home"
-            className="inline-flex max-w-[65%] items-center"
+            className="inline-flex max-w-[78%] items-center"
             aria-label={siteConfig.name}
             onClick={(event) => {
               if (pathname !== '/') return;

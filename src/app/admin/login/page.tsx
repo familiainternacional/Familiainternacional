@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { connection } from 'next/server';
 import AdminLoginForm from './AdminLoginForm';
 import { getAdminClaims } from '@/lib/supabase/auth';
-import { getSiteLogoSrc } from '@/lib/storage/site-assets';
+import { getSiteIsotypeSrc, getSiteLogoSrc } from '@/lib/storage/site-assets';
 import { siteConfig } from '@/config/site';
 import { logoImageSizes } from '@/config/logo';
 
@@ -28,7 +28,16 @@ export default async function AdminLoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-white px-5 py-12 text-[#07234c]">
       <section className="w-full max-w-md rounded-card border border-[#07234c]/10 bg-white p-6 md:p-8 shadow-sm">
-        <Link href="/" className="mb-8 inline-flex">
+        <Link href="/" className="mb-8 inline-flex items-center gap-2.5">
+          <Image
+            src={getSiteIsotypeSrc()}
+            alt=""
+            width={logoImageSizes.isotype.admin}
+            height={logoImageSizes.isotype.admin}
+            priority
+            className="h-9 w-9 shrink-0 object-contain"
+            aria-hidden
+          />
           <Image
             src={getSiteLogoSrc('dark')}
             alt={siteConfig.name}
