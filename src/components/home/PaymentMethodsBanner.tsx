@@ -11,8 +11,8 @@ const paymentMethods = [
 ];
 
 export default function PaymentMethodsBanner() {
-  const { locale } = useI18n();
-  const title = locale === 'es' ? 'Métodos de pago internacionales aceptados' : 'International payment methods accepted';
+  const { dictionary } = useI18n();
+  const title = dictionary.home.payment.title;
 
   // Duplicate items to create a seamless infinite loop
   const carouselItems = [...paymentMethods, ...paymentMethods, ...paymentMethods, ...paymentMethods];

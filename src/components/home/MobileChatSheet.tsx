@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Loader2, X } from 'lucide-react';
+import { ChevronDown, Loader2, X } from 'lucide-react';
+import { useI18n } from '@/lib/i18n/I18nProvider';
 import {
-  activateCliengoChatFromLauncher,
   mountMobileCliengoChat,
-  requestCliengoChatOpen,
+  mountMobileCliengoLauncher,
   setMobileCliengoChatOpen,
   unmountMobileCliengoChat,
   unmountMobileCliengoLauncher,
-  waitForChatIframeElement,
+  waitForChatIframeVisible,
 } from '@/lib/integrations/cliengo';
 
 type MobileChatSheetProps = {
@@ -18,28 +18,30 @@ type MobileChatSheetProps = {
   locale: string;
 };
 
-const DISMISS_THRESHOLD_PX = 96;
-const CHAT_OPEN_RETRY_MS = 400;
-const CHAT_OPEN_MAX_WAIT_MS = 20_000;
+const LAUNCHER_MOUNT_RETRY_MS = 400;
+const LAUNCHER_MOUNT_MAX_WAIT_MS = 20_000;
 
-export default function MobileChatSheet({ open, onClose, locale }: MobileChatSheetProps) {
+export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps) {
+  const { t, dictionary } = useI18n();
+  const chat = dictionary.mobile.chat;
   const bodyRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const launcherHostRef = useRef<HTMLDivElement>(null);
+  const [launcherReady, setLauncherReady] = useState(false);
+  const [launcherFailed, setLauncherFailed] = useState(false);
   const [chatActive, setChatActive] = useState(false);
-  const [openFailed, setOpenFailed] = useState(false);
-  const isEnglish = locale === 'en';
 
   useEffect(() => {
     if (!open) {
       return;
     }
 
+    setLauncherReady(false);
+    setLauncherFailed(false);
     setChatActive(false);
-    setOpenFailed(false);
     setMobileCliengoChatOpen(true);
 
     let cancelled = false;
-    let mounted = false;
     let retryTimer: number | null = null;
     let waitTimeout: number | null = null;
 
@@ -50,8 +52,23 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
       }
     };
 
+    const mountLauncher = () => {
+      if (cancelled || !launcherHostRef.current) {
+        return false;
+      }
+
+      if (!mountMobileCliengoLauncher(launcherHostRef.current)) {
+        return false;
+      }
+
+      setLauncherReady(true);
+      setLauncherFailed(false);
+      clearRetries();
+      return true;
+    };
+
     const mountChat = () => {
-      if (cancelled || mounted || !bodyRef.current) {
+      if (cancelled || !bodyRef.current) {
         return false;
       }
 
@@ -59,41 +76,31 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
         return false;
       }
 
-      mounted = true;
       setChatActive(true);
-      setOpenFailed(false);
-      clearRetries();
+      unmountMobileCliengoLauncher();
       return true;
     };
 
-    const requestOpen = () => {
-      if (cancelled) return;
-      requestCliengoChatOpen();
-      activateCliengoChatFromLauncher();
-    };
-
-    requestOpen();
-
     retryTimer = window.setInterval(() => {
-      if (cancelled || mounted) return;
-      if (mountChat()) return;
-      requestOpen();
-    }, CHAT_OPEN_RETRY_MS);
-
-    const stopWaiting = waitForChatIframeElement(() => {
-      if (cancelled) return;
-      mountChat();
-    }, CHAT_OPEN_MAX_WAIT_MS);
+      if (cancelled || launcherReady) return;
+      mountLauncher();
+    }, LAUNCHER_MOUNT_RETRY_MS);
 
     waitTimeout = window.setTimeout(() => {
-      if (cancelled || mounted) return;
-      if (mountChat()) return;
-      setOpenFailed(true);
-    }, CHAT_OPEN_MAX_WAIT_MS);
+      if (cancelled || launcherReady) return;
+      if (mountLauncher()) return;
+      setLauncherFailed(true);
+      clearRetries();
+    }, LAUNCHER_MOUNT_MAX_WAIT_MS);
+
+    const stopWaitingForChat = waitForChatIframeVisible(() => {
+      if (cancelled) return;
+      mountChat();
+    });
 
     return () => {
       cancelled = true;
-      stopWaiting();
+      stopWaitingForChat();
       clearRetries();
       if (waitTimeout !== null) {
         window.clearTimeout(waitTimeout);
@@ -119,7 +126,7 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
     mount();
     const interval = window.setInterval(() => {
       mount();
-      if (attempts >= 28) {
+      if (attempts >= 20) {
         window.clearInterval(interval);
       }
     }, 150);
@@ -161,7 +168,7 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
       header.style.transform = '';
       if (body) body.style.transform = '';
 
-      if (deltaY >= DISMISS_THRESHOLD_PX) {
+      if (deltaY >= 96) {
         onClose();
       }
     };
@@ -181,14 +188,26 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
     };
   }, [open, onClose]);
 
+  const retryLauncher = () => {
+    setLauncherFailed(false);
+    setLauncherReady(false);
+    if (launcherHostRef.current) {
+      window.setTimeout(() => {
+        if (mountMobileCliengoLauncher(launcherHostRef.current!)) {
+          setLauncherReady(true);
+        }
+      }, 0);
+    }
+  };
+
   if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex flex-col bg-white lg:hidden"
+      className="fixed inset-0 z-[60] flex flex-col overscroll-none bg-white touch-none lg:hidden"
       role="dialog"
       aria-modal="true"
-      aria-label={isEnglish ? 'Chat' : 'Chat en línea'}
+      aria-label={chat.title}
     >
       <div
         ref={headerRef}
@@ -197,55 +216,68 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
         <span className="mx-auto mb-3 block h-1 w-10 rounded-full bg-neutral-300" aria-hidden />
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-bold text-[#07234c]">
-              {isEnglish ? 'Online chat' : 'Chat en línea'}
-            </p>
-            <p className="text-xs text-neutral-500">
-              {isEnglish ? 'Swipe down to close' : 'Desliza hacia abajo para cerrar'}
-            </p>
+            <p className="text-sm font-bold text-[#07234c]">{chat.title}</p>
+            <p className="text-xs text-neutral-500">{chat.swipeToClose}</p>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[#07234c] transition-colors hover:bg-black/5"
-            aria-label={isEnglish ? 'Close chat' : 'Cerrar chat'}
+            aria-label={t('mobile.chat.close')}
           >
             <X size={20} aria-hidden />
           </button>
         </div>
       </div>
+
       <div
         ref={bodyRef}
-        className={`fi-mobile-chat-sheet__body relative min-h-0 flex-1 overflow-hidden bg-white pb-[env(safe-area-inset-bottom)] ${
+        className={`fi-mobile-chat-sheet__body relative min-h-0 flex-1 touch-pan-y overflow-hidden bg-white pb-[env(safe-area-inset-bottom)] ${
           chatActive ? 'fi-mobile-chat-sheet__body--chat-active' : ''
         }`}
       >
-        {!chatActive && openFailed ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center text-neutral-600">
-            <p className="max-w-xs text-sm leading-relaxed">
-              {isEnglish
-                ? 'We could not open the chat. Please try again in a moment.'
-                : 'No pudimos abrir el chat. Intenta de nuevo en unos segundos.'}
+        {!chatActive ? (
+          <div className="flex h-full flex-col items-center justify-center px-8 text-center">
+            <h2 className="max-w-sm text-lg font-bold leading-snug text-[#07234c]">
+              {chat.orientationTitle}
+            </h2>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-600">
+              {chat.orientationBody}
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                setOpenFailed(false);
-                requestCliengoChatOpen();
-                activateCliengoChatFromLauncher();
-              }}
-              className="rounded-full bg-[#07234c] px-5 py-2.5 text-sm font-bold text-white"
-            >
-              {isEnglish ? 'Retry' : 'Reintentar'}
-            </button>
-          </div>
-        ) : null}
-        {!chatActive && !openFailed ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 px-8 text-center text-neutral-600">
-            <Loader2 className="h-8 w-8 animate-spin text-[#07234c]" aria-hidden />
-            <p className="text-sm">
-              {isEnglish ? 'Opening chat…' : 'Abriendo chat…'}
-            </p>
+
+            {!launcherReady && !launcherFailed ? (
+              <div className="mt-8 flex flex-col items-center gap-3 text-neutral-500">
+                <Loader2 className="h-7 w-7 animate-spin text-[#07234c]" aria-hidden />
+                <p className="text-sm">{chat.launcherLoading}</p>
+              </div>
+            ) : null}
+
+            {launcherFailed ? (
+              <div className="mt-8 flex flex-col items-center gap-4">
+                <p className="max-w-xs text-sm text-neutral-600">{chat.error}</p>
+                <button
+                  type="button"
+                  onClick={retryLauncher}
+                  className="rounded-full bg-[#07234c] px-5 py-2.5 text-sm font-bold text-white"
+                >
+                  {chat.retry}
+                </button>
+              </div>
+            ) : null}
+
+            {launcherReady ? (
+              <ChevronDown
+                className="mt-6 h-6 w-6 animate-bounce text-[#07234c]/50"
+                strokeWidth={2.5}
+                aria-hidden
+              />
+            ) : null}
+
+            <div
+              ref={launcherHostRef}
+              className={`fi-mobile-chat-sheet__launcher-host mt-4 ${launcherReady ? '' : 'sr-only'}`}
+              aria-hidden={!launcherReady}
+            />
           </div>
         ) : null}
       </div>

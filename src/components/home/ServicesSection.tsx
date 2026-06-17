@@ -5,29 +5,29 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import type { ServicesPageSettingsAdminValues } from '@/app/admin/servicios/actions';
-import { familyServices } from '@/config/family-services';
+import { getFamilyServices } from '@/config/family-services';
 import type { Locale } from '@/lib/i18n/config';
 
-const adminPayloadKeys = ['divorcios', 'cuidado', 'filiacion', 'exequatur', 'herencias', 'consulares'] as const;
+const adminPayloadKeys = ['divorcios', 'cuidado', 'filiacion', 'exequatur', 'herencias', 'consulares', 'autorizaciones'] as const;
 
 function mapServiceValues(
   locale: Locale,
   parsedPayload: Record<string, string>,
 ) {
-  return familyServices.map((service, index) => {
+  return getFamilyServices(locale).map((service, index) => {
     const key = adminPayloadKeys[index];
     return {
       num: service.num,
       slug: service.slug,
-      title: parsedPayload[`${key}Title`] || (locale === 'es' ? service.title.es : service.title.en),
-      desc: parsedPayload[`${key}Desc`] || (locale === 'es' ? service.desc.es : service.desc.en),
+      title: parsedPayload[`${key}Title`] || service.title,
+      desc: parsedPayload[`${key}Desc`] || service.desc,
       image: service.image,
     };
   });
 }
 
 export default function ServicesSection({ adminValues }: { adminValues?: ServicesPageSettingsAdminValues | null }) {
-  const { locale } = useI18n();
+  const { locale, dictionary } = useI18n();
   const [activeIndex, setActiveIndex] = useState(0);
 
   let parsedPayload: Record<string, string> = {};
@@ -55,7 +55,7 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
           <div className="flex flex-col">
             <div className="mb-12">
               <span className="mb-6 block text-sm font-semibold uppercase tracking-widest text-slate-400">
-                {locale === 'es' ? 'Nuestros servicios' : 'Our services'}
+                {dictionary.home.servicesSection.eyebrow}
               </span>
             </div>
             

@@ -7,11 +7,14 @@ import ReCaptchaWrapper from '@/components/forms/ReCaptchaWrapper';
 import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { resolveSiteContact } from '@/lib/site-contact';
 import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS } from '@/lib/layout';
+import { useI18n } from '@/lib/i18n/I18nProvider';
 
 function ReplicaContactFormInner() {
+  const { dictionary } = useI18n();
+  const contactForm = dictionary.forms.contact;
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('Ocurrió un error al enviar su solicitud.');
+  const [errorMessage, setErrorMessage] = useState<string>(contactForm.error);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -27,7 +30,7 @@ function ReplicaContactFormInner() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
-    setErrorMessage('Ocurrió un error al enviar su solicitud. Por favor, intente nuevamente o contáctenos por teléfono.');
+    setErrorMessage(contactForm.error);
     
     try {
       let token = '';
@@ -54,7 +57,7 @@ function ReplicaContactFormInner() {
         setFormData({ name: '', email: '', phone: '', message: '' });
       } else {
         const payload = await res.json().catch(() => null) as { error?: string } | null;
-        setErrorMessage(payload?.error ?? 'Ocurrió un error al enviar su solicitud.');
+        setErrorMessage(payload?.error ?? contactForm.error);
         setStatus('error');
       }
     } catch (error) {
@@ -67,13 +70,13 @@ function ReplicaContactFormInner() {
     return (
       <div className="bg-white p-8 rounded-card shadow-sm text-center h-full flex flex-col justify-center items-center">
         <CheckCircle2 className="mb-4 h-12 w-12 text-[#07234c]" />
-        <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">¡Mensaje Enviado!</h3>
-        <p className="text-[#555555]">Nuestro equipo se pondrá en contacto a la brevedad.</p>
+        <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">{contactForm.success}</h3>
+        <p className="text-[#555555]">{contactForm.successDesc}</p>
         <button 
           onClick={() => setStatus('idle')}
           className="mt-6 px-6 py-2 rounded-full border border-gray-200 text-sm font-medium hover:bg-gray-50"
         >
-          Enviar otro mensaje
+          {contactForm.sendAnother}
         </button>
       </div>
     );
@@ -90,7 +93,7 @@ function ReplicaContactFormInner() {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="name" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">Nombre Completo</label>
+          <label htmlFor="name" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">{contactForm.fields.name}</label>
           <input
             required
             id="name"
@@ -98,12 +101,12 @@ function ReplicaContactFormInner() {
             value={formData.name}
             onChange={handleChange}
             className="w-full bg-[#f9f8f6] border-none rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] focus:ring-2 focus:ring-[#07234c]/30"
-            placeholder="Ej. Juan Pérez"
+            placeholder={contactForm.fields.namePlaceholder}
           />
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="email" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">Correo Electrónico</label>
+          <label htmlFor="email" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">{contactForm.fields.email}</label>
           <input
             required
             type="email"
@@ -112,12 +115,12 @@ function ReplicaContactFormInner() {
             value={formData.email}
             onChange={handleChange}
             className="w-full bg-[#f9f8f6] border-none rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] focus:ring-2 focus:ring-[#07234c]/30"
-            placeholder="correo@ejemplo.com"
+            placeholder={contactForm.fields.emailPlaceholder}
           />
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="phone" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">Teléfono de Contacto</label>
+          <label htmlFor="phone" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">{contactForm.fields.phone}</label>
           <input
             type="tel"
             id="phone"
@@ -125,16 +128,16 @@ function ReplicaContactFormInner() {
             value={formData.phone}
             onChange={handleChange}
             className="w-full bg-[#f9f8f6] border-none rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] focus:ring-2 focus:ring-[#07234c]/30"
-            placeholder="+56 9..."
+            placeholder={contactForm.fields.phonePlaceholder}
           />
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="message" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">Descripción de su Caso</label>
+          <label htmlFor="message" className="text-[11px] font-semibold text-[#1a1a1a] uppercase tracking-wide">{contactForm.fields.message}</label>
           <textarea
             required id="message" name="message" value={formData.message} onChange={handleChange} rows={3}
             className="w-full bg-[#f9f8f6] border-none rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] focus:ring-2 focus:ring-[#07234c]/30 resize-none"
-            placeholder="Describa brevemente la situación legal en la que necesita asesoría..."
+            placeholder={contactForm.fields.messagePlaceholder}
           />
         </div>
 
@@ -144,7 +147,7 @@ function ReplicaContactFormInner() {
             type="submit"
             className="fi-btn-primary inline-flex w-full items-center justify-center gap-2 sm:w-auto"
           >
-            {status === 'submitting' ? 'Enviando...' : 'Enviar Mensaje'}
+            {status === 'submitting' ? contactForm.submitting : contactForm.submit}
           </button>
         </div>
       </form>
@@ -153,6 +156,8 @@ function ReplicaContactFormInner() {
 }
 
 export default function ReplicaContactSection({ adminValues }: { adminValues?: SiteSettingsAdminValues | null }) {
+  const { dictionary } = useI18n();
+  const contactSection = dictionary.home.contact;
   const contact = resolveSiteContact(adminValues);
 
   return (
@@ -161,13 +166,12 @@ export default function ReplicaContactSection({ adminValues }: { adminValues?: S
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
             {/* Left Info */}
             <div>
-              <p className="fi-eyebrow mb-4 text-[var(--color-primary)]">Contacto</p>
+              <p className="fi-eyebrow mb-4 text-[var(--color-primary)]">{contactSection.eyebrow}</p>
               <h2 className={`mb-6 max-w-sm ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
-                Cuéntenos su situación
+                {contactSection.title}
               </h2>
               <p className="mb-12 max-w-md text-sm text-[#555555] sm:text-base">
-                Complete el formulario y le responderemos con la mayor brevedad. Si su caso es urgente, llámenos
-                directamente.
+                {contactSection.intro}
               </p>
 
               <div className="space-y-6">

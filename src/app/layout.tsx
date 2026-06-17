@@ -3,6 +3,7 @@ import { Montserrat } from 'next/font/google';
 import LenisProvider from '@/components/providers/LenisProvider';
 import HomeReturnScroll from '@/components/navigation/HomeReturnScroll';
 import { I18nProvider } from '@/lib/i18n/I18nProvider';
+import { getServerCurrency, getServerLocale } from '@/lib/i18n/server';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { GoogleAnalytics } from '@next/third-parties/google';
@@ -104,13 +105,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [siteSettings, initialLocale, initialCurrency] = await Promise.all([
+    getSiteSettingsAdminValues().catch(() => null),
+    getServerLocale(),
+    getServerCurrency(),
+  ]);
   const fontVariables = montserrat.variable;
-  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
 
   return (
-    <html lang="es" className={fontVariables} suppressHydrationWarning>
+    <html lang={initialLocale} className={fontVariables} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <I18nProvider>
+        <I18nProvider initialLocale={initialLocale} initialCurrency={initialCurrency}>
           <LenisProvider>
             <HomeReturnScroll />
             {children}

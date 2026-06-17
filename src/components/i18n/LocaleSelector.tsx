@@ -14,7 +14,7 @@ export default function LocaleSelector({
   triggerClassName = 'fi-nav-action fi-nav-action--icon',
   triggerStyle,
 }: LocaleSelectorProps) {
-  const { locale, setLocale } = useI18n();
+  const { locale, setLocale, t } = useI18n();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -39,15 +39,15 @@ export default function LocaleSelector({
         style={triggerStyle}
         aria-expanded={open}
         aria-haspopup="dialog"
-        aria-label={locale === 'es' ? 'Seleccionar idioma' : 'Select language'}
+        aria-label={t('mobile.locale.select')}
         onClick={() => setOpen((value) => !value)}
       >
         <Globe size={18} aria-hidden />
       </button>
 
       {open ? (
-        <div className="lang-popover" role="dialog" aria-label={locale === 'es' ? 'Idioma' : 'Language'}>
-          <span className="lang-popover-section-label">{locale === 'es' ? 'Idioma' : 'Language'}</span>
+        <div className="lang-popover" role="dialog" aria-label={t('mobile.locale.dialog')}>
+          <span className="lang-popover-section-label">{t('mobile.locale.label')}</span>
           {(['es', 'en'] as const).map((option) => (
             <button
               key={option}
@@ -58,7 +58,7 @@ export default function LocaleSelector({
                 setOpen(false);
               }}
             >
-              <span className="lang-label">{option === 'es' ? 'Español' : 'English'}</span>
+              <span className="lang-label">{option === 'es' ? t('mobile.locale.spanish') : t('mobile.locale.english')}</span>
               <label className="switch" aria-hidden="true">
                 <input type="checkbox" checked={locale === option} readOnly tabIndex={-1} />
                 <span className="slider" />

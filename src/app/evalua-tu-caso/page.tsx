@@ -8,15 +8,20 @@ import { buildEvaluaTuCasoStructuredData } from '@/lib/seo/structured-data';
 import { resolveSiteContact } from '@/lib/site-contact';
 import { Scale, Clock, ShieldCheck } from 'lucide-react';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const evaluaDescription =
-  'Cuéntanos tu situación en derecho de familia nacional o internacional. Un abogado de Familia Internacional analizará tu caso para definir la mejor estrategia.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.evalua;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/evalua-tu-caso',
-  title: 'Evalúa tu caso',
-  description: evaluaDescription,
-});
+  return createPageMetadata({
+    pathname: '/evalua-tu-caso',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
 export default async function EvaluaTuCasoPage() {
   const googleCalendarBookingUrl = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_BOOKING_URL;

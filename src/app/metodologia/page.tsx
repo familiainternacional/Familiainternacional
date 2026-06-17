@@ -8,17 +8,25 @@ import ScrollReveal from '@/components/home/ScrollReveal';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const metodologiaDescription =
-  'Así trabaja Familia Internacional: consulta inicial, diagnóstico estratégico, propuesta clara y ejecución rigurosa en casos de familia internacional.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.metodologia;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/metodologia',
-  title: 'Metodología',
-  description: metodologiaDescription,
-});
+  return createPageMetadata({
+    pathname: '/metodologia',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
-export default function MetodologiaPage() {
+export default async function MetodologiaPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.metodologia;
   const siteUrl = getDefaultCanonicalBaseUrl();
 
   return (
@@ -29,19 +37,19 @@ export default function MetodologiaPage() {
           '@type': 'WebPage',
           '@id': `${siteUrl}/metodologia#webpage`,
           url: `${siteUrl}/metodologia`,
-          name: `Metodología | ${siteConfig.name}`,
-          description: metadata.description,
+          name: `${page.metaTitle} | ${siteConfig.name}`,
+          description: page.metaDescription,
           inLanguage: 'es-CL',
         }}
       />
 
       <InnerPageHero
-        eyebrow="Cómo trabajamos"
-        title="Metodología clara en cada etapa"
-        description="Desde la primera consulta hasta la ejecución del caso, usted sabe qué esperar, qué plazos aplican y cómo avanzamos juntos."
+        eyebrow={page.eyebrow}
+        title={page.title}
+        description={page.description}
         breadcrumbs={[
-          { label: 'Inicio', href: '/' },
-          { label: 'Metodología' },
+          { label: dict.common.home, href: '/' },
+          { label: page.metaTitle },
         ]}
       />
 

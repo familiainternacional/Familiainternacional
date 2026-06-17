@@ -6,11 +6,12 @@ import {
   FileCheck,
   Globe2,
   Landmark,
+  Plane,
   Scale,
   Users,
   type LucideIcon,
 } from 'lucide-react';
-import { familyServices } from '@/config/family-services';
+import { getFamilyServices } from '@/config/family-services';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 
@@ -21,22 +22,23 @@ const serviceIcons: Record<string, LucideIcon> = {
   exequatur: FileCheck,
   'herencias-internacionales': Landmark,
   'tramites-consulares': Globe2,
+  'autorizaciones-salida-pais': Plane,
 };
 
 export default function ServicesScrollBanner() {
-  const { locale } = useI18n();
-  const isSpanish = locale === 'es';
+  const { locale, t } = useI18n();
+  const familyServices = getFamilyServices(locale);
 
   return (
     <section
-      aria-label={isSpanish ? 'Servicios del estudio' : 'Firm practice areas'}
+      aria-label={t('home.services.bannerAria')}
       className="w-full pt-4"
     >
       <div className="w-full overflow-hidden rounded-card border border-[#dbe4e2] shadow-[0_12px_40px_rgba(15,23,42,0.06)] rounded-card">
-        <div className="flex snap-x snap-mandatory gap-0 overflow-x-auto pb-0 hide-scrollbar sm:gap-0 lg:grid lg:grid-cols-6 lg:gap-0 lg:overflow-visible lg:snap-none">
+        <div className="flex snap-x snap-mandatory gap-0 overflow-x-auto pb-0 hide-scrollbar sm:gap-0 lg:grid lg:grid-cols-7 lg:gap-0 lg:overflow-visible lg:snap-none">
           {familyServices.map((service) => {
             const Icon = serviceIcons[service.slug] ?? Scale;
-            const title = isSpanish ? service.title.es : service.title.en;
+            const title = service.title;
 
             return (
               <article
@@ -47,7 +49,7 @@ export default function ServicesScrollBanner() {
                     src={resolveSiteAssetSrc(service.image)}
                     alt=""
                     fill
-                    sizes="(min-width: 1024px) 16vw, 240px"
+                    sizes="(min-width: 1024px) 14vw, 240px"
                     className="object-cover grayscale-[35%]"
                     aria-hidden
                   />

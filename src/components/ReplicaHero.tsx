@@ -4,6 +4,7 @@ import { useState } from 'react';
 import EvaluaTuCasoForm from '@/components/forms/EvaluaTuCasoForm';
 import BookCallButton from '@/components/home/BookCallButton';
 import SectionBackgroundImage from '@/components/ui/SectionBackgroundImage';
+import { useI18n } from '@/lib/i18n/I18nProvider';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import { PRIMARY_BUTTON_XL_CLASS, SITE_CONTAINER_CLASS } from '@/lib/layout';
 
@@ -11,6 +12,8 @@ const HERO_BG_SRC = resolveSiteAssetSrc('/hero-bg.webp');
 
 export default function ReplicaHero() {
   const [showForm, setShowForm] = useState(false);
+  const { t, dictionary } = useI18n();
+  const hero = dictionary.home.hero;
 
   return (
     <section className="relative w-full pb-10 pt-[140px] sm:pt-[140px] lg:pt-[160px] xl:pb-12 xl:pt-[180px]">
@@ -25,36 +28,36 @@ export default function ReplicaHero() {
             <div className={`flex h-full min-h-0 flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 transition-all duration-700 ${showForm ? 'lg:justify-between lg:px-10 lg:py-12 xl:px-14 xl:py-12 2xl:px-16' : 'items-center text-center max-w-5xl mx-auto py-12 lg:py-24'}`}>
               <div className={`space-y-3 sm:space-y-4 lg:space-y-5 flex flex-col items-center transition-all duration-500 ${showForm ? 'lg:items-start text-center lg:text-left' : 'text-center'}`}>
                 <p className="hidden text-xs font-bold uppercase tracking-[0.18em] text-[#6b7280] sm:text-[13px] lg:block">
-                  Derecho Internacional de Familia · Chile
+                  {hero.eyebrow}
                 </p>
 
                 <h1 className={`font-extrabold tracking-tight text-[#111827] transition-all duration-500 ${showForm ? 'text-[1.65rem] leading-[1.15] sm:text-4xl lg:text-5xl xl:leading-tight' : 'text-3xl leading-tight sm:text-4xl lg:text-5xl xl:text-6xl xl:leading-[1.15]'}`}>
-                  Somos el primer y único Estudio Jurídico en Chile dedicado exclusivamente al Derecho Internacional de Familia
+                  {hero.title}
                 </h1>
 
-                <p className="sr-only">
-                  Familia Internacional — estudio jurídico en Chile especializado en Derecho Internacional de Familia:
-                  divorcios internacionales, sustracción de menores, exequátur y custodia transfronteriza.
-                </p>
+                <p className="sr-only">{hero.srOnly}</p>
 
                 <p className={`font-medium leading-relaxed text-[#4b5563] transition-all duration-500 ${showForm ? 'max-w-2xl text-sm sm:text-base lg:max-w-none lg:text-[1.0625rem] lg:leading-7 xl:max-w-xl' : 'max-w-3xl text-base sm:text-lg lg:text-xl'}`}>
-                  Si su caso cruza países, le ayudamos a entender qué conviene, dónde actuar y cuál es el primer paso
-                  procesal — con abogados especializados en convenios internacionales y tribunales chilenos.
+                  {hero.subtitle}
+                </p>
+
+                <p className="text-sm font-medium leading-relaxed text-[#07234c]/80 sm:text-base">
+                  {hero.languageNote}
                 </p>
               </div>
 
               <div className={`mt-8 w-full sm:mt-10 lg:mb-8 lg:mt-10 flex flex-row gap-2 sm:gap-4 items-stretch ${showForm ? 'justify-center lg:justify-start' : 'justify-center'}`}>
                 <BookCallButton
-                  text="Agendar Videollamada"
+                  text={t('common.bookVideoCall')}
                   className={`${PRIMARY_BUTTON_XL_CLASS} flex-1 sm:flex-none sm:!w-[280px] !rounded-full !gap-2 !px-3 sm:!px-6 !text-[12px] sm:!text-base leading-tight [&_svg]:h-4 [&_svg]:w-4 sm:[&_svg]:h-5 sm:[&_svg]:w-5`}
                 />
-                
+
                 <button
                   type="button"
                   onClick={() => setShowForm(!showForm)}
                   className={`${PRIMARY_BUTTON_XL_CLASS} flex-1 sm:flex-none sm:!w-[280px] !rounded-full !px-1 sm:!px-6 !text-[12px] sm:!text-base leading-tight bg-transparent border-2 border-[#07234c] text-[#07234c] hover:bg-[#07234c] hover:text-white transition-colors`}
                 >
-                  {showForm ? 'Ocultar Formulario' : 'Desplegar Formulario'}
+                  {showForm ? t('common.hideForm') : t('common.openForm')}
                 </button>
               </div>
             </div>
@@ -64,7 +67,6 @@ export default function ReplicaHero() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

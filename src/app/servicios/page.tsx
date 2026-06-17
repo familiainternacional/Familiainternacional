@@ -6,23 +6,32 @@ import InnerPageHero from '@/components/marketing/InnerPageHero';
 import ServicesSection from '@/components/home/ServicesSection';
 import CtaSection from '@/components/home/CtaSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
-import { familyServices } from '@/config/family-services';
+import { getFamilyServices } from '@/config/family-services';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { getServicesPageAdminValues } from '@/app/admin/servicios/actions';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const servicesDescription =
-  'Divorcios internacionales, sustracción de menores, exequátur, alimentos, herencias y trámites consulares. Familia Internacional, especialistas en Chile.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.servicios;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/servicios',
-  title: 'Servicios de derecho de familia internacional',
-  description: servicesDescription,
-});
+  return createPageMetadata({
+    pathname: '/servicios',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
 export default async function ServicesIndexPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.servicios;
   const servicesValues = await getServicesPageAdminValues().catch(() => null);
+  const familyServices = getFamilyServices(locale);
   const siteUrl = getDefaultCanonicalBaseUrl();
 
   return (
@@ -35,15 +44,15 @@ export default async function ServicesIndexPage() {
               '@type': 'CollectionPage',
               '@id': `${siteUrl}/servicios#webpage`,
               url: `${siteUrl}/servicios`,
-              name: `Servicios | ${siteConfig.name}`,
-              description: servicesDescription,
+              name: `${page.metaTitle} | ${siteConfig.name}`,
+              description: page.metaDescription,
               inLanguage: 'es-CL',
               mainEntity: {
                 '@type': 'ItemList',
                 itemListElement: familyServices.map((service, index) => ({
                   '@type': 'ListItem',
                   position: index + 1,
-                  name: service.title.es,
+                  name: service.title,
                   url: `${siteUrl}/servicios/${service.slug}`,
                 })),
               },
@@ -51,8 +60,8 @@ export default async function ServicesIndexPage() {
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Inicio', item: siteUrl },
-                { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${siteUrl}/servicios` },
+                { '@type': 'ListItem', position: 1, name: dict.common.home, item: siteUrl },
+                { '@type': 'ListItem', position: 2, name: page.metaTitle, item: `${siteUrl}/servicios` },
               ],
             },
           ],
@@ -60,12 +69,12 @@ export default async function ServicesIndexPage() {
       />
 
       <InnerPageHero
-        eyebrow="Áreas de práctica"
-        title="Servicios de familia internacional"
-        description="Cada materia requiere experiencia transfronteriza. Seleccione el área más cercana a su situación o evalúe su caso con nuestro equipo."
+        eyebrow={page.eyebrow}
+        title={page.title}
+        description={page.description}
         breadcrumbs={[
-          { label: 'Inicio', href: '/' },
-          { label: 'Servicios' },
+          { label: dict.common.home, href: '/' },
+          { label: page.metaTitle },
         ]}
       />
 
@@ -75,15 +84,12 @@ export default async function ServicesIndexPage() {
 
       <section className="border-t border-[#07234c]/5 bg-[#f8fafc] px-5 py-12 md:px-12 lg:px-24">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <p className="fi-section-intro mt-0 max-w-xl">
-            ¿No está seguro de qué servicio necesita? Cuéntenos su situación y le orientamos sobre la vía jurídica
-            aplicable.
-          </p>
+          <p className="fi-section-intro mt-0 max-w-xl">{page.ctaBody}</p>
           <Link
             href="/evalua-tu-caso"
             className="inline-flex items-center justify-center rounded-full bg-[#07234c] px-7 py-4 text-base font-bold text-white transition-colors hover:bg-[#051830]"
           >
-            Evaluar mi caso
+            {dict.common.evaluateCase}
           </Link>
         </div>
       </section>

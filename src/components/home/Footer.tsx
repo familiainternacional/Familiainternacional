@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
-import { familyServices } from '@/config/family-services';
+import { getFamilyServices } from '@/config/family-services';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { getSiteIsotypeSrc, getSiteLogoSrc } from '@/lib/storage/site-assets';
 import { resolveSiteContact } from '@/lib/site-contact';
@@ -16,8 +16,8 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
   const logoSrc = getSiteLogoSrc('light');
   const isotypeSrc = getSiteIsotypeSrc();
   const contact = resolveSiteContact(adminValues);
-  const serviceLinks = familyServices.map((service) => ({
-    label: locale === 'es' ? service.title.es : service.title.en,
+  const serviceLinks = getFamilyServices(locale).map((service) => ({
+    label: service.title,
     href: `/servicios/${service.slug}`,
   }));
 
@@ -54,7 +54,7 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
             <p className="whitespace-pre-wrap">{contact.officeAddressMultiline}</p>
 
             <p>
-              <strong className="block text-small font-medium text-white">Contacto General</strong>
+              <strong className="block text-small font-medium text-white">{t('common.contactGeneral')}</strong>
               <a href={`mailto:${contact.primaryEmail}`} className="break-all transition-colors hover:text-white">
                 {contact.primaryEmail}
               </a>
@@ -111,7 +111,7 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
             </li>
             <li>
               <Link href="/prensa" className="transition-colors hover:text-white">
-                Prensa
+                {t('nav.press')}
               </Link>
             </li>
             <li>
@@ -121,12 +121,12 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
             </li>
             <li>
               <Link href="/reseñas" className="transition-colors hover:text-white">
-                Reseñas Google
+                {t('common.googleReviews')}
               </Link>
             </li>
             <li>
               <Link href="/preguntas-frecuentes" className="transition-colors hover:text-white">
-                FAQ
+                {t('common.faq')}
               </Link>
             </li>
             <li>
@@ -156,10 +156,10 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
 
       <div className={`${SITE_CONTAINER_CLASS} mt-12 flex w-full flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:gap-0 lg:mt-16 lg:pt-10`}>
         <p className="text-small">
-          © 2026 Familia Internacional. Todos los derechos reservados.
+          © 2026 {siteConfig.name}. {t('common.allRightsReserved')}
         </p>
         <p className="text-small">
-          Desarrollado por{' '}
+          {t('common.developedBy')}{' '}
           <a
             href="https://airconsulting-ten.vercel.app/"
             target="_blank"

@@ -11,6 +11,7 @@ import { buildWhatsAppWidgetHref } from '@/lib/contact/links';
 import { navigateToHomeSection, type NavSection } from '@/config/nav';
 import {
   closeMobileCliengoChat,
+  getSavedMobileScrollY,
   isCliengoEnabled,
   isMobileTabBarViewport,
   subscribeCliengoProactivePrompt,
@@ -39,7 +40,7 @@ const MOBILE_TAB_BAR_REVEALED_BODY_CLASS = 'fi-mobile-tab-bar-revealed';
 
 export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: string }) {
   const pathname = usePathname();
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const lenis = useLenis();
   const phone = whatsappNumber || siteConfig.contact.whatsappNumber;
   const whatsappHref = buildWhatsAppWidgetHref(phone, locale);
@@ -51,13 +52,24 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   const hiddenByFormFocusRef = useRef(false);
 
   const closeChat = () => {
+    const scrollY = getSavedMobileScrollY();
     setChatOpen(false);
     closeMobileCliengoChat();
     window.requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+      lenis?.scrollTo(scrollY, { immediate: true });
       lenis?.start();
       lenis?.resize();
     });
   };
+
+  useEffect(() => {
+    if (!chatOpen) return;
+    lenis?.stop();
+    return () => {
+      // lenis restarts in closeChat after scroll position is restored
+    };
+  }, [chatOpen, lenis]);
 
   useEffect(() => {
     hiddenByFormFocusRef.current = hiddenByFormFocus;
@@ -72,6 +84,10 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
         setChatPromptActive(false);
         document.body.classList.remove(MOBILE_TAB_BAR_REVEALED_BODY_CLASS);
         closeMobileCliengoChat();
+        window.requestAnimationFrame(() => {
+          lenis?.start();
+          lenis?.resize();
+        });
       }
     };
 
@@ -189,7 +205,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
         <nav className="mx-auto flex w-full max-w-sm items-center justify-between rounded-card bg-white px-4 py-3 pointer-events-auto">
           <Link href="/#home" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'home', '/#home')}>
             <Home size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">Inicio</span>
+            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.home')}</span>
           </Link>
           <Link
             href="/#services"
@@ -197,18 +213,18 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             onClick={(event) => handleSectionNav(event, 'services', '/#services')}
           >
             <Briefcase size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">Servicios</span>
+            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.services')}</span>
           </Link>
           <Link href="/#about" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'about', '/#about')}>
             <Info size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">Nosotros</span>
+            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.about')}</span>
           </Link>
           {MOBILE_TAB_BAR_CHAT_ENABLED ? (
             <button
               type="button"
               onClick={handleChatClick}
               aria-expanded={chatOpen}
-              aria-label={locale === 'en' ? 'Open chat' : 'Abrir chat'}
+              aria-label={t('mobile.chat.open')}
               className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
                 chatOpen
                   ? 'bg-[#07234c] text-white'
@@ -218,7 +234,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
               }`}
             >
               <MessageCircle size={22} strokeWidth={2} />
-              <span className="text-[10px] font-bold tracking-wide">Chat</span>
+              <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.chat')}</span>
             </button>
           ) : null}
           <a
@@ -228,7 +244,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
             className="flex flex-col items-center justify-center gap-1 text-[#1a9e4b] transition-colors hover:text-[#25D366]"
           >
             <WhatsAppIcon size={22} />
-            <span className="text-[10px] font-bold tracking-wide">WhatsApp</span>
+            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.whatsapp')}</span>
           </a>
         </nav>
       </div>

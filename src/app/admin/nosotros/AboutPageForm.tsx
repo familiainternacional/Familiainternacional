@@ -16,9 +16,9 @@ export default function AboutPageForm({ initialValues }: { initialValues: AboutP
     lawyer1Name: t('team.jaime.name'),
     lawyer1Bio1: t('team.jaime.bio1'),
     lawyer1Bio2: t('team.jaime.bio2'),
-    lawyer2Name: t('team.sebastian.name'),
-    lawyer2Bio1: t('team.sebastian.bio1'),
-    lawyer2Bio2: t('team.sebastian.bio2'),
+    lawyer2Name: '',
+    lawyer2Bio1: '',
+    lawyer2Bio2: '',
   };
 
   try {

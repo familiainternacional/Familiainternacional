@@ -1,0 +1,16 @@
+export const nav = {
+  home: 'Inicio',
+  services: 'Servicios',
+  about: 'Nosotros',
+  methodology: 'Metodología',
+  press: 'Prensa',
+  contact: 'Contacto',
+  blog: 'Perspectivas',
+  process: 'Metodología',
+  evaluate: 'Evalúa tu caso',
+  language: 'Idioma',
+  primaryNav: 'Navegación principal',
+  callPhone: 'Llamar al {phone}',
+  whatsapp: 'Escribir por WhatsApp',
+  bookCall: 'Agendar videollamada',
+} as const;

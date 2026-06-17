@@ -14,6 +14,11 @@ export type TeamMember = {
     description: string;
     keywords: string[];
   };
+  seoEn?: {
+    title: string;
+    description: string;
+    keywords: string[];
+  };
 };
 
 export const teamMembers: TeamMember[] = [
@@ -75,6 +80,18 @@ export const teamMembers: TeamMember[] = [
         'abogado familia internacional',
         'Convenio de La Haya',
         'sustracción internacional menores Chile',
+        'Familia Internacional',
+      ],
+    },
+    seoEn: {
+      title: 'Jaime Soto Silva | International Family Law Attorney',
+      description:
+        'Jaime Soto Silva, partner attorney at Familia Internacional. Expert in the Hague Convention, international child abduction, exequatur, and cross-border custody. Former Central Authority attorney.',
+      keywords: [
+        'Jaime Soto Silva',
+        'international family law attorney',
+        'Hague Convention',
+        'international child abduction Chile',
         'Familia Internacional',
       ],
     },

@@ -237,8 +237,12 @@ body {
   }
 
   body.fi-mobile-chat-open {
-    overflow: hidden;
+    overflow: hidden !important;
     padding-bottom: 0 !important;
+  }
+
+  html.fi-mobile-chat-open {
+    overflow: hidden !important;
   }
 
   .fi-mobile-chat-sheet__body--chat-active {
@@ -278,7 +282,8 @@ body {
   .fi-mobile-chat-sheet__launcher-host {
     position: relative;
     min-height: 5.5rem;
-    width: 100%;
+    width: min(100%, 6rem);
+    margin-inline: auto;
   }
 
   .fi-mobile-chat-sheet__launcher-host #cliengo-button,

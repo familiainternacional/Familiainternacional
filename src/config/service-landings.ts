@@ -310,6 +310,55 @@ export const serviceLandings = [
       },
     ],
   },
+  {
+    slug: 'autorizaciones-salida-pais',
+    title: 'Autorizaciones para Salir del País',
+    shortTitle: 'Salida del país',
+    seoTitle: 'Autorización judicial para salir del país con menores Chile',
+    seoDescription:
+      'Tramitamos autorizaciones judiciales para que menores salgan del país, por viajes temporales o relocalización definitiva. Familia Internacional.',
+    eyebrow: 'Área 07',
+    heroTitle: 'Autorización judicial para viajar o relocalizar con su hijo',
+    heroSubtitle:
+      'Patrocinamos solicitudes ante tribunales de familia para salidas temporales del país o cambios de residencia internacional de menores.',
+    image: '/hero-santiago.png',
+    ctaTitle: 'Evalúe su solicitud de autorización',
+    ctaDescription:
+      'Revisamos plazos, destino, oposición del otro progenitor y documentación necesaria antes de presentar la demanda.',
+    ctaLabel: 'Evaluar autorización de salida',
+    intro:
+      'Cuando un progenitor necesita viajar al extranjero con su hijo o relocalizarse de forma definitiva, suele requerirse autorización judicial si no existe acuerdo. Familia Internacional tramita estas solicitudes con foco en la protección del menor y en los plazos del viaje o mudanza.',
+    problems: [
+      'Negativa del otro padre o madre a firmar el permiso de salida.',
+      'Viaje escolar, familiar o de urgencia con fecha cercana.',
+      'Relocalización internacional con oposición del otro progenitor.',
+      'Renovación o ampliación de una autorización previa.',
+    ],
+    approach: [
+      'Análisis de acuerdos vigentes, sentencias y régimen de cuidado personal.',
+      'Preparación de demanda o solicitud con fundamentos y documentación.',
+      'Negociación judicial o extrajudicial cuando es viable.',
+      'Seguimiento hasta la resolución y orientación para el viaje.',
+    ],
+    includes: [
+      'Autorizaciones para salidas temporales del país.',
+      'Relocalización o residencia permanente en el extranjero.',
+      'Defensa ante oposición del otro progenitor.',
+      'Coordinación con casos de visitas o Convenio de La Haya vinculados.',
+    ],
+    faqs: [
+      {
+        question: '¿Siempre se necesita autorización judicial para salir del país con un menor?',
+        answer:
+          'No en todos los casos, pero cuando no hay acuerdo o existe oposición, el tribunal de familia debe autorizar la salida. Evaluamos su situación concreta antes de viajar.',
+      },
+      {
+        question: '¿Cuánto demora una autorización de salida?',
+        answer:
+          'Depende del tribunal, la urgencia y si hay oposición. En viajes con plazo corto conviene actuar con la mayor anticipación posible.',
+      },
+    ],
+  },
 ] as const satisfies ServiceLanding[];
 
 export type ServiceSlug = (typeof serviceLandings)[number]['slug'];

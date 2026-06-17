@@ -13,20 +13,27 @@ import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const nosotrosDescription =
-  'Conoce Familia Internacional: el primer estudio en Chile dedicado exclusivamente al Derecho Internacional de Familia, liderado por Jaime Soto Silva.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.nosotros;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/nosotros',
-  title: 'Nosotros',
-  description: nosotrosDescription,
-});
+  return createPageMetadata({
+    pathname: '/nosotros',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
 export default async function NosotrosPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.nosotros;
   const aboutValues = await getAboutPageAdminValues().catch(() => null);
   const siteUrl = getDefaultCanonicalBaseUrl();
-  const pageDescription = nosotrosDescription;
 
   return (
     <MarketingPageLayout>
@@ -36,20 +43,20 @@ export default async function NosotrosPage() {
           '@type': 'AboutPage',
           '@id': `${siteUrl}/nosotros#webpage`,
           url: `${siteUrl}/nosotros`,
-          name: `Nosotros | ${siteConfig.name}`,
-          description: pageDescription,
+          name: `${page.metaTitle} | ${siteConfig.name}`,
+          description: page.metaDescription,
           inLanguage: 'es-CL',
           isPartOf: { '@id': `${siteUrl}/#website` },
         }}
       />
 
       <InnerPageHero
-        eyebrow="El estudio"
-        title="Expertos en familia internacional"
-        description="Somos el primer y único estudio jurídico en Chile dedicado exclusivamente a la protección de familias y menores cuando sus derechos cruzan fronteras."
+        eyebrow={page.eyebrow}
+        title={page.title}
+        description={page.description}
         breadcrumbs={[
-          { label: 'Inicio', href: '/' },
-          { label: 'Nosotros' },
+          { label: dict.common.home, href: '/' },
+          { label: page.metaTitle },
         ]}
       />
 
@@ -71,15 +78,12 @@ export default async function NosotrosPage() {
 
       <section className="border-t border-[#07234c]/5 bg-white px-5 py-12 md:px-12 lg:px-24">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <p className="fi-section-intro mt-0 max-w-xl">
-            Conoce la trayectoria completa de Jaime Soto Silva, su experiencia en el Convenio de La Haya y su
-            participación como autoridad central.
-          </p>
+          <p className="fi-section-intro mt-0 max-w-xl">{page.jaimeTeaser}</p>
           <Link
             href="/equipo/jaime-soto-silva"
             className="fi-link-action rounded-full border border-[#07234c]/15 px-6 py-3 text-[#07234c] hover:bg-[#07234c] hover:text-white"
           >
-            Perfil de Jaime Soto
+            {page.jaimeProfileLink}
           </Link>
         </div>
       </section>

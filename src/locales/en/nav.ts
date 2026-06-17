@@ -1,0 +1,16 @@
+export const nav = {
+  home: 'Home',
+  services: 'Services',
+  about: 'About',
+  methodology: 'Methodology',
+  press: 'Press',
+  contact: 'Contact',
+  blog: 'Insights',
+  process: 'Methodology',
+  evaluate: 'Evaluate your case',
+  language: 'Language',
+  primaryNav: 'Primary navigation',
+  callPhone: 'Call {phone}',
+  whatsapp: 'Message on WhatsApp',
+  bookCall: 'Book a video call',
+} as const;

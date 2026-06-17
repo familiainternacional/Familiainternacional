@@ -5,19 +5,29 @@ import Footer from '@/components/home/Footer';
 import PressListing from '@/components/press/PressListing';
 import JsonLd from '@/components/seo/JsonLd';
 import { pressHubSeo } from '@/config/media-mentions';
-import { siteConfig } from '@/config/site';
 import { buildPressHubStructuredData } from '@/lib/seo/press-structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/prensa',
-  title: pressHubSeo.title,
-  description: pressHubSeo.description,
-  keywords: pressHubSeo.keywords,
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.prensa;
+
+  return createPageMetadata({
+    pathname: '/prensa',
+    title: page.metaTitle,
+    description: page.metaDescription,
+    keywords: pressHubSeo.keywords,
+  });
+}
 
 export default async function PrensaPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.prensa;
   const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
 
   return (
@@ -31,25 +41,19 @@ export default async function PrensaPage() {
             <ol className="flex flex-wrap items-center gap-2">
               <li>
                 <Link href="/" className="transition-colors hover:text-[#07234c]">
-                  Inicio
+                  {dict.common.home}
                 </Link>
               </li>
               <li aria-hidden>/</li>
-              <li className="font-semibold text-[#07234c]">Prensa</li>
+              <li className="font-semibold text-[#07234c]">{page.metaTitle}</li>
             </ol>
           </nav>
 
           <header className="mb-12 max-w-3xl md:mb-16">
-            <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.15em] text-[#07234c]">
-              Prensa y medios
-            </p>
             <h1 className="mb-5 font-serif text-3xl font-semibold tracking-tight text-[#07234c] md:text-5xl">
-              Autoridad consultada en derecho de familia internacional
+              {page.title}
             </h1>
-            <p className="text-base leading-relaxed text-neutral-600 md:text-lg">
-              Medios nacionales recurren a {siteConfig.name} para explicar conflictos transfronterizos, el Convenio de
-              La Haya, apelaciones en el extranjero y las opciones reales que tienen las familias.
-            </p>
+            <p className="text-base leading-relaxed text-neutral-600 md:text-lg">{page.intro}</p>
           </header>
 
           <PressListing />

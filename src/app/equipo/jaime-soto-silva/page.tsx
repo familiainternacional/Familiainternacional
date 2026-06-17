@@ -13,36 +13,51 @@ import { buildTeamMemberStructuredData } from '@/lib/seo/team-structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { notFound } from 'next/navigation';
 import { buildLanguageAlternates, buildTwitterMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { getLocalizedTeamMember } from '@/lib/i18n/team-member';
 
 const member = getTeamMemberBySlug('jaime-soto-silva');
 
-export const metadata: Metadata = member
-  ? {
-      title: member.seo.title,
-      description: member.seo.description,
-      keywords: member.seo.keywords,
-      alternates: buildLanguageAlternates(`/equipo/${member.slug}`),
-      openGraph: {
-        title: `${member.seo.title} | ${siteConfig.name}`,
-        description: member.seo.description,
-        url: `/equipo/${member.slug}`,
-        type: 'profile',
-        locale: 'es_CL',
-        alternateLocale: ['en_US'],
-        siteName: siteConfig.name,
-        images: [{ url: member.image, alt: member.imageAlt, width: 1200, height: 630 }],
-      },
-      twitter: buildTwitterMetadata({
-        title: `${member.seo.title} | ${siteConfig.name}`,
-        description: member.seo.description,
-        images: member.image,
-      }),
-    }
-  : {};
+export async function generateMetadata(): Promise<Metadata> {
+  if (!member) {
+    return {};
+  }
+
+  const locale = await getServerLocale();
+  const localized = getLocalizedTeamMember(member, locale);
+  const openGraphTitle = `${localized.seo.title} | ${siteConfig.name}`;
+
+  return {
+    title: localized.seo.title,
+    description: localized.seo.description,
+    keywords: localized.seo.keywords,
+    alternates: buildLanguageAlternates(`/equipo/${member.slug}`),
+    openGraph: {
+      title: openGraphTitle,
+      description: localized.seo.description,
+      url: `/equipo/${member.slug}`,
+      type: 'profile',
+      locale: locale === 'en' ? 'en_US' : 'es_CL',
+      alternateLocale: locale === 'en' ? ['es_CL'] : ['en_US'],
+      siteName: siteConfig.name,
+      images: [{ url: member.image, alt: member.imageAlt, width: 1200, height: 630 }],
+    },
+    twitter: buildTwitterMetadata({
+      title: openGraphTitle,
+      description: localized.seo.description,
+      images: member.image,
+    }),
+  };
+}
 
 export default async function TeamMemberPage() {
   if (!member) notFound();
 
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.jaime;
+  const localized = getLocalizedTeamMember(member, locale);
   const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
 
   return (
@@ -52,17 +67,17 @@ export default async function TeamMemberPage() {
 
       <article className="px-5 pb-24 pt-32 md:px-12 md:pb-32 md:pt-40 lg:px-24">
         <div className="mx-auto max-w-6xl">
-          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-neutral-500">
+          <nav aria-label={dict.common.breadcrumb} className="mb-6 text-sm text-neutral-500">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
                 <Link href="/" className="hover:text-[#07234c]">
-                  Inicio
+                  {dict.common.home}
                 </Link>
               </li>
               <li aria-hidden>/</li>
               <li>
                 <Link href="/#about" className="hover:text-[#07234c]">
-                  Nosotros
+                  {dict.nav.about}
                 </Link>
               </li>
               <li aria-hidden>/</li>
@@ -88,17 +103,17 @@ export default async function TeamMemberPage() {
               </p>
               <h1 className="mb-2 font-serif text-4xl font-semibold tracking-tight md:text-5xl">{member.name}</h1>
               <p className="mb-6 text-sm font-bold uppercase tracking-widest text-[var(--color-primary-mid)]">
-                {member.role.es}
+                {localized.role}
               </p>
 
               <div className="mb-8 space-y-4 text-base leading-relaxed text-neutral-700">
-                {member.bio.es.map((paragraph) => (
+                {localized.bio.map((paragraph) => (
                   <p key={paragraph.slice(0, 48)}>{paragraph}</p>
                 ))}
               </div>
 
               <div className="mb-8 flex flex-wrap gap-2">
-                {member.tags.map((tag) => (
+                {localized.tags.map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-[#07234c]/10 bg-[#07234c]/[0.04] px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#555555]"
@@ -113,18 +128,18 @@ export default async function TeamMemberPage() {
               </div>
 
               <section className="mb-8">
-                <h2 className="mb-4 text-xl font-bold">Formación</h2>
+                <h2 className="mb-4 text-xl font-bold">{page.education}</h2>
                 <ul className="list-disc space-y-2 pl-5 text-neutral-700">
-                  {member.formacion.es.map((item) => (
+                  {localized.formacion.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </section>
 
               <section className="mb-10">
-                <h2 className="mb-4 text-xl font-bold">Experiencia</h2>
+                <h2 className="mb-4 text-xl font-bold">{page.experience}</h2>
                 <ul className="list-disc space-y-2 pl-5 text-neutral-700">
-                  {member.experiencia.es.map((item) => (
+                  {localized.experiencia.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
@@ -135,7 +150,7 @@ export default async function TeamMemberPage() {
                   href="/evalua-tu-caso"
                   className="inline-flex items-center gap-2 rounded-full bg-[#07234c] px-5 py-3 text-sm font-bold text-white hover:bg-[#051830]"
                 >
-                  Agendar evaluación
+                  {page.bookEvaluation}
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </Link>
                 <a
@@ -145,7 +160,7 @@ export default async function TeamMemberPage() {
                   {member.email}
                 </a>
                 <Link href="/prensa" className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-[#07234c]">
-                  Ver cobertura en prensa
+                  {page.viewPress}
                 </Link>
               </div>
             </div>

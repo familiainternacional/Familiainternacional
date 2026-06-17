@@ -7,28 +7,37 @@ import CtaSection from '@/components/home/CtaSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import { buildGoogleReviewsStructuredData } from '@/lib/seo/google-reviews-structured-data';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const resenasDescription =
-  'Reseñas verificadas de clientes de Familia Internacional en Google Business Profile. Experiencias en derecho de familia internacional.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.resenas;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/reseñas',
-  title: 'Reseñas de Google',
-  description: resenasDescription,
-});
+  return createPageMetadata({
+    pathname: '/reseñas',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
-export default function ResenasPage() {
+export default async function ResenasPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.resenas;
+
   return (
     <MarketingPageLayout>
       <JsonLd data={buildGoogleReviewsStructuredData('/reseñas')} />
 
       <InnerPageHero
-        eyebrow="Google Business Profile"
-        title="Reseñas verificadas de nuestros clientes"
-        description="Estas opiniones provienen directamente de nuestro perfil público en Google. Puede verificar cada reseña y dejar la suya después de trabajar con nosotros."
+        eyebrow={page.eyebrow}
+        title={page.title}
+        description={page.description}
         breadcrumbs={[
-          { label: 'Inicio', href: '/' },
-          { label: 'Reseñas' },
+          { label: dict.common.home, href: '/' },
+          { label: page.metaTitle },
         ]}
       />
 

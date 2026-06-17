@@ -1,30 +1,13 @@
+'use client';
+
 import React from 'react';
+import { useI18n } from '@/lib/i18n/I18nProvider';
 import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS, HOME_STEP_TITLE_CLASS } from '@/lib/layout';
 
-const processSteps = [
-  {
-    title: 'Evaluación inicial',
-    description: 'País competente, convenios aplicables y grado de urgencia.',
-  },
-  {
-    title: 'Estrategia jurídica',
-    description: 'Vía en Chile, en el extranjero o combinada según su caso.',
-  },
-  {
-    title: 'Medidas cautelares',
-    description: 'Alertas y protección cuando el tiempo es crítico.',
-  },
-  {
-    title: 'Litigación coordinada',
-    description: 'Tribunales chilenos, autoridades centrales y abogados internacionales.',
-  },
-  {
-    title: 'Seguimiento',
-    description: 'Acuerdos, cumplimiento y próximos pasos claros.',
-  },
-];
-
 export default function GuideProcessSection() {
+  const { t, dictionary } = useI18n();
+  const process = dictionary.home.process;
+
   return (
     <section
       id="metodologia"
@@ -34,24 +17,23 @@ export default function GuideProcessSection() {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-16">
           <div>
-            <p className="fi-eyebrow mb-4 text-[var(--color-primary)]">Cómo trabajamos</p>
+            <p className="fi-eyebrow mb-4 text-[var(--color-primary)]">{process.eyebrow}</p>
             <h2 id="process-guide-title" className={`max-w-[18ch] ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
-              Un camino claro cuando el derecho cruza fronteras
+              {process.title}
             </h2>
           </div>
           <div className="md:pt-2">
-            <p className="max-w-lg text-base leading-relaxed text-[#555555] sm:text-lg">
-              No prometemos atajos: traducimos su situación en opciones concretas, plazos realistas y el orden
-              procesal que corresponde en derecho de familia internacional.
-            </p>
+            <p className="max-w-lg text-base leading-relaxed text-[#555555] sm:text-lg">{process.intro}</p>
           </div>
         </div>
 
         <div className="mt-14 w-full sm:mt-20">
           <div className="space-y-4 lg:hidden">
-            {processSteps.map((step, index) => (
+            {process.steps.map((step, index) => (
               <article key={step.title} className="rounded-card border border-[#07234c]/10 bg-white p-5 shadow-sm">
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#07234c]">Paso 0{index + 1}</p>
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#07234c]">
+                  {t('common.step')} 0{index + 1}
+                </p>
                 <h3 className={`mb-2 ${HOME_STEP_TITLE_CLASS}`}>{step.title}</h3>
                 <p className="text-sm leading-relaxed text-[#555555]">{step.description}</p>
               </article>
@@ -59,7 +41,7 @@ export default function GuideProcessSection() {
           </div>
 
           <div className="hidden grid-cols-1 gap-10 sm:grid-cols-2 lg:grid lg:grid-cols-5 lg:gap-6">
-            {processSteps.map((step, index) => {
+            {process.steps.map((step, index) => {
               const isActive = index === 0;
 
               return (
@@ -74,7 +56,7 @@ export default function GuideProcessSection() {
                   <span
                     className={`mb-3 text-[10px] font-bold uppercase tracking-[0.2em] sm:mb-4 sm:text-xs ${isActive ? 'text-[#07234c]' : 'text-[#1a1a1a]/40'}`}
                   >
-                    Paso 0{index + 1}
+                    {t('common.step')} 0{index + 1}
                   </span>
                   <h3 className={`mb-2 ${HOME_STEP_TITLE_CLASS} ${isActive ? '' : 'text-[#1a1a1a]/70'}`}>
                     {step.title}

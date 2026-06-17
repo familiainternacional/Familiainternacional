@@ -1,4 +1,5 @@
 import type { Locale } from '@/lib/i18n/config';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
 export type NavSection =
   | 'home'
@@ -39,42 +40,42 @@ function homeSectionHref(section: NavSection) {
 }
 
 export function getMainNavItems(locale: Locale): NavMenuLink[] {
-  const isSpanish = locale === 'es';
+  const nav = getDictionary(locale).nav;
 
   return [
     {
       type: 'link',
-      label: isSpanish ? 'Inicio' : 'Home',
+      label: nav.home,
       href: homeSectionHref('home'),
       section: 'home',
     },
     {
       type: 'link',
-      label: isSpanish ? 'Servicios' : 'Services',
+      label: nav.services,
       href: homeSectionHref('services'),
       section: 'services',
     },
     {
       type: 'link',
-      label: isSpanish ? 'Nosotros' : 'About',
+      label: nav.about,
       href: homeSectionHref('about'),
       section: 'about',
     },
     {
       type: 'link',
-      label: isSpanish ? 'Metodología' : 'Methodology',
+      label: nav.methodology,
       href: homeSectionHref('metodologia'),
       section: 'metodologia',
     },
     {
       type: 'link',
-      label: isSpanish ? 'Prensa' : 'Press',
+      label: nav.press,
       href: homeSectionHref('prensa'),
       section: 'prensa',
     },
     {
       type: 'link',
-      label: isSpanish ? 'Contacto' : 'Contact',
+      label: nav.contact,
       href: homeSectionHref('contact'),
       section: 'contact',
     },

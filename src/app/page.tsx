@@ -13,6 +13,7 @@ import PaymentMethodsBanner from '@/components/home/PaymentMethodsBanner';
 import Footer from '@/components/home/Footer';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import JsonLd from '@/components/seo/JsonLd';
+import SkipToContentLink from '@/components/i18n/SkipToContentLink';
 import { siteConfig } from '@/config/site';
 import { buildHomeStructuredData } from '@/lib/seo/structured-data';
 import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
@@ -48,12 +49,7 @@ export default async function HomePage() {
     <>
       <JsonLd data={buildHomeStructuredData()} />
 
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-[60] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-[#07234c]"
-      >
-        Saltar al contenido principal
-      </a>
+      <SkipToContentLink />
 
       <Navbar adminValues={siteSettings} />
 

@@ -13,11 +13,7 @@ import Footer from '@/components/home/Footer';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import JsonLd from '@/components/seo/JsonLd';
 import FaqAccordion from '@/components/ui/FaqAccordion';
-import {
-  getServiceLanding,
-  serviceLandings,
-} from '@/config/service-landings';
-import { getServiceSeoCopy } from '@/config/service-seo-copy';
+import { serviceLandings } from '@/config/service-landings';
 import { siteConfig } from '@/config/site';
 import { buildServiceLandingStructuredData } from '@/lib/seo/structured-data';
 import { buildLanguageAlternates, buildTwitterMetadata, NOINDEX_ROBOTS } from '@/lib/seo/metadata';
@@ -28,6 +24,13 @@ import {
   SLUG_PAGE_SECTION_SHELL_CLASS,
 } from '@/lib/layout';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
+import { getServerLocale } from '@/lib/i18n/server';
+import { formatTranslation, getDictionary } from '@/lib/i18n/dictionaries';
+import {
+  getLocalizedServiceLanding,
+  getLocalizedServiceLandings,
+} from '@/lib/i18n/service-landing';
+import { getLocalizedServiceSeoCopy } from '@/lib/i18n/service-seo-copy';
 
 type ServicePageProps = {
   params: Promise<{
@@ -43,16 +46,18 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const landing = getServiceLanding(slug);
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const landing = getLocalizedServiceLanding(slug, locale);
 
   if (!landing) {
     return {
-      title: 'Servicio no encontrado',
+      title: dict.common.serviceNotFound,
       robots: NOINDEX_ROBOTS,
     };
   }
 
-  const seoCopy = getServiceSeoCopy(landing.slug);
+  const seoCopy = getLocalizedServiceSeoCopy(landing.slug, locale);
   const ogImage = `/servicios/${landing.slug}/opengraph-image`;
   const openGraphTitle = `${landing.seoTitle} | ${siteConfig.name}`;
 
@@ -88,28 +93,30 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
 
 export default async function ServiceLandingPage({ params }: ServicePageProps) {
   const { slug } = await params;
-  const landing = getServiceLanding(slug);
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const landing = getLocalizedServiceLanding(slug, locale);
+  const ui = dict.servicesUi;
 
   if (!landing) {
     notFound();
   }
 
-  const relatedServices = serviceLandings
+  const relatedServices = getLocalizedServiceLandings(locale)
     .filter((service) => service.slug !== landing.slug)
     .slice(0, 3);
-  const seoCopy = getServiceSeoCopy(landing.slug);
+  const seoCopy = getLocalizedServiceSeoCopy(landing.slug, locale);
   const heroStats = [
-    { value: '01', label: 'diagnostico inicial' },
-    { value: String(landing.approach.length).padStart(2, '0'), label: 'fases de estrategia' },
-    { value: String(landing.includes.length).padStart(2, '0'), label: 'servicios incluidos' },
-    { value: '100%', label: 'confidencialidad' },
+    { value: '01', label: ui.stats.initialDiagnosis },
+    { value: String(landing.approach.length).padStart(2, '0'), label: ui.stats.strategyPhases },
+    { value: String(landing.includes.length).padStart(2, '0'), label: ui.stats.includedServices },
+    { value: '100%', label: ui.stats.confidentiality },
   ];
   const guideColumns = seoCopy.decisionPoints.slice(0, 3).map((point, index) => ({
     point,
-    title: ['Inspire la decision.', 'Conecte los antecedentes.', 'Equipe su estrategia.'][index],
+    title: ui.guideColumns[index],
     Icon: [Scale, CheckCircle, CircleDot][index],
   }));
-  const approachTitles = ['Diagnostico', 'Estrategia', 'Ejecucion'];
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-white font-sans text-[#07234c] scroll-smooth">
@@ -154,7 +161,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                 href="/servicios"
                 className="mb-7 inline-flex items-center text-small font-semibold text-[#07234c]/70 underline decoration-[#07234c]/20 underline-offset-4 transition-colors hover:text-[#07234c]"
               >
-                Servicios juridicos
+                {ui.breadcrumb}
               </Link>
 
               <span className="mb-5 block text-small font-bold uppercase tracking-widest text-brand">
@@ -216,10 +223,12 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
           <section className={`${SLUG_PAGE_SECTION_CLASS} py-20 md:py-28`}>
             <div className="mx-auto max-w-7xl">
               <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
-                Enfoque
+                {ui.focus}
               </span>
               <h2 className="max-w-[18ch] font-serif text-h2 font-bold tracking-tight">
-                Como abordamos {landing.shortTitle.toLowerCase()}
+                {formatTranslation(locale, 'servicesUi.approachTitle', {
+                  area: landing.shortTitle.toLowerCase(),
+                })}
               </h2>
               <p className="mt-6 max-w-[70ch] text-body leading-relaxed text-[#555555]">
                 {landing.intro}
@@ -235,7 +244,10 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <h3 className="mt-10 max-w-[13ch] text-small font-bold uppercase leading-tight text-[#07234c]">
-                      {approachTitles[index] ?? `Etapa ${index + 1}`}
+                      {ui.approachStages[index] ??
+                        formatTranslation(locale, 'servicesUi.stageFallback', {
+                          n: String(index + 1),
+                        })}
                     </h3>
                     <p className="mt-5 max-w-[32ch] text-small leading-relaxed text-[#333333]">
                       {item}
@@ -252,18 +264,16 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
             <div className="mx-auto max-w-7xl">
               <Scale className="h-10 w-10 text-[#07234c]" strokeWidth={1.7} />
               <h2 className="mt-6 max-w-[18ch] font-serif text-h2 font-bold tracking-tight">
-                Problemas que resolvemos
+                {ui.problemsTitle}
               </h2>
               
               <div className="mt-8 grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
                 <div className="space-y-4">
                   <p className="max-w-[65ch] text-body text-[#333333]">
-                    Identificamos los puntos de friccion que suelen transformar una
-                    diferencia legal en un problema patrimonial, operativo o comercial.
+                    {ui.problemsIntro1}
                   </p>
                   <p className="max-w-[65ch] text-body text-[#333333]">
-                    Cada caso se ordena con criterio juridico, lectura estrategica y
-                    una ruta concreta para decidir el siguiente movimiento.
+                    {ui.problemsIntro2}
                   </p>
                   <div className="pt-8">
                     <Link
@@ -293,7 +303,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
             <div className={`${SLUG_PAGE_SECTION_DIVIDER_CLASS} px-0 py-16 md:py-24 lg:px-0`}>
               <div className="mx-auto max-w-7xl px-5 md:px-12 lg:px-24">
                 <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
-                  Guia estrategica
+                  {ui.guideEyebrow}
                 </span>
                 <h2 className="max-w-[18ch] font-serif text-h2 font-bold tracking-tight">
                   {seoCopy.intentTitle}
@@ -334,7 +344,9 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                       className="border border-[#07234c]/5 bg-white p-7 shadow-[0_14px_36px_rgba(0,0,0,0.06)] md:p-8"
                     >
                       <h3 className="text-small font-bold text-[#07234c]">
-                        Paso {String(index + 1).padStart(2, '0')}
+                        {formatTranslation(locale, 'servicesUi.stepLabel', {
+                          n: String(index + 1).padStart(2, '0'),
+                        })}
                       </h3>
                       <p className="mt-4 max-w-[44ch] text-body leading-relaxed text-[#333333]">
                         {point}
@@ -376,10 +388,10 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
             <div className="mx-auto max-w-7xl">
               <div className="mb-10 max-w-[65ch]">
                 <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
-                  Servicios incluidos
+                  {ui.includesTitle}
                 </span>
                 <h2 className="font-serif text-h2 font-bold tracking-tight">
-                  Que puede incluir esta asesoria
+                  {ui.includesHeading}
                 </h2>
               </div>
 
@@ -423,7 +435,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
 
                         <div className="mt-2 flex items-center md:mt-auto md:justify-between md:gap-4 md:pt-2">
                           <span className="hidden text-small text-[#07234c] md:block">
-                            Incluye {includeNumber}
+                            {ui.includePrefix} {includeNumber}
                           </span>
                           <CircleDot className="hidden h-4 w-4 text-brand md:block" />
                         </div>
@@ -440,10 +452,10 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
           <section className={`${SLUG_PAGE_SECTION_CLASS} py-20 md:py-28`}>
             <div className="mx-auto max-w-7xl">
               <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
-                Preguntas frecuentes
+                {ui.faqTitle}
               </span>
               <h2 className="max-w-[14ch] font-serif text-h2 font-bold tracking-tight">
-                Antes de avanzar
+                {ui.beforeAdvancing}
               </h2>
 
               <div className="mt-10 max-w-4xl">
@@ -458,7 +470,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
             <div className="mx-auto max-w-7xl">
               <div className="max-w-[760px]">
                 <span className="mb-4 block text-small font-bold uppercase tracking-widest text-brand">
-                  Proximo paso
+                  {ui.nextStep}
                 </span>
                 <h2 className="max-w-[18ch] font-serif text-h2 font-bold tracking-tight">
                   {landing.ctaTitle}
@@ -482,10 +494,10 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
           <section className={`${SLUG_PAGE_SECTION_CLASS} py-16 md:py-20`}>
             <div className="mx-auto max-w-7xl">
               <h2 className="font-serif text-h2 font-bold tracking-tight">
-                Otros servicios
+                {ui.otherServices}
               </h2>
               <p className="mt-3 max-w-[65ch] text-body text-[#555555]">
-                Explore areas relacionadas para construir una estrategia legal integral.
+                {ui.relatedServicesIntro}
               </p>
               <div className="mt-8 grid gap-6 md:grid-cols-3">
                 {relatedServices.map((service) => (

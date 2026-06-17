@@ -9,6 +9,7 @@ import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLenis } from 'lenis/react';
 import BookCallButton from '@/components/home/BookCallButton';
+import LocaleSelector from '@/components/i18n/LocaleSelector';
 import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { SITE_CONTAINER_CLASS } from '@/lib/layout';
 import { buildWhatsAppWidgetHref, digitsOnly } from '@/lib/contact/links';
@@ -28,6 +29,8 @@ import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 
 const SCROLL_OFFSET = 12;
 const SCROLL_RANGE = 180;
+const LOCALE_TRIGGER_CLASS =
+  'inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 text-[#555555] transition-colors hover:bg-black/5 hover:text-[#07234c]';
 
 const NAV_LOGO_HEIGHT = { min: 42, max: 54 } as const;
 const NAV_LOGO_MAX_WIDTH = { min: 220, max: 300 } as const;
@@ -184,13 +187,12 @@ function FiLogo({
 
 export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
   const pathname = usePathname();
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const lenis = useLenis();
   const [collapseProgress, setCollapseProgress] = useState(0);
   const scrollRafRef = useRef<number | null>(null);
   const [activeSection, setActiveSection] = useState<NavSection>('home');
   const mainNavItems = useMemo(() => getMainNavItems(locale), [locale]);
-  const isEnglish = locale === 'en';
   const isMobileOnly = variant === 'mobile-only';
   const contact = resolveSiteContact(adminValues);
   const { primaryPhone, primaryPhoneHref } = contact;
@@ -358,7 +360,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
             <nav
               className="hidden lg:flex items-center justify-center"
               style={{ gap: desktopNavMetrics.navGap }}
-              aria-label={isEnglish ? 'Primary navigation' : 'Navegación principal'}
+              aria-label={t('nav.primaryNav')}
             >
               {mainNavItems.map((item) => (
                 <Link
@@ -376,7 +378,13 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
             {/* Right: acciones (utilidad → contacto → conversión) */}
             <div className="flex shrink-0 items-center" style={{ gap: desktopNavMetrics.actionGap }}>
               <div className="hidden lg:block">
-                {/* LocaleSelector removed for more space */}
+                <LocaleSelector
+                  triggerClassName={`${LOCALE_TRIGGER_CLASS} hidden lg:inline-flex`}
+                  triggerStyle={{
+                    width: desktopNavMetrics.actionHeight,
+                    height: desktopNavMetrics.actionHeight,
+                  }}
+                />
               </div>
 
               <span
@@ -392,7 +400,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
                   width: desktopNavMetrics.actionHeight,
                   height: desktopNavMetrics.actionHeight,
                 }}
-                aria-label={isEnglish ? `Call ${primaryPhone}` : `Llamar al ${primaryPhone}`}
+                aria-label={t('nav.callPhone', { phone: primaryPhone })}
               >
                 <Phone size={desktopNavMetrics.phoneIconSize} className="shrink-0" aria-hidden />
               </a>
@@ -407,7 +415,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
                     width: desktopNavMetrics.actionHeight,
                     height: desktopNavMetrics.actionHeight,
                   }}
-                  aria-label={isEnglish ? 'Message on WhatsApp' : 'Escribir por WhatsApp'}
+                  aria-label={t('nav.whatsapp')}
                 >
                   <WhatsAppIcon size={desktopNavMetrics.phoneIconSize} className="shrink-0" />
                 </a>
@@ -422,7 +430,7 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
                 showIcon
                 iconSize={desktopNavMetrics.phoneIconSize}
                 text=""
-                ariaLabel={isEnglish ? 'Book a video call' : 'Agendar videollamada'}
+                ariaLabel={t('nav.bookCall')}
               />
             </div>
           </div>
@@ -477,7 +485,10 @@ export default function Navbar({ adminValues, variant = 'full' }: NavbarProps) {
           </Link>
 
           <div className="flex shrink-0 items-center">
-            {/* LocaleSelector removed for more space */}
+            <LocaleSelector
+              triggerClassName={LOCALE_TRIGGER_CLASS}
+              triggerStyle={{ width: 40, height: 40 }}
+            />
           </div>
         </div>
       </header>

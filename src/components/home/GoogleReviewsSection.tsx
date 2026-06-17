@@ -9,9 +9,7 @@ import { googleBusinessProfile, googleReviews } from '@/config/google-reviews';
 import { HOME_SECTION_TITLE_MUTED_CLASS, OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
 type GoogleReviewsSectionProps = {
-  /** Máximo de tarjetas visibles. Por defecto todas. */
   limit?: number;
-  /** En home: enlace a página completa de reseñas. */
   showViewAllLink?: boolean;
   compact?: boolean;
 };
@@ -54,6 +52,7 @@ function ReviewAuthorAvatar({
   initial: string;
 }) {
   const [imageFailed, setImageFailed] = useState(false);
+  const { t } = useI18n();
 
   if (!photoUrl || imageFailed) {
     return (
@@ -69,7 +68,7 @@ function ReviewAuthorAvatar({
   return (
     <Image
       src={photoUrl}
-      alt={`Foto de perfil de ${name}`}
+      alt={t('reviews.profilePhoto', { name })}
       width={40}
       height={40}
       loading="lazy"
@@ -85,8 +84,8 @@ export default function GoogleReviewsSection({
   showViewAllLink = false,
   compact = false,
 }: GoogleReviewsSectionProps) {
-  const { locale } = useI18n();
-  const isSpanish = locale === 'es';
+  const { locale, t, dictionary } = useI18n();
+  const copy = dictionary.reviews;
   const reviews = limit ? googleReviews.slice(0, limit) : googleReviews;
   const { profileUrl, aggregateRating } = googleBusinessProfile;
 
@@ -99,13 +98,9 @@ export default function GoogleReviewsSection({
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex w-full flex-col items-start">
         <div className="fi-section-header">
-          <p className="fi-eyebrow text-[#07234c]">
-            {isSpanish ? 'Reseñas verificadas' : 'Verified reviews'}
-          </p>
+          <p className="fi-eyebrow text-[#07234c]">{copy.eyebrow}</p>
           <h2 id="google-reviews-title" className={`max-w-4xl ${HOME_SECTION_TITLE_MUTED_CLASS}`}>
-            {isSpanish
-              ? 'Experiencias reales de familias que confiaron en nosotros'
-              : 'Real experiences from families who trusted us'}
+            {copy.title}
           </h2>
           <p className="fi-section-intro mt-4 flex flex-wrap items-center justify-start gap-3">
             <span className="flex items-center gap-1">
@@ -116,9 +111,7 @@ export default function GoogleReviewsSection({
             </span>
             <span className="text-neutral-400">·</span>
             <span className="text-sm font-medium text-neutral-500">
-              {isSpanish
-                ? `${aggregateRating.reviewCount} reseñas en Google`
-                : `${aggregateRating.reviewCount} Google reviews`}
+              {t('reviews.count', { count: String(aggregateRating.reviewCount) })}
             </span>
             <span className="text-neutral-400">·</span>
             <GoogleBadge />
@@ -131,7 +124,7 @@ export default function GoogleReviewsSection({
           rel="noopener noreferrer"
           className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} fi-link-action group mb-10 text-[#1c1c1c] transition-colors hover:text-black/70`}
         >
-          {isSpanish ? 'Ver perfil en Google' : 'View Google profile'}
+          {copy.viewGoogleProfile}
           <span className="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 transition-colors group-hover:bg-black/5">
             <ArrowUpRight className="h-4 w-4" aria-hidden />
           </span>
@@ -160,7 +153,7 @@ export default function GoogleReviewsSection({
                 </p>
 
                 <p className="fi-card-desc mb-6 text-neutral-600" itemProp="reviewBody">
-                  {isSpanish ? review.text.es : review.text.en}
+                  {locale === 'es' ? review.text.es : review.text.en}
                 </p>
               </div>
 
@@ -179,7 +172,7 @@ export default function GoogleReviewsSection({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-[#1c1c1c]`}
-                  aria-label={isSpanish ? `Ver reseña de ${review.author} en Google` : `View ${review.author}'s review on Google`}
+                  aria-label={t('reviews.reviewAria', { author: review.author })}
                 >
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </a>
@@ -193,7 +186,7 @@ export default function GoogleReviewsSection({
             href="/reseñas"
             className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} fi-link-action mt-10 text-[#07234c] hover:text-[#051830]`}
           >
-            {isSpanish ? 'Ver página de reseñas' : 'View reviews page'}
+            {copy.viewAll}
             <ArrowUpRight className="h-4 w-4" aria-hidden />
           </Link>
         ) : null}

@@ -7,59 +7,16 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 
 export default function ProcessSection() {
-  const { t, locale } = useI18n();
+  const { t, dictionary } = useI18n();
   const [activeIndex, setActiveIndex] = React.useState(0);
   const carouselRef = React.useRef<HTMLDivElement>(null);
+  const carousel = dictionary.diferencial.carousel;
 
   const featureImages = ['/hero-familia.png', '/hero-defensa.png', '/hero-santiago.png', '/hero-familia.png'] as const;
-
-  const featuresEs = [
-    {
-      title: 'Solo familia internacional',
-      desc: 'Enfoque exclusivo en derecho de familia transfronterizo, sin diluir la práctica en otras áreas.',
-      image: featureImages[0],
-    },
-    {
-      title: 'Red internacional',
-      desc: 'Coordinación con abogados y autoridades centrales en Chile y en el extranjero.',
-      image: featureImages[1],
-    },
-    {
-      title: 'Convenio de La Haya',
-      desc: 'Experiencia directa en sustracción internacional, visitas y medidas urgentes.',
-      image: featureImages[2],
-    },
-    {
-      title: 'Comunicación clara',
-      desc: 'Traducimos el lenguaje jurídico para decidir con información real en momentos sensibles.',
-      image: featureImages[3],
-    },
-  ];
-
-  const featuresEn = [
-    {
-      title: 'International family law only',
-      desc: 'Exclusive focus on cross-border family matters without diluting the practice.',
-      image: featureImages[0],
-    },
-    {
-      title: 'International network',
-      desc: 'Coordination with attorneys and central authorities in Chile and abroad.',
-      image: featureImages[1],
-    },
-    {
-      title: 'Hague Convention',
-      desc: 'Direct experience in international abduction, access cases, and urgent measures.',
-      image: featureImages[2],
-    },
-    {
-      title: 'Clear communication',
-      desc: 'We translate legal language so you can decide with real information in sensitive moments.',
-      image: featureImages[3],
-    },
-  ];
-
-  const features = locale === 'es' ? featuresEs : featuresEn;
+  const features = dictionary.diferencial.features.map((feature, index) => ({
+    ...feature,
+    image: featureImages[index] ?? featureImages[0],
+  }));
   const scrollToFeature = (index: number) => {
     const nextIndex = (index + features.length) % features.length;
     const target = carouselRef.current?.children[nextIndex];
@@ -116,7 +73,7 @@ export default function ProcessSection() {
             ref={carouselRef}
             onScroll={handleCarouselScroll}
             className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] lg:gap-7 [&::-webkit-scrollbar]:hidden"
-            aria-label={locale === 'es' ? 'Carrusel de diferenciales' : 'Advantages carousel'}
+            aria-label={carousel.aria}
           >
             {features.map((item) => {
               return (
@@ -162,11 +119,7 @@ export default function ProcessSection() {
                   className={`h-2.5 rounded-full transition-all ${
                     activeIndex === idx ? 'w-8 bg-[var(--color-primary)]' : 'w-2.5 bg-[#07234c]/20 hover:bg-[#07234c]/35'
                   }`}
-                  aria-label={
-                    locale === 'es'
-                      ? `Ver diferencial ${idx + 1}`
-                      : `Show advantage ${idx + 1}`
-                  }
+                  aria-label={t('diferencial.carousel.dot', { n: String(idx + 1) })}
                 />
               ))}
             </div>
@@ -176,7 +129,7 @@ export default function ProcessSection() {
                 type="button"
                 onClick={() => scrollToFeature(activeIndex - 1)}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-[#07234c]/15 text-[#07234c] transition-colors hover:border-[#185365] hover:bg-[#185365] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185365]"
-                aria-label={locale === 'es' ? 'Diferencial anterior' : 'Previous advantage'}
+                aria-label={carousel.prev}
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -184,7 +137,7 @@ export default function ProcessSection() {
                 type="button"
                 onClick={() => scrollToFeature(activeIndex + 1)}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-[#07234c]/15 text-[#07234c] transition-colors hover:border-[#185365] hover:bg-[#185365] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185365]"
-                aria-label={locale === 'es' ? 'Siguiente diferencial' : 'Next advantage'}
+                aria-label={carousel.next}
               >
                 <ChevronRight className="h-5 w-5" />
               </button>

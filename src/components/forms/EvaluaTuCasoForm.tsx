@@ -25,13 +25,12 @@ function EvaluaTuCasoFormInner({
   variant?: EvaluaTuCasoFormVariant;
   fillHeight?: boolean;
 }) {
-  useI18n();
+  const { dictionary } = useI18n();
+  const evalua = dictionary.forms.evalua;
   const { executeRecaptcha } = useGoogleReCaptcha();
   const isLight = variant === 'light';
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState(
-    'Ocurrio un error al enviar su solicitud. Por favor, intente nuevamente o contactenos por telefono.',
-  );
+  const [errorMessage, setErrorMessage] = useState<string>(evalua.error);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -46,7 +45,7 @@ function EvaluaTuCasoFormInner({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
-    setErrorMessage('Ocurrio un error al enviar su solicitud. Por favor, intente nuevamente o contactenos por telefono.');
+    setErrorMessage(evalua.error);
     try {
       let token = '';
       if (executeRecaptcha) {
@@ -68,7 +67,7 @@ function EvaluaTuCasoFormInner({
         setFormData({ name: '', email: '', phone: '', message: '' });
       } else {
         const payload = await res.json().catch(() => null) as { error?: string } | null;
-        setErrorMessage(payload?.error ?? 'Ocurrio un error al enviar su solicitud. Por favor, intente nuevamente o contactenos por telefono.');
+        setErrorMessage(payload?.error ?? evalua.error);
         setStatus('error');
       }
     } catch (error) {
@@ -87,15 +86,15 @@ function EvaluaTuCasoFormInner({
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)]/20">
           <CheckCircle2 className="w-8 h-8 text-[var(--color-primary)]" />
         </div>
-        <h3 className={`mb-4 text-h3 ${isLight ? 'text-[#111827]' : 'text-white'}`}>¡Hemos recibido su solicitud!</h3>
+        <h3 className={`mb-4 text-h3 ${isLight ? 'text-[#111827]' : 'text-white'}`}>{evalua.success}</h3>
         <p className={`mb-8 max-w-[65ch] text-body ${isLight ? 'text-[#4b5563]' : 'text-gray-400'}`}>
-          Un abogado de nuestro equipo revisará su caso y se pondrá en contacto con usted a la brevedad posible.
+          {evalua.successDesc}
         </p>
         <button 
           onClick={() => setStatus('idle')}
           className={`${isLight ? 'border-black/10 bg-black/[0.03] text-[#111827] hover:bg-black/[0.06]' : 'border-white/10 bg-white/5 text-white hover:bg-white/10'} rounded-card border px-8 py-3 text-small font-medium transition-colors`}
         >
-          Enviar otra consulta
+          {evalua.sendAnother}
         </button>
       </motion.div>
     );
@@ -121,7 +120,7 @@ function EvaluaTuCasoFormInner({
         <div className={`grid grid-cols-1 gap-5 ${isLight ? 'md:grid-cols-2 md:gap-5' : 'md:grid-cols-2 gap-6'}`}>
           <div className="space-y-2">
             <label htmlFor="name" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
-              Nombre Completo <span className="text-[var(--color-primary)]">*</span>
+              {evalua.fields.name} <span className="text-[var(--color-primary)]">*</span>
             </label>
             <input
               required
@@ -130,12 +129,12 @@ function EvaluaTuCasoFormInner({
               value={formData.name}
               onChange={handleChange}
               className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
-              placeholder="Ej. Juan Pérez"
+              placeholder={evalua.fields.namePlaceholder}
             />
           </div>
           <div className="space-y-2">
             <label htmlFor="email" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
-              Correo Electrónico <span className="text-[var(--color-primary)]">*</span>
+              {evalua.fields.email} <span className="text-[var(--color-primary)]">*</span>
             </label>
             <input
               required
@@ -145,14 +144,14 @@ function EvaluaTuCasoFormInner({
               value={formData.email}
               onChange={handleChange}
               className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
-              placeholder="ejemplo@correo.com"
+              placeholder={evalua.fields.emailPlaceholder}
             />
           </div>
         </div>
 
         <div className="space-y-2">
           <label htmlFor="phone" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
-            Teléfono de Contacto
+            {evalua.fields.phone}
           </label>
           <input
             type="tel"
@@ -161,13 +160,13 @@ function EvaluaTuCasoFormInner({
             value={formData.phone}
             onChange={handleChange}
             className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
-            placeholder="+56 9 ..."
+            placeholder={evalua.fields.phonePlaceholder}
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="message" className={`text-small font-medium ${isLight ? 'text-[#374151]' : 'text-gray-300'}`}>
-            Descripción de su Caso <span className="text-[var(--color-primary)]">*</span>
+            {evalua.fields.message} <span className="text-[var(--color-primary)]">*</span>
           </label>
           <textarea
             required
@@ -177,7 +176,7 @@ function EvaluaTuCasoFormInner({
             onChange={handleChange}
             rows={isLight ? 4 : 5}
             className={`${isLight ? LIGHT_FIELD_CLASS : 'bg-[#07234c] border-white/10 text-white'} w-full resize-none rounded-card border px-4 py-3 transition-all focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]`}
-            placeholder="Describa brevemente la situación legal en la que necesita asesoría..."
+            placeholder={evalua.fields.messagePlaceholder}
           />
         </div>
 
@@ -192,11 +191,11 @@ function EvaluaTuCasoFormInner({
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Enviando...
+              {evalua.submitting}
             </span>
           ) : (
             <>
-              Solicitar Evaluación
+              {evalua.submit}
               <ArrowUpRight className="h-5 w-5" strokeWidth={2.5} aria-hidden />
             </>
           )}

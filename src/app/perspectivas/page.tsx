@@ -9,13 +9,21 @@ import { fallbackBlogPosts } from '@/config/blog-fallback-posts';
 import { perspectivasHubSeo } from '@/config/perspectivas-seo';
 import { createPageMetadata } from '@/lib/seo/metadata';
 import { buildPerspectivasHubStructuredData } from '@/lib/seo/perspectivas-structured-data';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/perspectivas',
-  title: perspectivasHubSeo.title,
-  description: perspectivasHubSeo.description,
-  keywords: perspectivasHubSeo.keywords,
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.perspectivas;
+
+  return createPageMetadata({
+    pathname: '/perspectivas',
+    title: page.metaTitle,
+    description: page.metaDescription,
+    keywords: perspectivasHubSeo.keywords,
+  });
+}
 
 async function getPublishedPosts() {
   try {
@@ -39,6 +47,9 @@ async function getPublishedPosts() {
 }
 
 export default async function PerspectivasPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.perspectivas;
   const dbPosts = await getPublishedPosts();
   const posts = dbPosts.length > 0 ? dbPosts : fallbackBlogPosts;
   const latestPost = posts[0];
@@ -53,11 +64,9 @@ export default async function PerspectivasPage() {
         <div className="mx-auto max-w-[1440px]">
           <div className="mb-8 flex items-end justify-between md:mb-12">
             <h1 className="font-serif text-3xl tracking-tight text-[#07234c] md:text-4xl lg:text-h2">
-              Perspectivas
+              {page.title}
             </h1>
-            <span className="text-sm font-medium text-neutral-500">
-              analisis legal
-            </span>
+            <span className="text-sm font-medium text-neutral-500">{page.subtitle}</span>
           </div>
 
           <div className="grid grid-cols-1 gap-10 md:gap-14 lg:grid-cols-12">

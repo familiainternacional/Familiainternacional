@@ -10,7 +10,7 @@ import {
   type Locale,
   type SupportedCurrency,
 } from './config';
-import { translate, type TranslationKey } from './dictionaries';
+import { translate, getDictionary, formatTranslation, type TranslationKey, type Dictionary } from './dictionaries';
 import { siteConfig } from '@/config/site';
 
 interface I18nContextValue {
@@ -18,7 +18,8 @@ interface I18nContextValue {
   currency: SupportedCurrency;
   setLocale: (locale: Locale) => void;
   setCurrency: (currency: SupportedCurrency) => void;
-  t: (key: TranslationKey) => string;
+  t: (key: TranslationKey, variables?: Record<string, string>) => string;
+  dictionary: Dictionary;
 }
 
 interface I18nProviderProps {
@@ -65,8 +66,20 @@ export function I18nProvider({
   initialCurrency = DEFAULT_CURRENCY,
 }: I18nProviderProps) {
   const router = useRouter();
-  const [locale, setLocaleState] = useState<Locale>(() => readStoredLocale(initialLocale));
-  const [currency, setCurrencyState] = useState<SupportedCurrency>(() => readStoredCurrency(initialCurrency));
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  const [currency, setCurrencyState] = useState<SupportedCurrency>(initialCurrency);
+
+  useEffect(() => {
+    const storedLocale = readStoredLocale(initialLocale);
+    if (storedLocale !== initialLocale) {
+      setLocaleState(storedLocale);
+    }
+
+    const storedCurrency = readStoredCurrency(initialCurrency);
+    if (storedCurrency !== initialCurrency) {
+      setCurrencyState(storedCurrency);
+    }
+  }, [initialCurrency, initialLocale]);
 
   useEffect(() => {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
@@ -89,6 +102,7 @@ export function I18nProvider({
   const value = useMemo<I18nContextValue>(() => ({
     locale,
     currency,
+    dictionary: getDictionary(locale),
     setLocale(nextLocale) {
       setLocaleState(nextLocale);
       window.localStorage.setItem(LOCALE_STORAGE_KEY, nextLocale);
@@ -103,7 +117,10 @@ export function I18nProvider({
       persistPreferences({ currency: nextCurrency });
       router.refresh();
     },
-    t(key) {
+    t(key, variables) {
+      if (variables) {
+        return formatTranslation(locale, key, variables);
+      }
       return translate(locale, key);
     },
   }), [currency, locale, router]);

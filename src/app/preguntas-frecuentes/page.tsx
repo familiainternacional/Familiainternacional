@@ -9,19 +9,26 @@ import { siteConfig } from '@/config/site';
 import { homeFaqItems } from '@/config/home-faq';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const faqDescription =
-  'Respuestas sobre derecho de familia internacional, Convenio de La Haya, sustracción de menores, exequátur y cómo evaluar su caso con Familia Internacional.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.faq;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/preguntas-frecuentes',
-  title: 'Preguntas frecuentes',
-  description: faqDescription,
-});
+  return createPageMetadata({
+    pathname: '/preguntas-frecuentes',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
-export default function PreguntasFrecuentesPage() {
+export default async function PreguntasFrecuentesPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.faq;
   const siteUrl = getDefaultCanonicalBaseUrl();
-  const pageDescription = faqDescription;
 
   return (
     <MarketingPageLayout>
@@ -31,8 +38,8 @@ export default function PreguntasFrecuentesPage() {
           '@type': 'WebPage',
           '@id': `${siteUrl}/preguntas-frecuentes#webpage`,
           url: `${siteUrl}/preguntas-frecuentes`,
-          name: `Preguntas frecuentes | ${siteConfig.name}`,
-          description: pageDescription,
+          name: `${page.metaTitle} | ${siteConfig.name}`,
+          description: page.metaDescription,
           inLanguage: 'es-CL',
           mainEntity: {
             '@type': 'FAQPage',
@@ -46,12 +53,12 @@ export default function PreguntasFrecuentesPage() {
       />
 
       <InnerPageHero
-        eyebrow="Consultas frecuentes"
-        title="Preguntas frecuentes"
-        description="Información clara sobre nuestro enfoque, el Convenio de La Haya y cómo dar el primer paso si su familia enfrenta un conflicto transfronterizo."
+        eyebrow={page.eyebrow}
+        title={page.title}
+        description={page.description}
         breadcrumbs={[
-          { label: 'Inicio', href: '/' },
-          { label: 'Preguntas frecuentes' },
+          { label: dict.common.home, href: '/' },
+          { label: page.metaTitle },
         ]}
       />
 

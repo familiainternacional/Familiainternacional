@@ -5,12 +5,18 @@ import { ArrowUpRight, Newspaper, PlayCircle } from 'lucide-react';
 import { getFeaturedPressMention, getPressHubItems, type MediaMention } from '@/config/media-mentions';
 import MediaThumbnail from '@/components/media/MediaThumbnail';
 import { useIsLgViewport } from '@/lib/hooks/use-is-lg-viewport';
+import { useI18n } from '@/lib/i18n/I18nProvider';
+import { getLocalizedMediaMention } from '@/lib/i18n/media-mention';
 import { HOME_CARD_TITLE_CLASS, OFF_PAGE_LINK_DESKTOP_ONLY_CLASS } from '@/lib/layout';
 
-function formatMediaDate(date: string) {
+function formatMediaDate(date: string, locale: string) {
   const parsed = new Date(`${date}T12:00:00`);
   if (Number.isNaN(parsed.getTime())) return date;
-  return parsed.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+  return parsed.toLocaleDateString(locale === 'en' ? 'en-US' : 'es-CL', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 }
 
 function getItemHref(item: MediaMention) {
@@ -35,10 +41,18 @@ function PressListingCard({
   item: MediaMention;
   linkEnabled: boolean;
 }) {
+  const { locale, t } = useI18n();
+  const localized = getLocalizedMediaMention(item, locale);
   const external = isExternalItem(item);
   const href = getItemHref(item);
   const cardClassName =
     'group flex flex-col overflow-hidden rounded-card border border-neutral-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07234c]';
+
+  const actionLabel = external
+    ? item.kind === 'video'
+      ? t('press.watchVideo')
+      : t('press.viewCoverage')
+    : t('press.readAnalysis');
 
   const cardContent = (
     <>
@@ -46,7 +60,7 @@ function PressListingCard({
         {item.thumbnail ? (
           <MediaThumbnail
             src={item.thumbnail}
-            alt={item.title}
+            alt={t('press.clippingAlt', { title: localized.title })}
             variant={item.kind === 'video' ? 'video' : 'press'}
           />
         ) : (
@@ -63,17 +77,17 @@ function PressListingCard({
       <div className="flex flex-grow flex-col justify-between p-8 lg:p-10">
         <div>
           <span className="mb-3 block text-[11px] font-bold uppercase tracking-widest text-[#07234c]">
-            {item.source}
+            {localized.source}
           </span>
           <h3 className={`mb-3 ${HOME_CARD_TITLE_CLASS} text-[#1c1c1c] transition-colors group-hover:text-[#07234c]`}>
-            {item.title}
+            {localized.title}
           </h3>
-          <p className="mb-8 line-clamp-3 text-[15px] leading-relaxed text-neutral-600">{item.description}</p>
+          <p className="mb-8 line-clamp-3 text-[15px] leading-relaxed text-neutral-600">{localized.description}</p>
         </div>
 
         <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-5">
           <span className="text-sm font-bold text-neutral-400 transition-colors group-hover:text-[#1c1c1c]">
-            {external ? (item.kind === 'video' ? 'Ver video' : 'Ver cobertura') : 'Leer análisis'}
+            {actionLabel}
           </span>
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-all group-hover:bg-neutral-50 group-hover:text-[#1c1c1c] ${linkEnabled ? '' : 'hidden lg:flex'}`}
@@ -116,8 +130,10 @@ export default function PressListing({
   offPageLinks = 'default',
 }: PressListingProps) {
   const isLg = useIsLgViewport();
+  const { locale, t } = useI18n();
   const linkEnabled = offPageLinks === 'default' || isLg;
   const featured = getFeaturedPressMention();
+  const localizedFeatured = featured ? getLocalizedMediaMention(featured, locale) : null;
   let items = showFeatured && featured ? getPressHubItems().filter((item) => item.id !== featured.id) : getPressHubItems();
 
   if (filterKind) {
@@ -129,7 +145,7 @@ export default function PressListing({
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col">
-      {showFeatured && featured ? (
+      {showFeatured && featured && localizedFeatured ? (
         <article className="mb-10 w-full overflow-hidden rounded-card border border-neutral-200/80 bg-white shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <div className="relative min-h-[260px] overflow-hidden bg-[#07234c] lg:min-h-[420px]">
@@ -137,30 +153,30 @@ export default function PressListing({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={featured.thumbnail}
-                  alt={`Recorte de prensa: ${featured.title}`}
+                  alt={t('press.clippingAlt', { title: localizedFeatured.title })}
                   className="h-full w-full object-cover object-top"
                 />
               ) : null}
               <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-[#07234c]">
                 <Newspaper className="h-4 w-4" aria-hidden />
-                Prensa destacada
+                {t('press.featured')}
               </div>
             </div>
 
             <div className="flex flex-col justify-between p-8 lg:p-10">
               <div>
                 <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-[#07234c]">
-                  <span>{featured.source}</span>
+                  <span>{localizedFeatured.source}</span>
                   <span className="text-neutral-300">·</span>
-                  <time dateTime={featured.date}>{formatMediaDate(featured.date)}</time>
+                  <time dateTime={featured.date}>{formatMediaDate(featured.date, locale)}</time>
                 </div>
                 <h2 className={`mb-4 ${HOME_CARD_TITLE_CLASS} text-[#1c1c1c]`}>
-                  {featured.title}
+                  {localizedFeatured.title}
                 </h2>
-                <p className="mb-6 text-[15px] leading-relaxed text-neutral-600">{featured.description}</p>
+                <p className="mb-6 text-[15px] leading-relaxed text-neutral-600">{localizedFeatured.description}</p>
                 {featured.expertQuote ? (
                   <blockquote className="border-l-4 border-[#07234c]/20 pl-4 text-[15px] italic leading-relaxed text-neutral-700">
-                    “{featured.expertQuote.es}”
+                    “{locale === 'en' ? featured.expertQuote.en : featured.expertQuote.es}”
                     <footer className="mt-2 not-italic text-sm font-semibold text-[#07234c]">
                       — {featured.expertName ?? 'Jaime Soto Silva'}
                     </footer>
@@ -174,7 +190,7 @@ export default function PressListing({
                     href={`/prensa/${featured.slug}`}
                     className={`${offPageLinks === 'desktop-only' ? OFF_PAGE_LINK_DESKTOP_ONLY_CLASS : 'inline-flex'} items-center gap-2 rounded-full bg-[#07234c] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#051830]`}
                   >
-                    Leer análisis completo
+                    {t('press.readFullAnalysis')}
                     <ArrowUpRight className="h-4 w-4" aria-hidden />
                   </Link>
                 ) : null}
@@ -184,7 +200,7 @@ export default function PressListing({
                   rel="noopener noreferrer"
                   className={`${offPageLinks === 'desktop-only' ? OFF_PAGE_LINK_DESKTOP_ONLY_CLASS : 'inline-flex'} items-center gap-2 rounded-full border border-neutral-200 px-5 py-3 text-sm font-bold text-[#07234c] transition-colors hover:bg-[#07234c] hover:text-white`}
                 >
-                  Ver nota original
+                  {t('press.viewOriginal')}
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </a>
               </div>

@@ -115,6 +115,24 @@ const CHAT_IFRAME_LAYOUT_PROPS = [
   'touch-action',
 ] as const;
 
+let savedMobileScrollY = 0;
+
+function applyMobileScrollLock() {
+  if (typeof document === 'undefined') return;
+
+  savedMobileScrollY = window.scrollY;
+  document.documentElement.classList.add(MOBILE_CHAT_OPEN_BODY_CLASS);
+  document.body.classList.add(MOBILE_CHAT_OPEN_BODY_CLASS);
+  document.documentElement.style.setProperty('overflow', 'hidden');
+  document.body.style.setProperty('overflow', 'hidden');
+  document.body.style.setProperty('position', 'fixed');
+  document.body.style.setProperty('top', `-${savedMobileScrollY}px`);
+  document.body.style.setProperty('left', '0');
+  document.body.style.setProperty('right', '0');
+  document.body.style.setProperty('width', '100%');
+  document.body.style.setProperty('touch-action', 'none');
+}
+
 function clearInlineStyles(element: HTMLElement, props: readonly string[]) {
   props.forEach((prop) => element.style.removeProperty(prop));
 }
@@ -122,18 +140,24 @@ function clearInlineStyles(element: HTMLElement, props: readonly string[]) {
 function releaseMobileScrollLock() {
   if (typeof document === 'undefined') return;
 
+  const scrollY = savedMobileScrollY;
   document.body.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
   document.documentElement.classList.remove(MOBILE_CHAT_OPEN_BODY_CLASS);
   clearInlineStyles(document.documentElement, SCROLL_LOCK_STYLE_PROPS);
   clearInlineStyles(document.body, SCROLL_LOCK_STYLE_PROPS);
+  window.scrollTo(0, scrollY);
+}
+
+export function getSavedMobileScrollY() {
+  return savedMobileScrollY;
 }
 
 export const MOBILE_CHAT_OPEN_BODY_CLASS = 'fi-mobile-chat-open';
 
 export function setMobileCliengoChatOpen(open: boolean) {
   if (typeof document === 'undefined') return;
-  document.body.classList.toggle(MOBILE_CHAT_OPEN_BODY_CLASS, open);
   if (open) {
+    applyMobileScrollLock();
     applyMobileCliengoChatLayout();
     return;
   }
@@ -306,6 +330,77 @@ function getCliengoApi() {
 export function getChatIframeElement() {
   if (typeof document === 'undefined') return null;
   return document.getElementById('chatIframe') as HTMLElement | null;
+}
+
+export function isChatIframeVisible() {
+  const iframe = getChatIframeElement();
+  if (!iframe) return false;
+
+  const style = window.getComputedStyle(iframe);
+  if (style.display === 'none' || style.visibility === 'hidden') {
+    return false;
+  }
+
+  if (Number.parseFloat(style.opacity) < 0.05) {
+    return false;
+  }
+
+  const rect = iframe.getBoundingClientRect();
+  return rect.width > 48 && rect.height > 48;
+}
+
+export function waitForChatIframeVisible(
+  onVisible: (iframe: HTMLElement) => void,
+  timeoutMs = 120_000,
+) {
+  if (typeof document === 'undefined') {
+    return () => {};
+  }
+
+  const existing = getChatIframeElement();
+  if (existing && isChatIframeVisible()) {
+    onVisible(existing);
+    return () => {};
+  }
+
+  let done = false;
+  const finish = (iframe: HTMLElement) => {
+    if (done) return;
+    done = true;
+    observer.disconnect();
+    window.clearInterval(interval);
+    window.clearTimeout(timer);
+    onVisible(iframe);
+  };
+
+  const check = () => {
+    const iframe = getChatIframeElement();
+    if (iframe && isChatIframeVisible()) {
+      finish(iframe);
+    }
+  };
+
+  const observer = new MutationObserver(check);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['style', 'class', 'hidden', 'aria-hidden'],
+  });
+
+  const interval = window.setInterval(check, 200);
+  const timer = window.setTimeout(() => {
+    done = true;
+    observer.disconnect();
+    window.clearInterval(interval);
+  }, timeoutMs);
+
+  return () => {
+    done = true;
+    observer.disconnect();
+    window.clearInterval(interval);
+    window.clearTimeout(timer);
+  };
 }
 
 export function requestCliengoChatOpen() {

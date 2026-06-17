@@ -6,7 +6,7 @@ import { Save, Loader2 } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 
 export default function HomeHeroForm({ initialValues }: { initialValues: HomeHeroSettingsAdminValues }) {
-  const { t } = useI18n();
+  const { dictionary } = useI18n();
   const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -42,7 +42,7 @@ export default function HomeHeroForm({ initialValues }: { initialValues: HomeHer
             <label className="block text-sm font-medium text-gray-700 mb-1">Título Línea 1</label>
             <input
               name="titleLine1Es"
-              defaultValue={initialValues.titleLine1Es || t('hero.title1')}
+              defaultValue={initialValues.titleLine1Es || dictionary.home.hero.title}
               placeholder="Ej: Precisión estratégica."
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
             />
@@ -51,7 +51,7 @@ export default function HomeHeroForm({ initialValues }: { initialValues: HomeHer
             <label className="block text-sm font-medium text-gray-700 mb-1">Título Línea 2</label>
             <input
               name="titleLine2Es"
-              defaultValue={initialValues.titleLine2Es || t('hero.title2')}
+              defaultValue={initialValues.titleLine2Es || ''}
               placeholder="Ej: Ejecución implacable."
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
             />
@@ -60,7 +60,7 @@ export default function HomeHeroForm({ initialValues }: { initialValues: HomeHer
             <label className="block text-sm font-medium text-gray-700 mb-1">Subtítulo</label>
             <textarea
               name="subtitleEs"
-              defaultValue={initialValues.subtitleEs || t('hero.subtitle')}
+              defaultValue={initialValues.subtitleEs || dictionary.home.hero.subtitle}
               rows={3}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all resize-none"
             />

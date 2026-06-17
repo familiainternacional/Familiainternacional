@@ -7,17 +7,25 @@ import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { primaryContact } from '@/config/contact';
 import { createPageMetadata } from '@/lib/seo/metadata';
+import { getServerLocale } from '@/lib/i18n/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 
-const contactoDescription =
-  'Contacte a Familia Internacional en Lo Barnechea, Santiago. Teléfono, correo, mapa y formulario para evaluar su caso de familia internacional.';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.contacto;
 
-export const metadata: Metadata = createPageMetadata({
-  pathname: '/contacto',
-  title: 'Contacto',
-  description: contactoDescription,
-});
+  return createPageMetadata({
+    pathname: '/contacto',
+    title: page.metaTitle,
+    description: page.metaDescription,
+  });
+}
 
-export default function ContactoPage() {
+export default async function ContactoPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale);
+  const page = dict.pages.contacto;
   const siteUrl = getDefaultCanonicalBaseUrl();
   const office = siteConfig.offices[0];
 
@@ -29,8 +37,8 @@ export default function ContactoPage() {
           '@type': 'ContactPage',
           '@id': `${siteUrl}/contacto#webpage`,
           url: `${siteUrl}/contacto`,
-          name: `Contacto | ${siteConfig.name}`,
-          description: metadata.description,
+          name: `${page.metaTitle} | ${siteConfig.name}`,
+          description: page.metaDescription,
           inLanguage: 'es-CL',
           mainEntity: {
             '@type': 'LegalService',
@@ -49,12 +57,12 @@ export default function ContactoPage() {
       />
 
       <InnerPageHero
-        eyebrow="Contacto"
-        title="Estamos para escucharte"
-        description="Escríbenos, llámanos o completa el formulario. Un abogado especializado revisará su consulta."
+        eyebrow={page.eyebrow}
+        title={page.title}
+        description={page.description}
         breadcrumbs={[
-          { label: 'Inicio', href: '/' },
-          { label: 'Contacto' },
+          { label: dict.common.home, href: '/' },
+          { label: page.metaTitle },
         ]}
       />
 

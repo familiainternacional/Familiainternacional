@@ -8,19 +8,19 @@ import BookCallButton from './BookCallButton';
 import HeroParallax from '@/components/motion/HeroParallax';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
-import type { TranslationKey } from '@/lib/i18n/dictionaries';
 
 const heroStats = [
-  { value: 'hero.stats.0.value', label: 'hero.stats.0.label' },
-  { value: 'hero.stats.1.value', label: 'hero.stats.1.label' },
-  { value: 'hero.stats.2.value', label: 'hero.stats.2.label' },
-  { value: 'hero.stats.3.value', label: 'hero.stats.3.label' },
-] as const satisfies ReadonlyArray<{ value: TranslationKey; label: TranslationKey }>;
+  { value: '95%', label: 'casos favorables' },
+  { value: '11', label: 'años de exp.' },
+  { value: '100%', label: 'confidencialidad' },
+  { value: '86', label: 'casos resueltos' },
+] as const;
 
 import type { HomeHeroSettingsAdminValues } from '@/app/admin/inicio/actions';
 
 export default function HeroSection({ adminValues }: { adminValues?: HomeHeroSettingsAdminValues | null }) {
-  const { t } = useI18n();
+  const { t, dictionary } = useI18n();
+  const hero = dictionary.home.hero;
 
   return (
     <HeroParallax>
@@ -55,15 +55,11 @@ export default function HeroSection({ adminValues }: { adminValues?: HomeHeroSet
           className="mx-auto max-w-[343px] px-2 text-center lg:mx-0 lg:max-w-2xl lg:pr-0 lg:text-left lg:mt-16"
         >
           <h1 id="hero-title" className="mb-5 font-serif text-[3.25rem] leading-[1.05] tracking-tight text-white lg:mb-12 lg:text-h1">
-            <span className="block">{adminValues?.titleLine1Es || t('hero.title1')}</span>
-            <span className="block">{adminValues?.titleLine2Es || t('hero.title2')}</span>
-            {(!adminValues?.titleLine1Es && !adminValues?.titleLine2Es) && (
-              <span className="block">{t('hero.title3')}</span>
-            )}
+            <span className="block">{adminValues?.titleLine1Es || hero.title}</span>
           </h1>
 
           <p className="mb-7 mx-auto max-w-[65ch] text-base leading-relaxed text-white/90 lg:mx-0 lg:mb-9 lg:text-body whitespace-pre-wrap">
-            {adminValues?.subtitleEs || t('hero.subtitle')}
+            {adminValues?.subtitleEs || hero.subtitle}
           </p>
           
           <div className="mb-10 lg:mb-24">
@@ -75,7 +71,7 @@ export default function HeroSection({ adminValues }: { adminValues?: HomeHeroSet
                 href="/evalua-tu-caso" 
                 className="rlu-button rlu-button-primary min-h-12 px-6 uppercase tracking-wide lg:px-7 w-full sm:w-auto"
               >
-                {t('hero.cta')}
+                {t('common.evaluateCase')}
               </Link>
             </div>
             <p className="mt-4 text-xs font-medium tracking-wide text-white/50 lg:text-sm lg:mt-5 max-w-[40ch] mx-auto lg:mx-0">
@@ -94,10 +90,10 @@ export default function HeroSection({ adminValues }: { adminValues?: HomeHeroSet
           {heroStats.map((stat) => (
             <div key={stat.value} className="min-w-0 pr-2 lg:flex-shrink-0 lg:pr-0">
               <p className="mb-1 font-serif text-h3 text-white lg:mb-3">
-                {t(stat.value)}
+                {stat.value}
               </p>
               <p className="max-w-[13ch] text-small text-gray-200 lg:max-w-[120px]">
-                {t(stat.label)}
+                {stat.label}
               </p>
             </div>
           ))}

@@ -12,15 +12,15 @@ import { HOME_CARD_TITLE_CLASS, HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_BR
 
 type TabKey = 'bio' | 'formacion' | 'experiencia' | 'contacto';
 
-const tabs: { key: TabKey; label: string }[] = [
-  { key: 'bio', label: 'Perfil' },
-  { key: 'formacion', label: 'Formación' },
-  { key: 'experiencia', label: 'Experiencia' },
-  { key: 'contacto', label: 'Contacto' },
-];
-
 export default function AboutSection({ adminValues }: { adminValues?: AboutPageSettingsAdminValues | null }) {
-  const { t } = useI18n();
+  const { t, dictionary } = useI18n();
+  const team = dictionary.team;
+  const tabs: { key: TabKey; label: string }[] = [
+    { key: 'bio', label: team.tabs.bio },
+    { key: 'formacion', label: team.tabs.education },
+    { key: 'experiencia', label: team.tabs.experience },
+    { key: 'contacto', label: team.tabs.contact },
+  ];
   const [activeDesktopTab, setActiveDesktopTab] = useState<TabKey>('bio');
   
   const [expandedMobileLawyer, setExpandedMobileLawyer] = useState<number | null>(null);
@@ -47,20 +47,11 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
       role: t('team.jaime.role'),
       bio1: parsedPayload.lawyer1Bio1 || t('team.jaime.bio1'),
       bio2: parsedPayload.lawyer1Bio2 || t('team.jaime.bio2'),
-      formacion: [
-        'Abogado, Magíster en Derecho de Familia.',
-        'Profesor Universitario en Derecho de Familia y Práctica Profesional.',
-        'Formación especializada en Convenio de La Haya (1980) y Convenio de Nueva York (1956).',
-      ],
-      experiencia: [
-        'Cientos de juicios tramitados en Derecho Internacional de Familia.',
-        'Ex abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para los Convenios de La Haya y Nueva York.',
-        'Consultado por Las Últimas Noticias y otros medios nacionales en casos de sustracción internacional y custodia transfronteriza.',
-        'Integrante de una extensa red internacional de abogados dedicados al derecho de familia.',
-      ],
+      formacion: [...team.jaime.education],
+      experiencia: [...team.jaime.experience],
       contacto: primaryContact.email,
       image: '/jaime-soto.png',
-      imageAlt: 'Jaime Soto Silva - Familia Internacional',
+      imageAlt: team.jaime.imageAlt,
     },
   ] as const;
 
@@ -116,7 +107,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
       case 'contacto':
         return (
           <div className="text-body text-[#555555]">
-            <p>Para consultas directas, puede comunicarse a través del siguiente correo:</p>
+            <p>{team.contactBlurb}</p>
             <a href={`mailto:${profile.contacto}`} className="mt-3 inline-block font-semibold text-[var(--color-primary)] hover:underline">
               {profile.contacto}
             </a>
@@ -269,7 +260,7 @@ export default function AboutSection({ adminValues }: { adminValues?: AboutPageS
                       {siteConfig.name}
                     </span>
                     <span className="mt-0.5 block text-sm text-gray-500">
-                      {isExpanded ? 'Ocultar perfil' : 'Ver perfil completo'}
+                      {isExpanded ? t('common.hideProfile') : t('common.viewProfile')}
                     </span>
                   </span>
                   <span className="flex items-center gap-4">

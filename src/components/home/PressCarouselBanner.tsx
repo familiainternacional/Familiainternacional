@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Newspaper } from 'lucide-react';
 import { getPressHubItems, type MediaMention } from '@/config/media-mentions';
 import { useI18n } from '@/lib/i18n/I18nProvider';
+import { getLocalizedMediaMention } from '@/lib/i18n/media-mention';
 import { HOME_CARD_TITLE_CLASS } from '@/lib/layout';
 
 const MOBILE_INTRO_MAX_WIDTH_PX = 1023;
@@ -51,14 +52,15 @@ function PressIntroSlide({
   durationMs,
   embedded = false,
   imageOnly = false,
+  clippingIntroAlt,
 }: {
   item: MediaMention;
   locale: string;
   durationMs: number;
   embedded?: boolean;
   imageOnly?: boolean;
+  clippingIntroAlt: string;
 }) {
-  const isEnglish = locale === 'en';
   const frameHeightClass = embedded ? EMBEDDED_FRAME_HEIGHT_CLASS : STANDALONE_FRAME_HEIGHT_CLASS;
 
   return (
@@ -66,7 +68,7 @@ function PressIntroSlide({
       <div className="relative min-h-0 flex-1">
         <Image
           src={item.mobilePressIntro!.image}
-          alt={isEnglish ? `Newspaper clipping: ${item.title}` : `Recorte de diario: ${item.title}`}
+          alt={clippingIntroAlt}
           fill
           sizes="100vw"
           className="object-contain object-center p-3 sm:p-4"
@@ -96,13 +98,18 @@ function PressArticleSlide({
   locale,
   activeIndex,
   embedded = false,
+  featuredLabel,
+  clippingAlt,
+  viewOriginalLabel,
 }: {
   item: MediaMention;
   locale: string;
   activeIndex: number;
   embedded?: boolean;
+  featuredLabel: string;
+  clippingAlt: string;
+  viewOriginalLabel: string;
 }) {
-  const isEnglish = locale === 'en';
   const frameHeightClass = embedded ? EMBEDDED_FRAME_HEIGHT_CLASS : STANDALONE_FRAME_HEIGHT_CLASS;
 
   return (
@@ -110,7 +117,7 @@ function PressArticleSlide({
       <Image
         key={item.id}
         src={item.thumbnail!}
-        alt={isEnglish ? `Press clipping: ${item.title}` : `Recorte de prensa: ${item.title}`}
+        alt={clippingAlt}
         fill
         sizes={embedded ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1280px) 1280px, 100vw'}
         className="object-cover object-top"
@@ -133,7 +140,7 @@ function PressArticleSlide({
         >
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#07234c]/8 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#07234c] sm:text-[11px]">
             <Newspaper className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
-            {isEnglish ? 'Featured press' : 'Prensa destacada'}
+            {featuredLabel}
           </div>
 
           <div className="mb-2 flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#07234c]/80 sm:text-[11px]">
@@ -158,7 +165,7 @@ function PressArticleSlide({
 
           {!embedded && item.expertQuote ? (
             <blockquote className="mb-5 border-l-[3px] border-[#d4af37] pl-3 text-sm italic leading-relaxed text-[#374151] sm:text-[15px]">
-              “{isEnglish ? item.expertQuote.en : item.expertQuote.es}”
+              “{locale === 'en' ? item.expertQuote.en : item.expertQuote.es}”
               {item.expertName ? (
                 <footer className="mt-2 not-italic text-xs font-semibold text-[#07234c] sm:text-sm">
                   — {item.expertName}
@@ -176,7 +183,7 @@ function PressArticleSlide({
                 embedded ? 'px-3 py-2 text-xs sm:px-4 sm:py-2.5 sm:text-sm' : 'px-4 py-2.5 text-xs sm:px-5 sm:py-3 sm:text-sm'
               }`}
             >
-              {isEnglish ? 'View original article' : 'Ver nota original'}
+              {viewOriginalLabel}
               <ArrowUpRight className="h-4 w-4" aria-hidden />
             </a>
           </div>
@@ -193,6 +200,10 @@ function PressCarouselSlide({
   isMobile,
   onIntroPlayingChange,
   embedded = false,
+  featuredLabel,
+  clippingAlt,
+  clippingIntroAlt,
+  viewOriginalLabel,
 }: {
   item: MediaMention;
   locale: string;
@@ -200,6 +211,10 @@ function PressCarouselSlide({
   isMobile: boolean;
   onIntroPlayingChange: (playing: boolean) => void;
   embedded?: boolean;
+  featuredLabel: string;
+  clippingAlt: string;
+  clippingIntroAlt: string;
+  viewOriginalLabel: string;
 }) {
   const hasMobileImageOnly = isMobile && Boolean(item.mobilePressIntro);
   const introDurationMs = item.mobilePressIntro?.durationMs ?? DEFAULT_INTRO_DURATION_MS;
@@ -216,25 +231,36 @@ function PressCarouselSlide({
         durationMs={introDurationMs}
         embedded={embedded}
         imageOnly
+        clippingIntroAlt={clippingIntroAlt}
       />
     );
   }
 
-  return <PressArticleSlide item={item} locale={locale} activeIndex={activeIndex} embedded={embedded} />;
+  return (
+    <PressArticleSlide
+      item={item}
+      locale={locale}
+      activeIndex={activeIndex}
+      embedded={embedded}
+      featuredLabel={featuredLabel}
+      clippingAlt={clippingAlt}
+      viewOriginalLabel={viewOriginalLabel}
+    />
+  );
 }
 
 export default function PressCarouselBanner({ embedded = false }: PressCarouselBannerProps) {
-  const { locale } = useI18n();
-  const isEnglish = locale === 'en';
+  const { locale, t } = useI18n();
   const isMobile = useMobilePressIntro();
   const items = getPressBannerItems();
   const [activeIndex, setActiveIndex] = useState(0);
   const [introPlaying, setIntroPlaying] = useState(false);
 
   const item = items[activeIndex];
+  const localizedItem = item ? getLocalizedMediaMention(item, locale) : null;
   const hasMultiple = items.length > 1;
 
-  if (!item || items.length === 0) return null;
+  if (!item || !localizedItem || items.length === 0) return null;
 
   function goTo(index: number) {
     setActiveIndex((index + items.length) % items.length);
@@ -249,12 +275,16 @@ export default function PressCarouselBanner({ embedded = false }: PressCarouselB
       >
         <PressCarouselSlide
           key={item.id}
-          item={item}
+          item={localizedItem}
           locale={locale}
           activeIndex={activeIndex}
           isMobile={isMobile}
           onIntroPlayingChange={setIntroPlaying}
           embedded={embedded}
+          featuredLabel={t('press.featured')}
+          clippingAlt={t('press.clippingAlt', { title: localizedItem.title })}
+          clippingIntroAlt={t('press.clippingIntroAlt', { title: localizedItem.title })}
+          viewOriginalLabel={t('press.viewOriginal')}
         />
 
         {hasMultiple && !introPlaying ? (
@@ -262,7 +292,7 @@ export default function PressCarouselBanner({ embedded = false }: PressCarouselB
             <button
               type="button"
               className="absolute left-3 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/90 text-[#07234c] shadow-lg transition-colors hover:bg-white sm:left-5"
-              aria-label={isEnglish ? 'Previous press item' : 'Aparición anterior'}
+              aria-label={t('press.carouselPrev')}
               onClick={() => goTo(activeIndex - 1)}
             >
               <ChevronLeft className="h-5 w-5" aria-hidden />
@@ -270,7 +300,7 @@ export default function PressCarouselBanner({ embedded = false }: PressCarouselB
             <button
               type="button"
               className="absolute right-3 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/90 text-[#07234c] shadow-lg transition-colors hover:bg-white sm:right-5"
-              aria-label={isEnglish ? 'Next press item' : 'Siguiente aparición'}
+              aria-label={t('press.carouselNext')}
               onClick={() => goTo(activeIndex + 1)}
             >
               <ChevronRight className="h-5 w-5" aria-hidden />
@@ -281,7 +311,7 @@ export default function PressCarouselBanner({ embedded = false }: PressCarouselB
                 <button
                   key={pressItem.id}
                   type="button"
-                  aria-label={`${isEnglish ? 'Go to slide' : 'Ir a la diapositiva'} ${index + 1}`}
+                  aria-label={t('press.carouselDot', { index: String(index + 1) })}
                   aria-current={index === activeIndex ? 'true' : undefined}
                   className={`h-2.5 rounded-full transition-all ${
                     index === activeIndex ? 'w-7 bg-white' : 'w-2.5 bg-white/45 hover:bg-white/70'
