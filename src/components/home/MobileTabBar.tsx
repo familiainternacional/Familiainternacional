@@ -129,28 +129,28 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
   return (
     <div
-      className={`fixed bottom-4 left-4 right-4 z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${
+      className={`fixed bottom-4 left-4 right-[84px] z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${
         isTabBarVisible
           ? 'translate-y-0 opacity-100'
           : 'pointer-events-none translate-y-[calc(100%+1.5rem)] opacity-0'
       }`}
     >
-      <nav className="mx-auto flex w-full max-w-sm items-center justify-around rounded-card bg-white px-4 py-3 pointer-events-auto">
+      <nav className="mx-auto flex w-full max-w-[320px] items-center justify-between rounded-[2rem] bg-white px-4 py-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] pointer-events-auto">
         <Link href="/#home" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'home', '/#home')}>
-          <Home size={22} strokeWidth={2} />
-          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.home')}</span>
+          <Home size={20} strokeWidth={2} />
+          <span className="text-[9px] font-bold tracking-wide">{t('mobile.tabs.home')}</span>
         </Link>
         <Link
           href="/#services"
           className={tabItemClass}
           onClick={(event) => handleSectionNav(event, 'services', '/#services')}
         >
-          <Briefcase size={22} strokeWidth={2} />
-          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.services')}</span>
+          <Briefcase size={20} strokeWidth={2} />
+          <span className="text-[9px] font-bold tracking-wide">{t('mobile.tabs.services')}</span>
         </Link>
         <Link href="/#about" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'about', '/#about')}>
-          <Info size={22} strokeWidth={2} />
-          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.about')}</span>
+          <Info size={20} strokeWidth={2} />
+          <span className="text-[9px] font-bold tracking-wide">{t('mobile.tabs.about')}</span>
         </Link>
         <a
           href={whatsappHref}
@@ -158,8 +158,8 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
           rel="noopener noreferrer"
           className="flex flex-col items-center justify-center gap-1 text-[#1a9e4b] transition-colors hover:text-[#25D366]"
         >
-          <WhatsAppIcon size={22} />
-          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.whatsapp')}</span>
+          <WhatsAppIcon size={20} />
+          <span className="text-[9px] font-bold tracking-wide">{t('mobile.tabs.whatsapp')}</span>
         </a>
       </nav>
     </div>
