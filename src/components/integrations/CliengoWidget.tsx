@@ -3,7 +3,7 @@
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { getCliengoScriptUrl, syncMobileFloatingLaunchers, applyMobileCliengoChatLayout } from '@/lib/integrations/cliengo';
+import { getCliengoScriptUrl, syncMobileFloatingLaunchers, applyMobileCliengoChatLayout, subscribeCliengoProactivePrompt } from '@/lib/integrations/cliengo';
 
 export default function CliengoWidget() {
   const pathname = usePathname();
@@ -24,9 +24,14 @@ export default function CliengoWidget() {
     observer.observe(document.body, { childList: true, subtree: true });
     media.addEventListener('change', sync);
 
+    const unsubscribePrompt = subscribeCliengoProactivePrompt(() => {
+      document.body.classList.add('fi-cliengo-has-notification');
+    });
+
     return () => {
       observer.disconnect();
       media.removeEventListener('change', sync);
+      unsubscribePrompt();
     };
   }, [isAdmin, scriptUrl]);
 

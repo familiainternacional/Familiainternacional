@@ -214,6 +214,40 @@ body {
     display: none !important;
   }
 
+  /* Ocultar la vista previa/mensaje proactivo de Cliengo */
+  .clgo-message-preview,
+  .clgo-chat-invitation,
+  .clgo-invitation,
+  [class*="proactive"],
+  [id*="proactive"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Insignia de notificación (1) personalizada sobre el botón */
+  body.fi-cliengo-has-notification #cliengo-button::after {
+    content: '1';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #e02424;
+    color: white;
+    border-radius: 9999px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    z-index: 50;
+    box-sizing: border-box;
+    font-family: var(--font-sans), sans-serif;
+  }
+
   #cliengo-button {
     position: fixed !important;
     right: 1rem !important;
