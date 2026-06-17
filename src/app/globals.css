@@ -205,7 +205,7 @@ body {
 
   body.fi-mobile-tab-bar-revealed {
     padding-bottom: 96px;
-    --fi-cliengo-launcher-bottom: calc(5.75rem + env(safe-area-inset-bottom));
+    --fi-cliengo-launcher-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 
   /* WhatsApp flotante duplicado: la tab bar ya incluye WhatsApp */
@@ -216,11 +216,11 @@ body {
 
   #cliengo-button {
     position: fixed !important;
-    right: 0.75rem !important;
+    right: 1rem !important;
     bottom: var(--fi-cliengo-launcher-bottom) !important;
     left: auto !important;
     top: auto !important;
-    transform: scale(0.65) !important;
+    transform: scale(0.85) !important;
     transform-origin: bottom right !important;
     margin: 0 !important;
     opacity: 1 !important;
