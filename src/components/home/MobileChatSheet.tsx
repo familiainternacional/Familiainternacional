@@ -21,24 +21,22 @@ type MobileChatSheetProps = {
 const LAUNCHER_MOUNT_RETRY_MS = 400;
 const LAUNCHER_MOUNT_MAX_WAIT_MS = 20_000;
 
-export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps) {
+function MobileChatSheetActive({ onClose }: { onClose: () => void }) {
   const { t, dictionary } = useI18n();
   const chat = dictionary.mobile.chat;
   const bodyRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const launcherHostRef = useRef<HTMLDivElement>(null);
+  const launcherReadyRef = useRef(false);
   const [launcherReady, setLauncherReady] = useState(false);
   const [launcherFailed, setLauncherFailed] = useState(false);
   const [chatActive, setChatActive] = useState(false);
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
+    launcherReadyRef.current = launcherReady;
+  }, [launcherReady]);
 
-    setLauncherReady(false);
-    setLauncherFailed(false);
-    setChatActive(false);
+  useEffect(() => {
     setMobileCliengoChatOpen(true);
 
     let cancelled = false;
@@ -52,6 +50,13 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
       }
     };
 
+    const markLauncherReady = () => {
+      launcherReadyRef.current = true;
+      setLauncherReady(true);
+      setLauncherFailed(false);
+      clearRetries();
+    };
+
     const mountLauncher = () => {
       if (cancelled || !launcherHostRef.current) {
         return false;
@@ -61,9 +66,7 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
         return false;
       }
 
-      setLauncherReady(true);
-      setLauncherFailed(false);
-      clearRetries();
+      markLauncherReady();
       return true;
     };
 
@@ -82,12 +85,12 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
     };
 
     retryTimer = window.setInterval(() => {
-      if (cancelled || launcherReady) return;
+      if (cancelled || launcherReadyRef.current) return;
       mountLauncher();
     }, LAUNCHER_MOUNT_RETRY_MS);
 
     waitTimeout = window.setTimeout(() => {
-      if (cancelled || launcherReady) return;
+      if (cancelled || launcherReadyRef.current) return;
       if (mountLauncher()) return;
       setLauncherFailed(true);
       clearRetries();
@@ -109,10 +112,10 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
       unmountMobileCliengoChat();
       setMobileCliengoChatOpen(false);
     };
-  }, [open]);
+  }, []);
 
   useEffect(() => {
-    if (!open || !chatActive || !bodyRef.current) {
+    if (!chatActive || !bodyRef.current) {
       return;
     }
 
@@ -134,12 +137,12 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
     return () => {
       window.clearInterval(interval);
     };
-  }, [open, chatActive]);
+  }, [chatActive]);
 
   useEffect(() => {
     const header = headerRef.current;
     const body = bodyRef.current;
-    if (!open || !header) return;
+    if (!header) return;
 
     let startY = 0;
     let dragging = false;
@@ -186,21 +189,21 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
       header.style.transform = '';
       if (body) body.style.transform = '';
     };
-  }, [open, onClose]);
+  }, [onClose]);
 
   const retryLauncher = () => {
     setLauncherFailed(false);
+    launcherReadyRef.current = false;
     setLauncherReady(false);
     if (launcherHostRef.current) {
       window.setTimeout(() => {
-        if (mountMobileCliengoLauncher(launcherHostRef.current!)) {
+        if (launcherHostRef.current && mountMobileCliengoLauncher(launcherHostRef.current)) {
+          launcherReadyRef.current = true;
           setLauncherReady(true);
         }
       }, 0);
     }
   };
-
-  if (!open) return null;
 
   return (
     <div
@@ -283,4 +286,10 @@ export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps)
       </div>
     </div>
   );
+}
+
+export default function MobileChatSheet({ open, onClose }: MobileChatSheetProps) {
+  if (!open) return null;
+
+  return <MobileChatSheetActive onClose={onClose} />;
 }
