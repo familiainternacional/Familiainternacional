@@ -198,6 +198,10 @@ export function applyMobileCliengoChatLayout() {
     return;
   }
 
+  if (isOpen && !inSheet) {
+    return;
+  }
+
   if (!isOpen || !inSheet) {
     chatIframe.style.setProperty('opacity', '0', 'important');
     chatIframe.style.setProperty('pointer-events', 'none', 'important');
@@ -265,7 +269,7 @@ export function unmountMobileCliengoLauncher() {
 export function mountMobileCliengoChat(container: HTMLElement) {
   if (!isMobileTabBarViewport()) return false;
 
-  const chatIframe = document.getElementById('chatIframe') as HTMLElement | null;
+  const chatIframe = getChatIframeElement();
   if (!chatIframe) return false;
 
   if (chatIframe.parentElement !== container) {
@@ -288,15 +292,94 @@ export function unmountMobileCliengoChat() {
   applyMobileCliengoChatLayout();
 }
 
-function waitForMobileChatIframe() {
-  let attempts = 0;
-  const interval = window.setInterval(() => {
-    applyMobileCliengoChatLayout();
-    attempts += 1;
-    if (attempts >= 24) {
-      window.clearInterval(interval);
-    }
-  }, 125);
+function getCliengoApi() {
+  return (window as Window & {
+    Cliengo?: {
+      open?: () => void;
+      openChat?: () => void;
+      close?: () => void;
+      closeChat?: () => void;
+    };
+  }).Cliengo;
+}
+
+export function getChatIframeElement() {
+  if (typeof document === 'undefined') return null;
+  return document.getElementById('chatIframe') as HTMLElement | null;
+}
+
+export function requestCliengoChatOpen() {
+  const cliengo = getCliengoApi();
+  if (typeof cliengo?.openChat === 'function') {
+    cliengo.openChat();
+    return true;
+  }
+  if (typeof cliengo?.open === 'function') {
+    cliengo.open();
+    return true;
+  }
+  return false;
+}
+
+function clickCliengoLauncherForOpen() {
+  const launcher = getCliengoLauncherElement();
+  if (!launcher) return false;
+
+  restoreHiddenLauncher(launcher);
+  launcher.style.setProperty('display', 'block', 'important');
+  launcher.style.setProperty('opacity', '0', 'important');
+  launcher.style.setProperty('position', 'fixed', 'important');
+  launcher.style.setProperty('left', '0', 'important');
+  launcher.style.setProperty('top', '0', 'important');
+  launcher.style.setProperty('width', '1px', 'important');
+  launcher.style.setProperty('height', '1px', 'important');
+  launcher.style.setProperty('pointer-events', 'auto', 'important');
+  launcher.style.setProperty('overflow', 'hidden', 'important');
+  launcher.click();
+  syncMobileFloatingLaunchers();
+  return true;
+}
+
+export function waitForChatIframeElement(
+  onFound: (iframe: HTMLElement) => void,
+  timeoutMs = 20_000,
+) {
+  if (typeof document === 'undefined') {
+    return () => {};
+  }
+
+  const existing = getChatIframeElement();
+  if (existing) {
+    onFound(existing);
+    return () => {};
+  }
+
+  let done = false;
+  const finish = (iframe: HTMLElement) => {
+    if (done) return;
+    done = true;
+    observer.disconnect();
+    window.clearTimeout(timer);
+    onFound(iframe);
+  };
+
+  const observer = new MutationObserver(() => {
+    const iframe = getChatIframeElement();
+    if (iframe) finish(iframe);
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  const timer = window.setTimeout(() => {
+    done = true;
+    observer.disconnect();
+  }, timeoutMs);
+
+  return () => {
+    done = true;
+    observer.disconnect();
+    window.clearTimeout(timer);
+  };
 }
 
 export function closeMobileCliengoChat() {
@@ -330,27 +413,28 @@ export function openCliengoChat(options?: { skipMobileSheet?: boolean }) {
 }
 
 export function activateCliengoChatFromLauncher() {
-  const launcher = getCliengoLauncherElement();
+  let opened = requestCliengoChatOpen();
 
-  if (launcher) {
-    launcher.click();
-    if (isMobileTabBarViewport()) waitForMobileChatIframe();
-    return true;
+  if (!opened) {
+    opened = clickCliengoLauncherForOpen();
   }
 
-  const cliengo = (window as Window & { Cliengo?: { open?: () => void; openChat?: () => void } }).Cliengo;
-  if (typeof cliengo?.openChat === 'function') {
-    cliengo.openChat();
-    if (isMobileTabBarViewport()) waitForMobileChatIframe();
-    return true;
-  }
-  if (typeof cliengo?.open === 'function') {
-    cliengo.open();
-    if (isMobileTabBarViewport()) waitForMobileChatIframe();
-    return true;
+  if (!opened) {
+    return false;
   }
 
-  return false;
+  if (isMobileTabBarViewport()) {
+    let attempts = 0;
+    const interval = window.setInterval(() => {
+      applyMobileCliengoChatLayout();
+      attempts += 1;
+      if (attempts >= 24) {
+        window.clearInterval(interval);
+      }
+    }, 125);
+  }
+
+  return true;
 }
 
 export const CLIENGO_PROACTIVE_PROMPT_MS = 10_000;

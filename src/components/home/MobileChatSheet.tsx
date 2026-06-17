@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { Loader2, X } from 'lucide-react';
 import {
   activateCliengoChatFromLauncher,
-  getCliengoLauncherElement,
   mountMobileCliengoChat,
-  mountMobileCliengoLauncher,
+  requestCliengoChatOpen,
   setMobileCliengoChatOpen,
   unmountMobileCliengoChat,
   unmountMobileCliengoLauncher,
+  waitForChatIframeElement,
 } from '@/lib/integrations/cliengo';
 
 type MobileChatSheetProps = {
@@ -19,14 +19,14 @@ type MobileChatSheetProps = {
 };
 
 const DISMISS_THRESHOLD_PX = 96;
-const CHAT_ACTIVATION_MAX_ATTEMPTS = 48;
+const CHAT_OPEN_RETRY_MS = 400;
+const CHAT_OPEN_MAX_WAIT_MS = 20_000;
 
 export default function MobileChatSheet({ open, onClose, locale }: MobileChatSheetProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
-  const launcherHostRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const [chatActive, setChatActive] = useState(false);
-  const [showLauncherFallback, setShowLauncherFallback] = useState(false);
+  const [openFailed, setOpenFailed] = useState(false);
   const isEnglish = locale === 'en';
 
   useEffect(() => {
@@ -34,46 +34,70 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
       return;
     }
 
+    setChatActive(false);
+    setOpenFailed(false);
     setMobileCliengoChatOpen(true);
 
-    let attempts = 0;
     let cancelled = false;
-    let launcherActivated = false;
+    let mounted = false;
+    let retryTimer: number | null = null;
+    let waitTimeout: number | null = null;
 
-    const tryActivateChat = () => {
-      if (cancelled || !bodyRef.current) {
+    const clearRetries = () => {
+      if (retryTimer !== null) {
+        window.clearInterval(retryTimer);
+        retryTimer = null;
+      }
+    };
+
+    const mountChat = () => {
+      if (cancelled || mounted || !bodyRef.current) {
         return false;
       }
 
-      if (!launcherActivated) {
-        launcherActivated = activateCliengoChatFromLauncher();
+      if (!mountMobileCliengoChat(bodyRef.current)) {
+        return false;
       }
 
-      if (mountMobileCliengoChat(bodyRef.current)) {
-        setChatActive(true);
-        setShowLauncherFallback(false);
-        return true;
-      }
-
-      return false;
+      mounted = true;
+      setChatActive(true);
+      setOpenFailed(false);
+      clearRetries();
+      return true;
     };
 
-    tryActivateChat();
+    const requestOpen = () => {
+      if (cancelled) return;
+      requestCliengoChatOpen();
+      activateCliengoChatFromLauncher();
+    };
 
-    const interval = window.setInterval(() => {
-      attempts += 1;
+    requestOpen();
 
-      if (tryActivateChat() || attempts >= CHAT_ACTIVATION_MAX_ATTEMPTS) {
-        window.clearInterval(interval);
-        if (!cancelled && attempts >= CHAT_ACTIVATION_MAX_ATTEMPTS) {
-          setShowLauncherFallback(true);
-        }
-      }
-    }, 150);
+    retryTimer = window.setInterval(() => {
+      if (cancelled || mounted) return;
+      if (mountChat()) return;
+      requestOpen();
+    }, CHAT_OPEN_RETRY_MS);
+
+    const stopWaiting = waitForChatIframeElement(() => {
+      if (cancelled) return;
+      mountChat();
+    }, CHAT_OPEN_MAX_WAIT_MS);
+
+    waitTimeout = window.setTimeout(() => {
+      if (cancelled || mounted) return;
+      if (mountChat()) return;
+      setOpenFailed(true);
+    }, CHAT_OPEN_MAX_WAIT_MS);
 
     return () => {
       cancelled = true;
-      window.clearInterval(interval);
+      stopWaiting();
+      clearRetries();
+      if (waitTimeout !== null) {
+        window.clearTimeout(waitTimeout);
+      }
       unmountMobileCliengoLauncher();
       unmountMobileCliengoChat();
       setMobileCliengoChatOpen(false);
@@ -81,74 +105,9 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
   }, [open]);
 
   useEffect(() => {
-    if (!open || !showLauncherFallback || chatActive) {
-      return;
-    }
-
-    let attempts = 0;
-    const mountLauncher = () => {
-      if (!launcherHostRef.current) return;
-      mountMobileCliengoLauncher(launcherHostRef.current);
-      attempts += 1;
-    };
-
-    mountLauncher();
-    const interval = window.setInterval(() => {
-      mountLauncher();
-      const launcher = getCliengoLauncherElement();
-      if ((launcher && launcherHostRef.current?.contains(launcher)) || attempts >= 28) {
-        window.clearInterval(interval);
-      }
-    }, 150);
-
-    return () => {
-      window.clearInterval(interval);
-    };
-  }, [open, showLauncherFallback, chatActive]);
-
-  useEffect(() => {
-    if (!open || !showLauncherFallback || chatActive) {
-      return;
-    }
-
-    let waitInterval: number | null = null;
-
-    const activateChat = () => {
-      if (waitInterval !== null || !bodyRef.current) {
-        return;
-      }
-
-      waitInterval = window.setInterval(() => {
-        if (!bodyRef.current) return;
-        if (mountMobileCliengoChat(bodyRef.current)) {
-          setChatActive(true);
-          setShowLauncherFallback(false);
-          if (waitInterval !== null) {
-            window.clearInterval(waitInterval);
-            waitInterval = null;
-          }
-        }
-      }, 150);
-    };
-
-    const host = launcherHostRef.current;
-    const launcher = host?.querySelector('#cliengo-button, .clgo-chat-launcher, #popupIframe');
-    launcher?.addEventListener('click', activateChat);
-
-    return () => {
-      launcher?.removeEventListener('click', activateChat);
-      if (waitInterval !== null) {
-        window.clearInterval(waitInterval);
-      }
-    };
-  }, [open, showLauncherFallback, chatActive]);
-
-  useEffect(() => {
     if (!open || !chatActive || !bodyRef.current) {
       return;
     }
-
-    unmountMobileCliengoLauncher();
 
     let attempts = 0;
     const mount = () => {
@@ -160,7 +119,7 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
     mount();
     const interval = window.setInterval(() => {
       mount();
-      if (document.getElementById('chatIframe') || attempts >= 28) {
+      if (attempts >= 28) {
         window.clearInterval(interval);
       }
     }, 150);
@@ -261,18 +220,27 @@ export default function MobileChatSheet({ open, onClose, locale }: MobileChatShe
           chatActive ? 'fi-mobile-chat-sheet__body--chat-active' : ''
         }`}
       >
-        {!chatActive && showLauncherFallback ? (
-          <div className="flex h-full flex-col items-center justify-center gap-5 px-8 text-center">
-            <div
-              ref={launcherHostRef}
-              className="fi-mobile-chat-sheet__launcher-host relative flex h-full w-full items-center justify-center"
-            />
-            <p className="max-w-xs text-sm leading-relaxed text-neutral-600">
-              {isEnglish ? 'Tap the icon to start chatting' : 'Haz click en el icono para chatear'}
+        {!chatActive && openFailed ? (
+          <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center text-neutral-600">
+            <p className="max-w-xs text-sm leading-relaxed">
+              {isEnglish
+                ? 'We could not open the chat. Please try again in a moment.'
+                : 'No pudimos abrir el chat. Intenta de nuevo en unos segundos.'}
             </p>
+            <button
+              type="button"
+              onClick={() => {
+                setOpenFailed(false);
+                requestCliengoChatOpen();
+                activateCliengoChatFromLauncher();
+              }}
+              className="rounded-full bg-[#07234c] px-5 py-2.5 text-sm font-bold text-white"
+            >
+              {isEnglish ? 'Retry' : 'Reintentar'}
+            </button>
           </div>
         ) : null}
-        {!chatActive && !showLauncherFallback ? (
+        {!chatActive && !openFailed ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 px-8 text-center text-neutral-600">
             <Loader2 className="h-8 w-8 animate-spin text-[#07234c]" aria-hidden />
             <p className="text-sm">

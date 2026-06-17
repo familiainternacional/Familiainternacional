@@ -50,11 +50,13 @@ function PressIntroSlide({
   locale,
   durationMs,
   embedded = false,
+  imageOnly = false,
 }: {
   item: MediaMention;
   locale: string;
   durationMs: number;
   embedded?: boolean;
+  imageOnly?: boolean;
 }) {
   const isEnglish = locale === 'en';
   const frameHeightClass = embedded ? EMBEDDED_FRAME_HEIGHT_CLASS : STANDALONE_FRAME_HEIGHT_CLASS;
@@ -71,18 +73,20 @@ function PressIntroSlide({
           priority
         />
       </div>
-      <div className="shrink-0 border-t border-[#dbe4e2] bg-white px-4 py-3">
-        <div className="mb-2 flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.12em] text-[#07234c]/75">
-          <span>{item.source}</span>
-          <time dateTime={item.date}>{formatMediaDate(item.date, locale)}</time>
+      {!imageOnly ? (
+        <div className="shrink-0 border-t border-[#dbe4e2] bg-white px-4 py-3">
+          <div className="mb-2 flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.12em] text-[#07234c]/75">
+            <span>{item.source}</span>
+            <time dateTime={item.date}>{formatMediaDate(item.date, locale)}</time>
+          </div>
+          <div className="h-1 overflow-hidden rounded-full bg-[#07234c]/10">
+            <span
+              className="fi-press-intro-progress block h-full origin-left rounded-full bg-[#07234c]"
+              style={{ animationDuration: `${durationMs}ms` }}
+            />
+          </div>
         </div>
-        <div className="h-1 overflow-hidden rounded-full bg-[#07234c]/10">
-          <span
-            className="fi-press-intro-progress block h-full origin-left rounded-full bg-[#07234c]"
-            style={{ animationDuration: `${durationMs}ms` }}
-          />
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 }
@@ -197,28 +201,26 @@ function PressCarouselSlide({
   onIntroPlayingChange: (playing: boolean) => void;
   embedded?: boolean;
 }) {
-  const hasIntro = isMobile && Boolean(item.mobilePressIntro);
+  const hasMobileImageOnly = isMobile && Boolean(item.mobilePressIntro);
   const introDurationMs = item.mobilePressIntro?.durationMs ?? DEFAULT_INTRO_DURATION_MS;
-  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
-    if (!hasIntro) return;
-    const timer = window.setTimeout(() => setIntroDone(true), introDurationMs);
-    return () => window.clearTimeout(timer);
-  }, [hasIntro, introDurationMs]);
+    onIntroPlayingChange(false);
+  }, [onIntroPlayingChange]);
 
-  const showIntro = hasIntro && !introDone;
+  if (hasMobileImageOnly) {
+    return (
+      <PressIntroSlide
+        item={item}
+        locale={locale}
+        durationMs={introDurationMs}
+        embedded={embedded}
+        imageOnly
+      />
+    );
+  }
 
-  useEffect(() => {
-    onIntroPlayingChange(showIntro);
-    return () => onIntroPlayingChange(false);
-  }, [onIntroPlayingChange, showIntro]);
-
-  return showIntro ? (
-    <PressIntroSlide item={item} locale={locale} durationMs={introDurationMs} embedded={embedded} />
-  ) : (
-    <PressArticleSlide item={item} locale={locale} activeIndex={activeIndex} embedded={embedded} />
-  );
+  return <PressArticleSlide item={item} locale={locale} activeIndex={activeIndex} embedded={embedded} />;
 }
 
 export default function PressCarouselBanner({ embedded = false }: PressCarouselBannerProps) {
