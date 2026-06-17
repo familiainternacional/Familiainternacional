@@ -8,6 +8,7 @@ export type ServiceLanding = {
   heroTitle: string;
   heroSubtitle: string;
   image: string;
+  includeImages?: string[];
   ctaTitle: string;
   ctaDescription: string;
   ctaLabel: string;
@@ -34,6 +35,7 @@ export const serviceLandings = [
     heroSubtitle:
       'Patrocinamos divorcios unilaterales, por culpa o de mutuo acuerdo cuando uno de los cónyuges está en el exterior, y asesoramos divorcios extranjeros con efectos en Chile.',
     image: '/hero-familia.png',
+    includeImages: ['/services/include-doc.png', '/services/include-handshake.png', '/services/include-scales.png', '/services/include-gavel.png'],
     ctaTitle: 'Evalúe su situación matrimonial',
     ctaDescription:
       'Analizamos país involucrado, domicilio, bienes y vía procesal aplicable antes de iniciar cualquier acción.',
@@ -82,6 +84,7 @@ export const serviceLandings = [
     heroSubtitle:
       'Defensa y demandas bajo el Convenio de La Haya de 1980, visitas internacionales y autorizaciones judiciales para viajar o relocalizar.',
     image: '/hero-defensa.png',
+    includeImages: ['/services/include-scales.png', '/services/include-doc.png', '/services/include-gavel.png', '/services/include-handshake.png'],
     ctaTitle: 'Actúe con urgencia si hay riesgo de sustracción',
     ctaDescription:
       'En estos casos el tiempo es crítico. Evaluamos medidas cautelares, Autoridad Central y vías en Chile y en el extranjero.',
@@ -129,7 +132,8 @@ export const serviceLandings = [
     heroTitle: 'Filiación y alimentos más allá de las fronteras',
     heroSubtitle:
       'Representación en paternidad internacional y cobro de pensión de alimentos cuando las partes o activos están en distintos países.',
-    image: '/hero-familia.png',
+    image: '/services/hero-filiacion.png',
+    includeImages: ['/services/include-handshake.png', '/services/include-scales.png', '/services/include-doc.png', '/services/include-gavel.png'],
     ctaTitle: 'Evalúe su caso de alimentos o filiación',
     ctaDescription:
       'Revisamos país de residencia del deudor, convenios aplicables y vías de cobro o reconocimiento en Chile.',
@@ -177,7 +181,8 @@ export const serviceLandings = [
     heroTitle: 'Reconozca en Chile una sentencia extranjera',
     heroSubtitle:
       'Tramitamos exequátur ante la Corte Suprema para que resoluciones de familia dictadas en el exterior produzcan efectos en Chile.',
-    image: '/hero-santiago.png',
+    image: '/services/hero-exequatur.png',
+    includeImages: ['/services/include-gavel.png', '/services/include-doc.png', '/services/include-handshake.png', '/services/include-scales.png'],
     ctaTitle: 'Evalúe si su sentencia puede validarse',
     ctaDescription:
       'Revisamos país de origen, tipo de resolución, requisitos formales y probabilidad de éxito del exequátur.',
@@ -225,7 +230,8 @@ export const serviceLandings = [
     heroTitle: 'Herencias con bienes en Chile y en el exterior',
     heroSubtitle:
       'Gestión de posesión efectiva, adjudicación y trámites sucesorios cuando el causante o los bienes están en más de un país.',
-    image: '/hero-santiago.png',
+    image: '/services/hero-herencias.png',
+    includeImages: ['/services/include-doc.png', '/services/include-scales.png', '/services/include-gavel.png', '/services/include-handshake.png'],
     ctaTitle: 'Ordene la sucesión internacional',
     ctaDescription:
       'Analizamos bienes en Chile y en el extranjero, ley aplicable y pasos para posesión efectiva o adjudicación.',
@@ -273,7 +279,8 @@ export const serviceLandings = [
     heroTitle: 'Actúe en Chile desde cualquier país',
     heroSubtitle:
       'Confección de mandatos, escrituras y poderes para consulados chilenos, con representación integral en tribunales de familia.',
-    image: '/hero-santiago.png',
+    image: '/services/hero-consulares.png',
+    includeImages: ['/services/include-handshake.png', '/services/include-gavel.png', '/services/include-scales.png', '/services/include-doc.png'],
     ctaTitle: 'Resuelva trámites sin viajar a Chile',
     ctaDescription:
       'Preparamos documentación consular y lo representamos en familia si reside en el extranjero.',

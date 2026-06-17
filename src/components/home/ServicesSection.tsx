@@ -2,11 +2,14 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import type { ServicesPageSettingsAdminValues } from '@/app/admin/servicios/actions';
 import { getFamilyServices } from '@/config/family-services';
 import type { Locale } from '@/lib/i18n/config';
+import { localizedHref } from '@/lib/i18n/localized-href';
 
 const adminPayloadKeys = ['divorcios', 'cuidado', 'filiacion', 'exequatur', 'herencias', 'consulares', 'autorizaciones'] as const;
 
@@ -27,7 +30,7 @@ function mapServiceValues(
 }
 
 export default function ServicesSection({ adminValues }: { adminValues?: ServicesPageSettingsAdminValues | null }) {
-  const { locale, dictionary } = useI18n();
+  const { locale, dictionary, t } = useI18n();
   const [activeIndex, setActiveIndex] = useState(0);
 
   let parsedPayload: Record<string, string> = {};
@@ -105,7 +108,14 @@ export default function ServicesSection({ adminValues }: { adminValues?: Service
                           <p className="text-[15px] leading-[1.7] text-slate-500 max-w-xl">
                             {service.desc}
                           </p>
-                          
+
+                          <Link
+                            href={localizedHref(`/servicios/${service.slug}`, locale)}
+                            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#07234c] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#051830] sm:w-auto lg:mt-8 lg:inline-flex lg:bg-transparent lg:px-0 lg:py-0 lg:text-[11px] lg:font-bold lg:uppercase lg:tracking-widest lg:text-[#0f172a] lg:hover:text-slate-500 lg:underline lg:decoration-slate-300 lg:underline-offset-4 lg:hover:decoration-slate-400"
+                          >
+                            {t('common.viewDetails')}
+                            <ArrowUpRight className="h-4 w-4 lg:hidden" aria-hidden />
+                          </Link>
                         </div>
                       </div>
                     </div>

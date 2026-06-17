@@ -74,7 +74,7 @@ export default function ServicesHomePreview() {
 
               <Link
                 href={localizedHref(`/servicios/${service.slug}`, locale)}
-                className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-[#07234c] transition-colors hover:text-[#051830]"
+                className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#07234c] px-5 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#051830] sm:w-auto lg:bg-transparent lg:px-0 lg:py-0 lg:text-[#07234c] lg:hover:bg-transparent lg:hover:text-[#051830]"
               >
                 {t('common.viewDetails')}
                 <ArrowUpRight className="h-4 w-4" aria-hidden />

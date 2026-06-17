@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import EvaluaTuCasoForm from '@/components/forms/EvaluaTuCasoForm';
 import BookCallButton from '@/components/home/BookCallButton';
+import ServicesScrollBanner from '@/components/home/ServicesScrollBanner';
 import SectionBackgroundImage from '@/components/ui/SectionBackgroundImage';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
@@ -67,6 +68,8 @@ export default function ReplicaHero() {
             </div>
           </div>
         </div>
+
+        <ServicesScrollBanner />
       </div>
     </section>
   );

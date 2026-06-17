@@ -1,3 +1,5 @@
+import { MOBILE_TAB_BAR_CHAT_ENABLED } from '@/config/features';
+
 const DEFAULT_CLIENGO_SCRIPT_URL =
   'https://s.cliengo.com/weboptimizer/5fb67d0d9c17fd002a2e608c/5fb67d0e9c17fd002a2e608f.js?platform=website';
 
@@ -27,9 +29,15 @@ export const MOBILE_FLOATING_LAUNCHER_SELECTORS = [
   '#cliengo-button',
   '.clgo-chat-launcher',
   '#chat-launcher',
+  '#popupIframe',
+] as const;
+
+const MOBILE_DUPLICATE_WIDGET_SELECTORS = [
   '#wspIframe',
   '.whatsapp-widget-container',
 ] as const;
+
+const SMALL_MOBILE_LAUNCHER_SIZE_PX = 44;
 
 export function isMobileTabBarViewport() {
   if (typeof window === 'undefined') return false;
@@ -49,6 +57,34 @@ function restoreHiddenLauncher(el: HTMLElement) {
   el.style.removeProperty('overflow');
 }
 
+function applySmallMobileFloatingLauncherStyles(el: HTMLElement) {
+  el.removeAttribute('data-fi-mobile-launcher-hidden');
+  el.style.setProperty('position', 'fixed', 'important');
+  el.style.setProperty('right', '12px', 'important');
+  el.style.setProperty('bottom', 'var(--fi-cliengo-launcher-bottom, 1rem)', 'important');
+  el.style.setProperty('left', 'auto', 'important');
+  el.style.setProperty('top', 'auto', 'important');
+  el.style.setProperty('display', 'block', 'important');
+  el.style.setProperty('opacity', '1', 'important');
+  el.style.setProperty('pointer-events', 'auto', 'important');
+  el.style.setProperty('width', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
+  el.style.setProperty('height', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
+  el.style.setProperty('min-width', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
+  el.style.setProperty('min-height', `${SMALL_MOBILE_LAUNCHER_SIZE_PX}px`, 'important');
+  el.style.setProperty('margin', '0', 'important');
+  el.style.setProperty('border', 'none', 'important');
+  el.style.setProperty('overflow', 'hidden', 'important');
+  el.style.setProperty('transform', 'none', 'important');
+  el.style.setProperty('z-index', '45', 'important');
+  el.style.setProperty('border-radius', '9999px', 'important');
+  el.style.setProperty('box-shadow', '0 4px 14px rgba(7, 35, 76, 0.22)', 'important');
+}
+
+function hideDuplicateMobileWidget(el: HTMLElement) {
+  el.dataset.fiMobileLauncherHidden = 'true';
+  el.style.setProperty('display', 'none', 'important');
+}
+
 export function syncMobileFloatingLaunchers(root: ParentNode = document) {
   const isMobile = isMobileTabBarViewport();
 
@@ -58,25 +94,36 @@ export function syncMobileFloatingLaunchers(root: ParentNode = document) {
 
   if (!isMobile) return;
 
+  if (MOBILE_TAB_BAR_CHAT_ENABLED) {
+    MOBILE_FLOATING_LAUNCHER_SELECTORS.forEach((selector) => {
+      root.querySelectorAll(selector).forEach((node) => {
+        const el = node as HTMLElement;
+        if (el.closest('.fi-mobile-chat-sheet__launcher-host')) return;
+        hideDuplicateMobileWidget(el);
+      });
+    });
+
+    MOBILE_DUPLICATE_WIDGET_SELECTORS.forEach((selector) => {
+      root.querySelectorAll(selector).forEach((node) => {
+        hideDuplicateMobileWidget(node as HTMLElement);
+      });
+    });
+    return;
+  }
+
   MOBILE_FLOATING_LAUNCHER_SELECTORS.forEach((selector) => {
     root.querySelectorAll(selector).forEach((node) => {
       const el = node as HTMLElement;
       if (el.closest('.fi-mobile-chat-sheet__launcher-host')) return;
-      el.dataset.fiMobileLauncherHidden = 'true';
-      el.style.setProperty('display', 'none', 'important');
+      applySmallMobileFloatingLauncherStyles(el);
     });
   });
 
-  const popupIframe = root instanceof Document ? root.getElementById('popupIframe') : null;
-  if (popupIframe && !popupIframe.dataset.fiMobileLauncherHidden && !popupIframe.closest('.fi-mobile-chat-sheet__launcher-host')) {
-    popupIframe.dataset.fiMobileLauncherHidden = 'true';
-    popupIframe.style.setProperty('opacity', '0', 'important');
-    popupIframe.style.setProperty('pointer-events', 'none', 'important');
-    popupIframe.style.setProperty('width', '0', 'important');
-    popupIframe.style.setProperty('height', '0', 'important');
-    popupIframe.style.setProperty('border', 'none', 'important');
-    popupIframe.style.setProperty('overflow', 'hidden', 'important');
-  }
+  MOBILE_DUPLICATE_WIDGET_SELECTORS.forEach((selector) => {
+    root.querySelectorAll(selector).forEach((node) => {
+      hideDuplicateMobileWidget(node as HTMLElement);
+    });
+  });
 }
 
 const SCROLL_LOCK_STYLE_PROPS = [
@@ -209,7 +256,7 @@ function applyCenteredMobileLauncherStyles(launcher: HTMLElement) {
 }
 
 export function applyMobileCliengoChatLayout() {
-  if (!isMobileTabBarViewport()) return;
+  if (!isMobileTabBarViewport() || !MOBILE_TAB_BAR_CHAT_ENABLED) return;
 
   const chatIframe = document.getElementById('chatIframe') as HTMLElement | null;
   if (!chatIframe) return;
@@ -495,13 +542,9 @@ export function closeMobileCliengoChat() {
 }
 
 export function openCliengoChat(options?: { skipMobileSheet?: boolean }) {
-  if (isMobileTabBarViewport() && !options?.skipMobileSheet) {
+  if (isMobileTabBarViewport() && MOBILE_TAB_BAR_CHAT_ENABLED && !options?.skipMobileSheet) {
     setMobileCliengoChatOpen(true);
     return true;
-  }
-
-  if (isMobileTabBarViewport()) {
-    setMobileCliengoChatOpen(true);
   }
 
   return activateCliengoChatFromLauncher();
@@ -518,7 +561,7 @@ export function activateCliengoChatFromLauncher() {
     return false;
   }
 
-  if (isMobileTabBarViewport()) {
+  if (isMobileTabBarViewport() && MOBILE_TAB_BAR_CHAT_ENABLED) {
     let attempts = 0;
     const interval = window.setInterval(() => {
       applyMobileCliengoChatLayout();

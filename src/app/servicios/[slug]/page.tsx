@@ -31,6 +31,7 @@ import {
   getLocalizedServiceLandings,
 } from '@/lib/i18n/service-landing';
 import { getLocalizedServiceSeoCopy } from '@/lib/i18n/service-seo-copy';
+import { localizedHref } from '@/lib/i18n/localized-href';
 
 type ServicePageProps = {
   params: Promise<{
@@ -406,7 +407,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                     >
                       <div className="relative block aspect-square w-full overflow-hidden rounded-card bg-[#f2f2f2] md:aspect-[1.35] md:rounded-card">
                         <Image
-                          src={resolveSiteAssetSrc(landing.image)}
+                          src={resolveSiteAssetSrc(landing.includeImages?.[index % (landing.includeImages?.length || 1)] || landing.image)}
                           alt={`${landing.title} - ${item}`}
                           fill
                           sizes="(min-width: 1024px) 23vw, (min-width: 768px) 48vw, 92vw"
@@ -501,9 +502,10 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
               </p>
               <div className="mt-8 grid gap-6 md:grid-cols-3">
                 {relatedServices.map((service) => (
-                  <article
+                  <Link
                     key={service.slug}
-                    className="rlu-card-base rlu-card-light p-3"
+                    href={localizedHref(`/servicios/${service.slug}`, locale)}
+                    className="rlu-card-base rlu-card-light group p-3 transition-transform hover:-translate-y-1"
                   >
                     <div className="relative aspect-[1.55] overflow-hidden rounded-card bg-[#f2f2f2]">
                       <Image
@@ -511,7 +513,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                         alt=""
                         fill
                         sizes="(min-width: 768px) 30vw, 92vw"
-                        className="object-cover grayscale-[15%]"
+                        className="object-cover grayscale-[15%] transition duration-500 group-hover:scale-[1.03]"
                       />
                       <div className="absolute inset-0 bg-white/35" />
                       <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
@@ -527,7 +529,7 @@ export default async function ServiceLandingPage({ params }: ServicePageProps) {
                         {service.seoDescription}
                       </p>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </div>

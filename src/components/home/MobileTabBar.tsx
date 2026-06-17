@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Briefcase, Info, MessageCircle } from 'lucide-react';
+import { Home, Briefcase, Info } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useLenis } from 'lenis/react';
@@ -9,16 +9,8 @@ import WhatsAppIcon from '@/components/icons/WhatsAppIcon';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { buildWhatsAppWidgetHref } from '@/lib/contact/links';
 import { navigateToHomeSection, type NavSection } from '@/config/nav';
-import {
-  closeMobileCliengoChat,
-  getSavedMobileScrollY,
-  isCliengoEnabled,
-  isMobileTabBarViewport,
-  subscribeCliengoProactivePrompt,
-} from '@/lib/integrations/cliengo';
-import MobileChatSheet from '@/components/home/MobileChatSheet';
+import { isMobileTabBarViewport } from '@/lib/integrations/cliengo';
 import { siteConfig } from '@/config/site';
-import { MOBILE_TAB_BAR_CHAT_ENABLED } from '@/config/features';
 
 function isEditableFormField(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
@@ -44,32 +36,9 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   const lenis = useLenis();
   const phone = whatsappNumber || siteConfig.contact.whatsappNumber;
   const whatsappHref = buildWhatsAppWidgetHref(phone, locale);
-  const [chatOpen, setChatOpen] = useState(false);
   const [hiddenByFormFocus, setHiddenByFormFocus] = useState(false);
   const [revealedByScroll, setRevealedByScroll] = useState(false);
-  const [chatPromptActive, setChatPromptActive] = useState(false);
-  const [chatSession, setChatSession] = useState(0);
   const hiddenByFormFocusRef = useRef(false);
-
-  const closeChat = () => {
-    const scrollY = getSavedMobileScrollY();
-    setChatOpen(false);
-    closeMobileCliengoChat();
-    window.requestAnimationFrame(() => {
-      window.scrollTo(0, scrollY);
-      lenis?.scrollTo(scrollY, { immediate: true });
-      lenis?.start();
-      lenis?.resize();
-    });
-  };
-
-  useEffect(() => {
-    if (!chatOpen) return;
-    lenis?.stop();
-    return () => {
-      // lenis restarts in closeChat after scroll position is restored
-    };
-  }, [chatOpen, lenis]);
 
   useEffect(() => {
     hiddenByFormFocusRef.current = hiddenByFormFocus;
@@ -78,12 +47,9 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   useEffect(() => {
     const onResize = () => {
       if (!isMobileTabBarViewport()) {
-        setChatOpen(false);
         setHiddenByFormFocus(false);
         setRevealedByScroll(false);
-        setChatPromptActive(false);
         document.body.classList.remove(MOBILE_TAB_BAR_REVEALED_BODY_CLASS);
-        closeMobileCliengoChat();
         window.requestAnimationFrame(() => {
           lenis?.start();
           lenis?.resize();
@@ -93,7 +59,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
 
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, []);
+  }, [lenis]);
 
   useEffect(() => {
     const readScrollY = () => (lenis ? lenis.scroll : window.scrollY);
@@ -137,7 +103,7 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
     };
   }, [lenis]);
 
-  const isTabBarVisible = revealedByScroll && !hiddenByFormFocus && !chatOpen;
+  const isTabBarVisible = revealedByScroll && !hiddenByFormFocus;
 
   useEffect(() => {
     if (!isMobileTabBarViewport()) {
@@ -152,34 +118,6 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
     };
   }, [isTabBarVisible]);
 
-  useEffect(() => {
-    if (!MOBILE_TAB_BAR_CHAT_ENABLED || !isCliengoEnabled() || !isMobileTabBarViewport()) {
-      return;
-    }
-
-    return subscribeCliengoProactivePrompt(() => {
-      setChatPromptActive(true);
-    });
-  }, []);
-
-  const handleChatClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    if (chatOpen) {
-      closeChat();
-      return;
-    }
-
-    if (isCliengoEnabled()) {
-      setChatPromptActive(false);
-      setChatSession((session) => session + 1);
-      setChatOpen(true);
-      return;
-    }
-
-    window.open(whatsappHref, '_blank', 'noopener,noreferrer');
-  };
-
   const tabItemClass =
     'flex flex-col items-center justify-center gap-1 text-[#555555] transition-colors hover:text-[#07234c]';
 
@@ -190,64 +128,40 @@ export default function MobileTabBar({ whatsappNumber }: { whatsappNumber?: stri
   };
 
   return (
-    <>
-      {MOBILE_TAB_BAR_CHAT_ENABLED ? (
-        <MobileChatSheet key={chatSession} open={chatOpen} onClose={closeChat} locale={locale} />
-      ) : null}
-
-      <div
-        className={`fixed bottom-4 left-4 right-4 z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${
-          isTabBarVisible
-            ? 'translate-y-0 opacity-100'
-            : 'pointer-events-none translate-y-[calc(100%+1.5rem)] opacity-0'
-        }`}
-      >
-        <nav className="mx-auto flex w-full max-w-sm items-center justify-between rounded-card bg-white px-4 py-3 pointer-events-auto">
-          <Link href="/#home" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'home', '/#home')}>
-            <Home size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.home')}</span>
-          </Link>
-          <Link
-            href="/#services"
-            className={tabItemClass}
-            onClick={(event) => handleSectionNav(event, 'services', '/#services')}
-          >
-            <Briefcase size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.services')}</span>
-          </Link>
-          <Link href="/#about" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'about', '/#about')}>
-            <Info size={22} strokeWidth={2} />
-            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.about')}</span>
-          </Link>
-          {MOBILE_TAB_BAR_CHAT_ENABLED ? (
-            <button
-              type="button"
-              onClick={handleChatClick}
-              aria-expanded={chatOpen}
-              aria-label={t('mobile.chat.open')}
-              className={`flex flex-col items-center justify-center gap-1 rounded-card px-2 py-1 transition-colors ${
-                chatOpen
-                  ? 'bg-[#07234c] text-white'
-                  : chatPromptActive
-                    ? 'text-[#1a9e4b] hover:text-[#25D366]'
-                    : 'text-[#07234c] hover:text-[#0a3169]'
-              }`}
-            >
-              <MessageCircle size={22} strokeWidth={2} />
-              <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.chat')}</span>
-            </button>
-          ) : null}
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center gap-1 text-[#1a9e4b] transition-colors hover:text-[#25D366]"
-          >
-            <WhatsAppIcon size={22} />
-            <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.whatsapp')}</span>
-          </a>
-        </nav>
-      </div>
-    </>
+    <div
+      className={`fixed bottom-4 left-4 right-4 z-40 lg:hidden pointer-events-none transition-all duration-300 ease-out ${
+        isTabBarVisible
+          ? 'translate-y-0 opacity-100'
+          : 'pointer-events-none translate-y-[calc(100%+1.5rem)] opacity-0'
+      }`}
+    >
+      <nav className="mx-auto flex w-full max-w-sm items-center justify-around rounded-card bg-white px-4 py-3 pointer-events-auto">
+        <Link href="/#home" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'home', '/#home')}>
+          <Home size={22} strokeWidth={2} />
+          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.home')}</span>
+        </Link>
+        <Link
+          href="/#services"
+          className={tabItemClass}
+          onClick={(event) => handleSectionNav(event, 'services', '/#services')}
+        >
+          <Briefcase size={22} strokeWidth={2} />
+          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.services')}</span>
+        </Link>
+        <Link href="/#about" className={tabItemClass} onClick={(event) => handleSectionNav(event, 'about', '/#about')}>
+          <Info size={22} strokeWidth={2} />
+          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.about')}</span>
+        </Link>
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center gap-1 text-[#1a9e4b] transition-colors hover:text-[#25D366]"
+        >
+          <WhatsAppIcon size={22} />
+          <span className="text-[10px] font-bold tracking-wide">{t('mobile.tabs.whatsapp')}</span>
+        </a>
+      </nav>
+    </div>
   );
 }

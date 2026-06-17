@@ -200,111 +200,42 @@ body {
 @media (max-width: 1023px) {
   body {
     padding-bottom: 0;
+    --fi-cliengo-launcher-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 
   body.fi-mobile-tab-bar-revealed {
     padding-bottom: 96px;
+    --fi-cliengo-launcher-bottom: calc(5.75rem + env(safe-area-inset-bottom));
   }
 
-  /* Launchers flotantes de terceros: acciones en MobileTabBar */
-  #cliengo-button,
-  .clgo-chat-launcher,
-  #chat-launcher,
+  /* WhatsApp flotante duplicado: la tab bar ya incluye WhatsApp */
   #wspIframe,
   .whatsapp-widget-container {
     display: none !important;
   }
 
+  /* Cliengo flotante compacto sobre el contenido principal */
+  #cliengo-button,
+  .clgo-chat-launcher,
+  #chat-launcher,
   #popupIframe {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-  }
-
-  #chatIframe {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-
-  body.fi-mobile-chat-open {
-    overflow: hidden !important;
-    padding-bottom: 0 !important;
-  }
-
-  html.fi-mobile-chat-open {
-    overflow: hidden !important;
-  }
-
-  .fi-mobile-chat-sheet__body--chat-active {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-
-  .fi-mobile-chat-sheet__body #chatIframe {
-    position: relative !important;
-    inset: auto !important;
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
+    position: fixed !important;
+    right: 0.75rem !important;
+    bottom: var(--fi-cliengo-launcher-bottom) !important;
     left: auto !important;
-    width: min(100%, 22.5rem) !important;
-    height: min(calc(100dvh - 12rem), 40rem) !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    z-index: 1 !important;
-    border: none !important;
-    outline: none !important;
-    border-radius: 1rem !important;
-    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
-    transform: none !important;
-    touch-action: pan-y !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  body.fi-mobile-chat-open #popupIframe {
-    display: none !important;
-  }
-
-  .fi-mobile-chat-sheet__launcher-host {
-    position: relative;
-    min-height: 5.5rem;
-    width: min(100%, 6rem);
-    margin-inline: auto;
-  }
-
-  .fi-mobile-chat-sheet__launcher-host #cliengo-button,
-  .fi-mobile-chat-sheet__launcher-host .clgo-chat-launcher,
-  .fi-mobile-chat-sheet__launcher-host #popupIframe {
-    display: block !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    right: auto !important;
-    bottom: auto !important;
-    width: 72px !important;
-    height: 72px !important;
-    min-width: 72px !important;
-    min-height: 72px !important;
+    top: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
     margin: 0 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 45 !important;
     border: none !important;
-    overflow: visible !important;
-    transform: translate(-50%, -50%) !important;
+    border-radius: 9999px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 14px rgba(7, 35, 76, 0.22) !important;
   }
 }
 
