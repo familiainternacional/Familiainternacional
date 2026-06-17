@@ -13,7 +13,7 @@ export default function ReplicaHero() {
   const [showForm, setShowForm] = useState(false);
 
   return (
-    <section className="relative w-full pb-10 pt-[112px] sm:pt-[120px] lg:pt-[160px] xl:pb-12 xl:pt-[180px]">
+    <section className="relative w-full pb-10 pt-[140px] sm:pt-[140px] lg:pt-[160px] xl:pb-12 xl:pt-[180px]">
       <SectionBackgroundImage src={HERO_BG_SRC} priority className="-z-20" />
       <div className="absolute inset-0 -z-10 bg-[#07234c]/30" />
       <div className={`relative z-10 ${SITE_CONTAINER_CLASS}`}>
@@ -43,16 +43,16 @@ export default function ReplicaHero() {
                 </p>
               </div>
 
-              <div className={`mt-8 w-full sm:mt-10 lg:mb-8 lg:mt-10 flex flex-row flex-wrap gap-3 sm:gap-4 items-center ${showForm ? 'justify-center lg:justify-start' : 'justify-center'}`}>
+              <div className={`mt-8 w-full sm:mt-10 lg:mb-8 lg:mt-10 flex flex-row gap-2 sm:gap-4 items-stretch ${showForm ? 'justify-center lg:justify-start' : 'justify-center'}`}>
                 <BookCallButton
                   text="Agendar Videollamada"
-                  className={`${PRIMARY_BUTTON_XL_CLASS} !w-auto !rounded-full [&_svg]:h-5 [&_svg]:w-5`}
+                  className={`${PRIMARY_BUTTON_XL_CLASS} flex-1 sm:flex-none sm:!w-[280px] !rounded-full !px-1 sm:!px-6 !text-[12px] sm:!text-base leading-tight [&_svg]:h-4 [&_svg]:w-4 sm:[&_svg]:h-5 sm:[&_svg]:w-5`}
                 />
                 
                 <button
                   type="button"
                   onClick={() => setShowForm(!showForm)}
-                  className={`${PRIMARY_BUTTON_XL_CLASS} !w-auto !rounded-full bg-transparent border-2 border-[#07234c] text-[#07234c] hover:bg-[#07234c] hover:text-white transition-colors`}
+                  className={`${PRIMARY_BUTTON_XL_CLASS} flex-1 sm:flex-none sm:!w-[280px] !rounded-full !px-1 sm:!px-6 !text-[12px] sm:!text-base leading-tight bg-transparent border-2 border-[#07234c] text-[#07234c] hover:bg-[#07234c] hover:text-white transition-colors`}
                 >
                   {showForm ? 'Ocultar Formulario' : 'Desplegar Formulario'}
                 </button>
