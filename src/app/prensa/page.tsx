@@ -6,7 +6,7 @@ import PressListing from '@/components/press/PressListing';
 import JsonLd from '@/components/seo/JsonLd';
 import { pressHubSeo } from '@/config/media-mentions';
 import { buildPressHubStructuredData } from '@/lib/seo/press-structured-data';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { getSiteSettings } from '@/lib/cms/site-settings';
 import { createPageMetadata } from '@/lib/seo/metadata';
 import { getServerLocale } from '@/lib/i18n/server';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -28,7 +28,7 @@ export default async function PrensaPage() {
   const locale = await getServerLocale();
   const dict = getDictionary(locale);
   const page = dict.pages.prensa;
-  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
+  const siteSettings = await getSiteSettings().catch(() => null);
 
   return (
     <main className="flex min-h-screen flex-col bg-[#f8fafc] text-[#07234c]">

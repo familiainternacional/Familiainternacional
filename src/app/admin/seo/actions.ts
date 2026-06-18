@@ -1,41 +1,12 @@
 'use server';
 
-import { cache } from 'react';
 import { getPrismaClient } from '@/lib/db/prisma';
 import { requireAdminSession } from '@/lib/supabase/auth';
 import { revalidatePath } from 'next/cache';
-import {
-  FAMILIA_INTERNACIONAL_SEO_DEFAULTS,
-  resolveSiteSeoDescription,
-  resolveSiteSeoTitle,
-} from '@/lib/seo/resolve-site-seo';
+import { FAMILIA_INTERNACIONAL_SEO_DEFAULTS } from '@/lib/seo/resolve-site-seo';
+import type { SiteSeoSettings } from '@/lib/cms/site-seo';
 
-export type SiteSeoSettingsAdminValues = {
-  defaultTitleEs: string;
-  defaultDescriptionEs: string;
-  defaultOgImage: string;
-};
-
-export const getSiteSeoSettingsAdminValues = cache(async (): Promise<SiteSeoSettingsAdminValues> => {
-  const prisma = getPrismaClient();
-  const data = await prisma.siteSeoSettings.findUnique({
-    where: { id: 'main' },
-  });
-  
-  if (!data) {
-    return {
-      defaultTitleEs: FAMILIA_INTERNACIONAL_SEO_DEFAULTS.defaultTitleEs,
-      defaultDescriptionEs: FAMILIA_INTERNACIONAL_SEO_DEFAULTS.defaultDescriptionEs,
-      defaultOgImage: '',
-    };
-  }
-
-  return {
-    defaultTitleEs: resolveSiteSeoTitle(data.defaultTitleEs),
-    defaultDescriptionEs: resolveSiteSeoDescription(data.defaultDescriptionEs),
-    defaultOgImage: data.defaultOgImage || '',
-  };
-});
+export type SiteSeoSettingsAdminValues = SiteSeoSettings;
 
 export async function updateSiteSeoSettingsAdminValues(values: SiteSeoSettingsAdminValues) {
   await requireAdminSession();

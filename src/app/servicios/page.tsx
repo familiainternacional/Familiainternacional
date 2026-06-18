@@ -9,7 +9,7 @@ import ScrollReveal from '@/components/home/ScrollReveal';
 import { getFamilyServices } from '@/config/family-services';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
-import { getServicesPageAdminValues } from '@/app/admin/servicios/actions';
+import { getServicesPageSettings } from '@/lib/cms/services-page';
 import { createPageMetadata } from '@/lib/seo/metadata';
 import { getServerLocale } from '@/lib/i18n/server';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -30,7 +30,7 @@ export default async function ServicesIndexPage() {
   const locale = await getServerLocale();
   const dict = getDictionary(locale);
   const page = dict.pages.servicios;
-  const servicesValues = await getServicesPageAdminValues().catch(() => null);
+  const servicesValues = await getServicesPageSettings().catch(() => null);
   const familyServices = getFamilyServices(locale);
   const siteUrl = getDefaultCanonicalBaseUrl();
 

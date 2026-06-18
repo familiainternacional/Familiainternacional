@@ -16,14 +16,14 @@ import JsonLd from '@/components/seo/JsonLd';
 import SkipToContentLink from '@/components/i18n/SkipToContentLink';
 import { siteConfig } from '@/config/site';
 import { buildHomeStructuredData } from '@/lib/seo/structured-data';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
-import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
+import { getSiteSettings } from '@/lib/cms/site-settings';
+import { getSiteSeoSettings } from '@/lib/cms/site-seo';
 import { resolveSiteSeoDescription, resolveSiteSeoTitle } from '@/lib/seo/resolve-site-seo';
-import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
+import { getAboutPageSettings } from '@/lib/cms/about-page';
 import { createPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seoSettings = await getSiteSeoSettingsAdminValues().catch(() => null);
+  const seoSettings = await getSiteSeoSettings().catch(() => null);
   const seoTitle = resolveSiteSeoTitle(seoSettings?.defaultTitleEs);
   const description = resolveSiteSeoDescription(seoSettings?.defaultDescriptionEs);
   const ogImage = seoSettings?.defaultOgImage?.trim() || undefined;
@@ -41,8 +41,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   const [siteSettings, aboutSettings] = await Promise.all([
-    getSiteSettingsAdminValues().catch(() => null),
-    getAboutPageAdminValues().catch(() => null),
+    getSiteSettings().catch(() => null),
+    getAboutPageSettings().catch(() => null),
   ]);
 
   return (

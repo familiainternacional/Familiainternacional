@@ -7,11 +7,11 @@ import { ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import type { ServicesPageSettingsAdminValues } from '@/app/admin/servicios/actions';
-import { getFamilyServices } from '@/config/family-services';
+import { getFamilyServices, SERVICE_ADMIN_PAYLOAD_KEYS } from '@/config/family-services';
 import type { Locale } from '@/lib/i18n/config';
 import { localizedHref } from '@/lib/i18n/localized-href';
 
-const adminPayloadKeys = ['divorcios', 'cuidado', 'filiacion', 'exequatur', 'herencias', 'consulares', 'autorizaciones'] as const;
+const adminPayloadKeys = SERVICE_ADMIN_PAYLOAD_KEYS;
 
 function mapServiceValues(
   locale: Locale,

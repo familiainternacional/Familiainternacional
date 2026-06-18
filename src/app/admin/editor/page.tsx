@@ -1,9 +1,9 @@
 ﻿import React from 'react';
-import { getHomeHeroAdminValues } from '@/app/admin/inicio/actions';
-import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
-import { getServicesPageAdminValues } from '@/app/admin/servicios/actions';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
-import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
+import { getHomeHeroSettings } from '@/lib/cms/home-hero';
+import { getAboutPageSettings } from '@/lib/cms/about-page';
+import { getServicesPageSettings } from '@/lib/cms/services-page';
+import { getSiteSettings } from '@/lib/cms/site-settings';
+import { getSiteSeoSettings } from '@/lib/cms/site-seo';
 import SiteEditorTabs from './SiteEditorTabs';
 import { Edit3 } from 'lucide-react';
 
@@ -13,11 +13,11 @@ export const metadata = {
 
 export default async function SiteEditorPage() {
   const [homeHeroValues, aboutPageValues, servicesPageValues, siteSettingsValues, seoSettingsValues] = await Promise.all([
-    getHomeHeroAdminValues(),
-    getAboutPageAdminValues(),
-    getServicesPageAdminValues(),
-    getSiteSettingsAdminValues(),
-    getSiteSeoSettingsAdminValues(),
+    getHomeHeroSettings(),
+    getAboutPageSettings(),
+    getServicesPageSettings(),
+    getSiteSettings(),
+    getSiteSeoSettings(),
   ]);
 
   return (

@@ -37,7 +37,7 @@ const MOBILE_DUPLICATE_WIDGET_SELECTORS = [
   '.whatsapp-widget-container',
 ] as const;
 
-const SMALL_MOBILE_LAUNCHER_SIZE_PX = 36;
+// Removed SMALL_MOBILE_LAUNCHER_SIZE_PX
 
 export function isMobileTabBarViewport() {
   if (typeof window === 'undefined') return false;

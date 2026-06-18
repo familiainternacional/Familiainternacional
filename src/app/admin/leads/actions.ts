@@ -1,9 +1,12 @@
 'use server';
 
 import { getPrismaClient } from '@/lib/db/prisma';
+import { requireAdminSession } from '@/lib/supabase/auth';
 import { revalidatePath } from 'next/cache';
 
 export async function markLeadAsRead(id: string) {
+  await requireAdminSession();
+
   try {
     const prisma = getPrismaClient();
     await prisma.lead.update({
@@ -20,6 +23,8 @@ export async function markLeadAsRead(id: string) {
 }
 
 export async function deleteLead(id: string) {
+  await requireAdminSession();
+
   try {
     const prisma = getPrismaClient();
     await prisma.lead.delete({

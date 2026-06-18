@@ -10,7 +10,7 @@ import { getTeamMemberBySlug } from '@/config/team';
 import { siteConfig } from '@/config/site';
 import { resolveSiteAssetSrc } from '@/lib/storage/site-assets';
 import { buildTeamMemberStructuredData } from '@/lib/seo/team-structured-data';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { getSiteSettings } from '@/lib/cms/site-settings';
 import { notFound } from 'next/navigation';
 import { buildLanguageAlternates, buildTwitterMetadata } from '@/lib/seo/metadata';
 import { getServerLocale } from '@/lib/i18n/server';
@@ -58,7 +58,7 @@ export default async function TeamMemberPage() {
   const dict = getDictionary(locale);
   const page = dict.pages.jaime;
   const localized = getLocalizedTeamMember(member, locale);
-  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
+  const siteSettings = await getSiteSettings().catch(() => null);
 
   return (
     <main className="flex min-h-screen flex-col bg-white text-[#07234c]">

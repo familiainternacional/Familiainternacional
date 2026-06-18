@@ -1,9 +1,9 @@
 import Navbar from '@/components/home/Navbar';
 import Footer from '@/components/home/Footer';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { getSiteSettings } from '@/lib/cms/site-settings';
 
 export default async function MarketingPageLayout({ children }: { children: React.ReactNode }) {
-  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
+  const siteSettings = await getSiteSettings().catch(() => null);
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-[#07234c]">

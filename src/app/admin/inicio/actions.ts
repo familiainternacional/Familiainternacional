@@ -2,29 +2,14 @@
 
 import { revalidatePath } from 'next/cache';
 import { getPrismaClient } from '@/lib/db/prisma';
+import { requireAdminSession } from '@/lib/supabase/auth';
+import type { HomeHeroSettings } from '@/lib/cms/home-hero';
 
-export type HomeHeroSettingsAdminValues = {
-  imageUrl: string;
-  titleLine1Es: string;
-  titleLine2Es: string;
-  subtitleEs: string;
-};
-
-export async function getHomeHeroAdminValues(): Promise<HomeHeroSettingsAdminValues> {
-  const prisma = await getPrismaClient();
-  const settings = await prisma.homeHeroSettings.findUnique({
-    where: { id: 'main' },
-  });
-
-  return {
-    imageUrl: settings?.imageUrl ?? '',
-    titleLine1Es: settings?.titleLine1Es ?? '',
-    titleLine2Es: settings?.titleLine2Es ?? '',
-    subtitleEs: settings?.subtitleEs ?? '',
-  };
-}
+export type HomeHeroSettingsAdminValues = HomeHeroSettings;
 
 export async function updateHomeHeroAdminValues(values: HomeHeroSettingsAdminValues) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   await prisma.homeHeroSettings.upsert({
     where: { id: 'main' },

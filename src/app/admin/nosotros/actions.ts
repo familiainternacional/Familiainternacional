@@ -2,23 +2,14 @@
 
 import { revalidatePath } from 'next/cache';
 import { getPrismaClient } from '@/lib/db/prisma';
+import { requireAdminSession } from '@/lib/supabase/auth';
+import type { AboutPageSettings } from '@/lib/cms/about-page';
 
-export type AboutPageSettingsAdminValues = {
-  payload: string;
-};
-
-export async function getAboutPageAdminValues(): Promise<AboutPageSettingsAdminValues> {
-  const prisma = await getPrismaClient();
-  const settings = await prisma.aboutPageSettings.findUnique({
-    where: { id: 'main' },
-  });
-
-  return {
-    payload: settings?.payload ?? '',
-  };
-}
+export type AboutPageSettingsAdminValues = AboutPageSettings;
 
 export async function updateAboutPageAdminValues(values: AboutPageSettingsAdminValues) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   await prisma.aboutPageSettings.upsert({
     where: { id: 'main' },

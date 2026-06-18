@@ -2,8 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { getPrismaClient } from '@/lib/db/prisma';
+import { requireAdminSession } from '@/lib/supabase/auth';
 
 export async function getTestimonials() {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   return prisma.testimonial.findMany({
     orderBy: [
@@ -14,6 +17,8 @@ export async function getTestimonials() {
 }
 
 export async function getTestimonialById(id: string) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   return prisma.testimonial.findUnique({
     where: { id },
@@ -21,6 +26,8 @@ export async function getTestimonialById(id: string) {
 }
 
 export async function createTestimonial(data: import("@prisma/client").Prisma.TestimonialCreateInput) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   const result = await prisma.testimonial.create({
     data,
@@ -30,6 +37,8 @@ export async function createTestimonial(data: import("@prisma/client").Prisma.Te
 }
 
 export async function updateTestimonial(id: string, data: import("@prisma/client").Prisma.TestimonialUpdateInput) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   const result = await prisma.testimonial.update({
     where: { id },
@@ -40,6 +49,8 @@ export async function updateTestimonial(id: string, data: import("@prisma/client
 }
 
 export async function deleteTestimonial(id: string) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   await prisma.testimonial.delete({
     where: { id },

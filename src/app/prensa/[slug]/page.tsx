@@ -7,7 +7,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import { getMediaMentionBySlug, getPressDetailPages } from '@/config/media-mentions';
 import { siteConfig } from '@/config/site';
 import { buildPressArticleStructuredData } from '@/lib/seo/press-structured-data';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
+import { getSiteSettings } from '@/lib/cms/site-settings';
 import { buildLanguageAlternates, buildTwitterMetadata, NOINDEX_ROBOTS } from '@/lib/seo/metadata';
 import { SLUG_PAGE_SECTION_DIVIDE_CLASS } from '@/lib/layout';
 import { ArrowUpRight } from 'lucide-react';
@@ -87,7 +87,7 @@ export default async function PrensaDetailPage({ params }: PageProps) {
 
   const localized = getLocalizedMediaMention(mention, locale);
   const bodyParagraphs = locale === 'en' ? localized.body?.en : localized.body?.es;
-  const siteSettings = await getSiteSettingsAdminValues().catch(() => null);
+  const siteSettings = await getSiteSettings().catch(() => null);
 
   return (
     <main className="flex min-h-screen flex-col bg-white text-[#07234c]">

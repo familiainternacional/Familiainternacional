@@ -29,7 +29,8 @@ export async function loginAdmin(
     supabase = await createSupabaseServerClient();
   } catch (error: unknown) {
     console.error('[admin-login] Supabase no esta configurado.', error);
-    return { error: `El acceso admin no esta configurado correctamente. Detalles: ${getErrorMessage(error)}` };
+    console.error('[admin-login] Detalles de configuracion:', getErrorMessage(error));
+    return { error: 'El acceso admin no esta configurado correctamente.' };
   }
 
   const { error } = await supabase.auth.signInWithPassword({

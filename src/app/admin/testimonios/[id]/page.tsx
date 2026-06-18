@@ -7,8 +7,9 @@ export const metadata = {
   title: 'Editar Testimonio | Panel de Control',
 };
 
-export default async function EditTestimonialPage({ params }: { params: { id: string } }) {
-  const testimonial = await getTestimonialById(params.id);
+export default async function EditTestimonialPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const testimonial = await getTestimonialById(id);
 
   if (!testimonial) {
     notFound();

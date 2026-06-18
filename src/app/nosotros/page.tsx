@@ -11,7 +11,7 @@ import CtaSection from '@/components/home/CtaSection';
 import ScrollReveal from '@/components/home/ScrollReveal';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
-import { getAboutPageAdminValues } from '@/app/admin/nosotros/actions';
+import { getAboutPageSettings } from '@/lib/cms/about-page';
 import { createPageMetadata } from '@/lib/seo/metadata';
 import { getServerLocale } from '@/lib/i18n/server';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -32,7 +32,7 @@ export default async function NosotrosPage() {
   const locale = await getServerLocale();
   const dict = getDictionary(locale);
   const page = dict.pages.nosotros;
-  const aboutValues = await getAboutPageAdminValues().catch(() => null);
+  const aboutValues = await getAboutPageSettings().catch(() => null);
   const siteUrl = getDefaultCanonicalBaseUrl();
 
   return (

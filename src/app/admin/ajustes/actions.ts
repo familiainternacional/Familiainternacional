@@ -1,37 +1,15 @@
 'use server';
 
-import { cache } from 'react';
 import { revalidatePath } from 'next/cache';
 import { getPrismaClient } from '@/lib/db/prisma';
+import { requireAdminSession } from '@/lib/supabase/auth';
+import type { SiteSettings } from '@/lib/cms/site-settings';
 
-export type SiteSettingsAdminValues = {
-  whatsappNumber: string;
-  primaryPhone: string;
-  primaryEmail: string;
-  officeAddress: string;
-  instagramUrl: string;
-  facebookUrl: string;
-  linkedinUrl: string;
-};
-
-export const getSiteSettingsAdminValues = cache(async (): Promise<SiteSettingsAdminValues> => {
-  const prisma = await getPrismaClient();
-  const settings = await prisma.siteSettings.findUnique({
-    where: { id: 'main' },
-  });
-
-  return {
-    whatsappNumber: settings?.whatsappNumber ?? '',
-    primaryPhone: settings?.primaryPhone ?? '',
-    primaryEmail: settings?.primaryEmail ?? '',
-    officeAddress: settings?.officeAddress ?? '',
-    instagramUrl: settings?.instagramUrl ?? '',
-    facebookUrl: settings?.facebookUrl ?? '',
-    linkedinUrl: settings?.linkedinUrl ?? '',
-  };
-});
+export type SiteSettingsAdminValues = SiteSettings;
 
 export async function updateSiteSettingsAdminValues(values: SiteSettingsAdminValues) {
+  await requireAdminSession();
+
   const prisma = await getPrismaClient();
   await prisma.siteSettings.upsert({
     where: { id: 'main' },

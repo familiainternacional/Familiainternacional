@@ -9,8 +9,8 @@ import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import CliengoWidget from '@/components/integrations/CliengoWidget';
 import MobileTabBar from '@/components/home/MobileTabBar';
-import { getSiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
-import { getSiteSeoSettingsAdminValues } from '@/app/admin/seo/actions';
+import { getSiteSettings } from '@/lib/cms/site-settings';
+import { getSiteSeoSettings } from '@/lib/cms/site-seo';
 import { resolveSiteSeoDescription, resolveSiteSeoTitle } from '@/lib/seo/resolve-site-seo';
 import {
   buildLanguageAlternates,
@@ -37,7 +37,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seoSettings = await getSiteSeoSettingsAdminValues().catch(() => null);
+  const seoSettings = await getSiteSeoSettings().catch(() => null);
   const seoTitle = resolveSiteSeoTitle(seoSettings?.defaultTitleEs);
   const defaultDescription = resolveSiteSeoDescription(seoSettings?.defaultDescriptionEs);
   const defaultOgImage = seoSettings?.defaultOgImage?.trim() || DEFAULT_OG_IMAGE_PATH;
@@ -106,7 +106,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const [siteSettings, initialLocale, initialCurrency] = await Promise.all([
-    getSiteSettingsAdminValues().catch(() => null),
+    getSiteSettings().catch(() => null),
     getServerLocale(),
     getServerCurrency(),
   ]);
