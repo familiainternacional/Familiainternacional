@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPrismaClient } from '@/lib/db/prisma';
+import { createCliengoContact } from '@/lib/integrations/cliengo-crm';
 import { sendLeadNotification } from '@/lib/email/lead-notification';
 import { verifyRecaptchaToken } from '@/lib/security/recaptcha';
 
@@ -45,19 +46,29 @@ export async function POST(request: Request) {
       },
     });
 
-    const notification = await sendLeadNotification({
-      id: lead.id,
-      name: lead.name,
-      email: lead.email,
-      phone: lead.phone,
-      message: lead.message,
-      createdAt: lead.createdAt,
-    }).catch((notificationError) => {
-      console.error('Error sending lead notification:', notificationError);
-      return { configured: true, sent: false };
-    });
+    const [notification, cliengo] = await Promise.all([
+      sendLeadNotification({
+        id: lead.id,
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        message: lead.message,
+        createdAt: lead.createdAt,
+      }).catch((notificationError) => {
+        console.error('Error sending lead notification:', notificationError);
+        return { configured: true, sent: false };
+      }),
+      createCliengoContact({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        message: lead.message,
+        leadSource: lead.leadSource,
+        leadId: lead.id,
+      }),
+    ]);
 
-    return NextResponse.json({ success: true, lead, notification }, { status: 201 });
+    return NextResponse.json({ success: true, lead, notification, cliengo }, { status: 201 });
   } catch (error) {
     console.error('Error creating lead:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

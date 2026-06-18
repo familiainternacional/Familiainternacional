@@ -58,6 +58,7 @@ function EvaluaTuCasoFormInner({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          leadSource: variant === 'light' ? 'home_hero_form' : 'evalua_tu_caso_form',
           recaptchaToken: token,
           recaptchaAction: 'evalua_tu_caso_submit',
         })
