@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { getPrismaClient } from '@/lib/db/prisma';
 import { Inbox, FileText, MessageSquare, Edit3, ArrowRight, TrendingUp } from 'lucide-react';
+import LeadStatusBadge from './leads/LeadStatusBadge';
 
 export const metadata = {
   title: 'Dashboard | Panel de Control',
@@ -16,7 +17,7 @@ export default async function AdminIndexPage() {
     publishedPostsCount,
     publishedTestimonialsCount
   ] = await Promise.all([
-    prisma.lead.count({ where: { status: 'pendiente' } }),
+    prisma.lead.count({ where: { status: { in: ['pendiente', 'nuevo'] } } }),
     prisma.lead.count(),
     prisma.blogPost.count({ where: { published: true } }),
     prisma.testimonial.count({ where: { published: true } }),
@@ -143,18 +144,14 @@ export default async function AdminIndexPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {lead.createdAt.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
                     </td>
-                    <td className="px-6 py-4 font-medium text-gray-900">{lead.name}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900">
+                      <Link href={`/admin/leads/${lead.id}`} className="hover:text-brand hover:underline">
+                        {lead.name}
+                      </Link>
+                    </td>
                     <td className="px-6 py-4">{lead.email}</td>
                     <td className="px-6 py-4">
-                      {lead.status === 'pendiente' ? (
-                        <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
-                          Pendiente
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                          Atendido
-                        </span>
-                      )}
+                      <LeadStatusBadge status={lead.status} />
                     </td>
                   </tr>
                 ))}

@@ -20,6 +20,11 @@ export function isCliengoCrmConfigured() {
   return Boolean(process.env.CLIENGO_API_KEY?.trim());
 }
 
+export function getCliengoContactPanelUrl(contactId: string) {
+  const base = process.env.CLIENGO_PANEL_URL?.trim() || 'https://app.cliengo.com';
+  return `${base.replace(/\/$/, '')}/contacts/${contactId}`;
+}
+
 export function getCliengoWebsiteId() {
   const configured = process.env.CLIENGO_WEBSITE_ID?.trim();
   if (configured) {

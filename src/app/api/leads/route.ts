@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         email,
         phone,
         message,
-        status: 'pendiente',
+        status: 'nuevo',
         leadSource: leadSource || 'evalua_tu_caso_form',
       },
     });
@@ -68,7 +68,22 @@ export async function POST(request: Request) {
       }),
     ]);
 
-    return NextResponse.json({ success: true, lead, notification, cliengo }, { status: 201 });
+    if (cliengo.contactId) {
+      await prisma.lead.update({
+        where: { id: lead.id },
+        data: { cliengoContactId: cliengo.contactId },
+      });
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        lead: { ...lead, cliengoContactId: cliengo.contactId ?? lead.cliengoContactId },
+        notification,
+        cliengo,
+      },
+      { status: 201 },
+    );
   } catch (error) {
     console.error('Error creating lead:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
