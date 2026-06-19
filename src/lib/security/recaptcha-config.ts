@@ -1,5 +1,7 @@
 /** Google reCAPTCHA v3 (invisible, score-based). */
 
+import { isRecaptchaFeatureEnabled } from '@/config/features';
+
 export const RECAPTCHA_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
 
 /** Mínimo score aceptado (0–1). 0.5 es el valor recomendado por Google. */
@@ -14,9 +16,17 @@ export function getRecaptchaSecretKey() {
 }
 
 export function isRecaptchaConfigured() {
+  if (!isRecaptchaFeatureEnabled()) {
+    return false;
+  }
+
   return Boolean(getRecaptchaSiteKey() && getRecaptchaSecretKey());
 }
 
 export function isRecaptchaConfiguredOnClient() {
+  if (!isRecaptchaFeatureEnabled()) {
+    return false;
+  }
+
   return Boolean(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.trim());
 }

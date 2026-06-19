@@ -2,6 +2,7 @@
 
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { isRecaptchaConfiguredOnClient } from '@/lib/security/recaptcha-config';
 
 type ReCaptchaWrapperProps = {
   children: ReactNode;
@@ -17,12 +18,13 @@ export default function ReCaptchaWrapper({
   forceActive = false,
 }: ReCaptchaWrapperProps) {
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  const recaptchaActive = isRecaptchaConfiguredOnClient();
   const [lazyActivated, setLazyActivated] = useState(!lazy);
   const active = lazyActivated || forceActive;
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!lazy || active || !siteKey) return;
+    if (!lazy || active || !recaptchaActive || !siteKey) return;
 
     const root = rootRef.current;
     if (!root) return;
@@ -55,10 +57,9 @@ export default function ReCaptchaWrapper({
         window.cancelIdleCallback(idleId);
       }
     };
-  }, [active, lazy, siteKey]);
+  }, [active, lazy, recaptchaActive, siteKey]);
 
-  if (!siteKey) {
-    console.warn('Recaptcha site key is missing');
+  if (!recaptchaActive || !siteKey) {
     return <div ref={rootRef}>{children}</div>;
   }
 
