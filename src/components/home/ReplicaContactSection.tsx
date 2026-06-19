@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Phone, Mail, MapPin, CheckCircle2, AlertCircle } from 'lucide-react';
 import ReCaptchaWrapper from '@/components/forms/ReCaptchaWrapper';
+import { useOptionalExecuteRecaptcha } from '@/lib/security/use-optional-execute-recaptcha';
 import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { resolveSiteContact } from '@/lib/site-contact';
 import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS } from '@/lib/layout';
@@ -12,7 +12,7 @@ import { useI18n } from '@/lib/i18n/I18nProvider';
 function ReplicaContactFormInner() {
   const { dictionary } = useI18n();
   const contactForm = dictionary.forms.contact;
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const executeRecaptcha = useOptionalExecuteRecaptcha();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>(contactForm.error);
   
@@ -35,7 +35,11 @@ function ReplicaContactFormInner() {
     try {
       let token = '';
       if (executeRecaptcha) {
-        token = await executeRecaptcha('evalua_tu_caso_submit');
+        try {
+          token = await executeRecaptcha('evalua_tu_caso_submit');
+        } catch (recaptchaError) {
+          console.error('[recaptcha] execute failed', recaptchaError);
+        }
       }
 
       const res = await fetch('/api/leads', {

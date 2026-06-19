@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ArrowRight, Briefcase, Mail, Smartphone, User, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { buildGoogleMapsEmbedFromCoordinates } from '@/lib/maps/google-maps-embed';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import ReCaptchaWrapper from '../forms/ReCaptchaWrapper';
+import { useOptionalExecuteRecaptcha } from '@/lib/security/use-optional-execute-recaptcha';
 
 const OFFICE_LAT = -33.41628375;
 const OFFICE_LNG = -70.5920947147805;
@@ -16,7 +16,7 @@ const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${OFFICE_LAT},
 function OfficeMapSectionInner({ showPageHeader = true }: { showPageHeader?: boolean }) {
   const { locale } = useI18n();
   const isSpanish = locale === 'es';
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const executeRecaptcha = useOptionalExecuteRecaptcha();
   
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState(
@@ -45,16 +45,20 @@ function OfficeMapSectionInner({ showPageHeader = true }: { showPageHeader?: boo
         : 'An error occurred while sending your request. Please try again.',
     );
     
-    let token = '';
-    if (executeRecaptcha) {
-      token = await executeRecaptcha('home_contact_form_submit');
-    }
-    
-    const finalMessage = formData.company 
-      ? `Empresa/Cargo: ${formData.company}\n\n${formData.message}`
-      : formData.message;
-
     try {
+      let token = '';
+      if (executeRecaptcha) {
+        try {
+          token = await executeRecaptcha('home_contact_form_submit');
+        } catch (recaptchaError) {
+          console.error('[recaptcha] execute failed', recaptchaError);
+        }
+      }
+
+      const finalMessage = formData.company
+        ? `Empresa/Cargo: ${formData.company}\n\n${formData.message}`
+        : formData.message;
+
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

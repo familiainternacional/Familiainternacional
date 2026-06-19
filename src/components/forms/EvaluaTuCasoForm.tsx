@@ -5,8 +5,8 @@ import { useI18n } from '@/lib/i18n/I18nProvider';
 import { CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import ReCaptchaWrapper from './ReCaptchaWrapper';
+import { useOptionalExecuteRecaptcha } from '@/lib/security/use-optional-execute-recaptcha';
 
 type EvaluaTuCasoFormVariant = 'default' | 'light';
 
@@ -27,7 +27,7 @@ function EvaluaTuCasoFormInner({
 }) {
   const { dictionary } = useI18n();
   const evalua = dictionary.forms.evalua;
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const executeRecaptcha = useOptionalExecuteRecaptcha();
   const isLight = variant === 'light';
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>(evalua.error);
@@ -49,7 +49,11 @@ function EvaluaTuCasoFormInner({
     try {
       let token = '';
       if (executeRecaptcha) {
-        token = await executeRecaptcha('evalua_tu_caso_submit');
+        try {
+          token = await executeRecaptcha('evalua_tu_caso_submit');
+        } catch (recaptchaError) {
+          console.error('[recaptcha] execute failed', recaptchaError);
+        }
       }
 
       const res = await fetch('/api/leads', {
