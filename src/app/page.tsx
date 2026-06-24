@@ -57,6 +57,10 @@ export default async function HomePage() {
         <ReplicaHero />
 
         <ScrollReveal>
+          <PaymentMethodsBanner />
+        </ScrollReveal>
+
+        <ScrollReveal>
           <GuideProcessSection />
         </ScrollReveal>
 
@@ -85,7 +89,6 @@ export default async function HomePage() {
         </ScrollReveal>
       </main>
 
-      <PaymentMethodsBanner />
       <Footer adminValues={siteSettings} />
     </>
   );

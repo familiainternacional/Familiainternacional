@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogOut, Menu, X, Inbox, FileText, Globe, Rocket, LayoutDashboard, MessageSquare } from 'lucide-react';
+import { LogOut, Menu, X, Inbox, FileText, Globe, Rocket, LayoutDashboard, MessageSquare, BarChart3 } from 'lucide-react';
 import { logoutAdmin } from './actions';
 
 export default function AdminSidebar({ adminEmail }: { adminEmail: string }) {
@@ -14,6 +14,7 @@ export default function AdminSidebar({ adminEmail }: { adminEmail: string }) {
 
   const links = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/analytics', label: 'Analytics CRM', icon: BarChart3 },
     { href: '/admin/leads', label: 'Bandeja de Casos', icon: Inbox },
     { href: '/admin/blog', label: 'Perspectivas (Blog)', icon: FileText },
     { href: '/admin/testimonios', label: 'Testimonios', icon: MessageSquare },

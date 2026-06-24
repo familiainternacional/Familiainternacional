@@ -1,32 +1,39 @@
 import React from 'react';
 import Link from 'next/link';
 import { getPrismaClient } from '@/lib/db/prisma';
-import { Inbox, FileText, MessageSquare, Edit3, ArrowRight, TrendingUp } from 'lucide-react';
+import { Inbox, FileText, MessageSquare, Edit3, ArrowRight, TrendingUp, AlertTriangle, BarChart3 } from 'lucide-react';
 import LeadStatusBadge from './leads/LeadStatusBadge';
+import { ACTIVE_LEADS_WHERE } from '@/lib/leads/query';
+import { getLeadAnalyticsSnapshot } from '@/lib/admin/lead-analytics';
 
 export const metadata = {
   title: 'Dashboard | Panel de Control',
 };
 
 export default async function AdminIndexPage() {
-  const prisma = await getPrismaClient();
+  const prisma = getPrismaClient();
 
   const [
     pendingLeadsCount,
     totalLeadsCount,
     publishedPostsCount,
-    publishedTestimonialsCount
+    publishedTestimonialsCount,
+    analytics,
+    recentLeads,
   ] = await Promise.all([
-    prisma.lead.count({ where: { status: { in: ['pendiente', 'nuevo'] } } }),
-    prisma.lead.count(),
+    prisma.lead.count({
+      where: { ...ACTIVE_LEADS_WHERE, status: { in: ['pendiente', 'nuevo'] } },
+    }),
+    prisma.lead.count({ where: ACTIVE_LEADS_WHERE }),
     prisma.blogPost.count({ where: { published: true } }),
     prisma.testimonial.count({ where: { published: true } }),
+    getLeadAnalyticsSnapshot(),
+    prisma.lead.findMany({
+      where: ACTIVE_LEADS_WHERE,
+      take: 3,
+      orderBy: { createdAt: 'desc' },
+    }),
   ]);
-
-  const recentLeads = await prisma.lead.findMany({
-    take: 3,
-    orderBy: { createdAt: 'desc' },
-  });
 
   return (
     <div className="space-y-8">
@@ -40,8 +47,29 @@ export default async function AdminIndexPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Metric 1 */}
+      {analytics.totals.slaBreaches > 0 && (
+        <div className="rounded-card border border-red-200 bg-red-50 px-5 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-700 mt-0.5" />
+            <div>
+              <p className="font-semibold text-red-900">
+                {analytics.totals.slaBreaches} caso(s) sin contacto en más de 24 horas
+              </p>
+              <p className="text-sm text-red-800 mt-1">
+                Revise la bandeja y asigne responsables para no perder oportunidades de intake.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin/leads"
+            className="inline-flex items-center justify-center rounded-lg bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
+          >
+            Revisar bandeja
+          </Link>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
@@ -53,14 +81,31 @@ export default async function AdminIndexPage() {
             </div>
           </div>
           <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-            <span className="text-sm text-gray-500">{totalLeadsCount} históricos</span>
+            <span className="text-sm text-gray-500">{totalLeadsCount} activos</span>
             <Link href="/admin/leads" className="text-sm font-medium text-brand hover:text-gray-600 flex items-center gap-1">
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
 
-        {/* Metric 2 */}
+        <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 bg-violet-50 text-violet-600 rounded-full flex items-center justify-center">
+              <BarChart3 className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Últimos 30 días</p>
+              <h3 className="text-2xl font-bold text-gray-900">{analytics.totals.last30Days}</h3>
+            </div>
+          </div>
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+            <span className="text-sm text-gray-500">{analytics.totals.cliente} clientes</span>
+            <Link href="/admin/analytics" className="text-sm font-medium text-brand hover:text-gray-600 flex items-center gap-1">
+              Analytics <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+
         <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
@@ -79,7 +124,6 @@ export default async function AdminIndexPage() {
           </div>
         </div>
 
-        {/* Metric 3 */}
         <div className="bg-white rounded-card border border-[#07234c]/10 p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center">
@@ -98,7 +142,6 @@ export default async function AdminIndexPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
         <div className="bg-brand text-white rounded-card border border-black p-6 shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="text-lg font-bold mb-2">Editor del Sitio</h3>
@@ -114,7 +157,6 @@ export default async function AdminIndexPage() {
         </div>
       </div>
 
-      {/* Recent Leads Table */}
       <div className="bg-white rounded-card border border-[#07234c]/10 shadow-sm overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
           <h2 className="text-lg font-bold text-gray-900">Leads Recientes</h2>
@@ -122,11 +164,9 @@ export default async function AdminIndexPage() {
             Ver todos los leads
           </Link>
         </div>
-        
+
         {recentLeads.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
-            Aún no hay leads recibidos.
-          </div>
+          <div className="p-8 text-center text-gray-500">Aún no hay leads recibidos.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-gray-600">

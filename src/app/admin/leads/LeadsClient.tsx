@@ -3,21 +3,37 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Lead } from '@prisma/client';
-import { Check, Trash2, Loader2, ExternalLink, Download, Eye } from 'lucide-react';
+import { Check, Trash2, Loader2, ExternalLink, Download, Eye, AlertTriangle } from 'lucide-react';
 import { deleteLead, exportLeadsCsv, updateLeadStatus } from './actions';
 import LeadStatusBadge from './LeadStatusBadge';
+import LeadPriorityBadge from './LeadPriorityBadge';
 import { LEAD_STATUSES, getLeadStatusLabel } from '@/lib/leads/status';
 import { getLeadSourceLabel } from '@/lib/leads/source';
 import { getCliengoContactPanelUrl } from '@/lib/integrations/cliengo-crm';
+import { getAssigneeLabel, type LeadAssignee } from '@/config/lead-assignees';
+import { getPracticeAreaLabel, PRACTICE_AREAS } from '@/lib/leads/practice-area';
+import { isLeadSlaBreached } from '@/lib/leads/sla';
 
 type StatusFilter = 'all' | (typeof LEAD_STATUSES)[number];
 type SourceFilter = 'all' | string;
+type AssigneeFilter = 'all' | 'unassigned' | string;
+type PracticeFilter = 'all' | string;
+type SlaFilter = 'all' | 'breached' | 'ok';
 
-export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) {
+export default function LeadsClient({
+  initialLeads,
+  assignees,
+}: {
+  initialLeads: Lead[];
+  assignees: LeadAssignee[];
+}) {
   const [leads, setLeads] = useState(initialLeads);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
+  const [assigneeFilter, setAssigneeFilter] = useState<AssigneeFilter>('all');
+  const [practiceFilter, setPracticeFilter] = useState<PracticeFilter>('all');
+  const [slaFilter, setSlaFilter] = useState<SlaFilter>('all');
   const [search, setSearch] = useState('');
   const [exporting, setExporting] = useState(false);
 
@@ -32,6 +48,13 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
     return leads.filter((lead) => {
       if (statusFilter !== 'all' && lead.status !== statusFilter) return false;
       if (sourceFilter !== 'all' && lead.leadSource !== sourceFilter) return false;
+      if (assigneeFilter === 'unassigned' && lead.assignedToEmail) return false;
+      if (assigneeFilter !== 'all' && assigneeFilter !== 'unassigned' && lead.assignedToEmail !== assigneeFilter) {
+        return false;
+      }
+      if (practiceFilter !== 'all' && (lead.practiceArea ?? '') !== practiceFilter) return false;
+      if (slaFilter === 'breached' && !isLeadSlaBreached(lead)) return false;
+      if (slaFilter === 'ok' && isLeadSlaBreached(lead)) return false;
 
       if (!query) return true;
 
@@ -42,7 +65,7 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
         (lead.message ?? '').toLowerCase().includes(query)
       );
     });
-  }, [leads, search, sourceFilter, statusFilter]);
+  }, [leads, search, sourceFilter, statusFilter, assigneeFilter, practiceFilter, slaFilter]);
 
   const handleQuickContact = async (id: string) => {
     setLoadingId(id);
@@ -56,7 +79,7 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de eliminar este caso? Esta acción no se puede deshacer.')) {
+    if (!confirm('¿Archivar este caso?')) {
       return;
     }
 
@@ -90,7 +113,7 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-3 flex-1">
           <label className="block text-sm">
             <span className="mb-1 block font-medium text-gray-700">Buscar</span>
             <input
@@ -133,7 +156,53 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
             </select>
           </label>
 
-          <div className="flex items-end">
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-gray-700">Responsable</span>
+            <select
+              value={assigneeFilter}
+              onChange={(event) => setAssigneeFilter(event.target.value as AssigneeFilter)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand/30"
+            >
+              <option value="all">Todos</option>
+              <option value="unassigned">Sin asignar</option>
+              {assignees.map((assignee) => (
+                <option key={assignee.email} value={assignee.email}>
+                  {assignee.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-gray-700">Área</span>
+            <select
+              value={practiceFilter}
+              onChange={(event) => setPracticeFilter(event.target.value as PracticeFilter)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand/30"
+            >
+              <option value="all">Todas</option>
+              {PRACTICE_AREAS.map((area) => (
+                <option key={area.id} value={area.id}>
+                  {area.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-gray-700">SLA</span>
+            <select
+              value={slaFilter}
+              onChange={(event) => setSlaFilter(event.target.value as SlaFilter)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand/30"
+            >
+              <option value="all">Todos</option>
+              <option value="breached">Vencido (+24h)</option>
+              <option value="ok">En plazo</option>
+            </select>
+          </label>
+
+          <div className="flex items-end sm:col-span-2 xl:col-span-1">
             <button
               type="button"
               onClick={handleExport}
@@ -163,6 +232,8 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
                   <th className="px-6 py-4 font-medium">Nombre</th>
                   <th className="px-6 py-4 font-medium">Contacto</th>
                   <th className="px-6 py-4 font-medium">Origen</th>
+                  <th className="px-6 py-4 font-medium">Área</th>
+                  <th className="px-6 py-4 font-medium">Responsable</th>
                   <th className="px-6 py-4 font-medium">Mensaje</th>
                   <th className="px-6 py-4 font-medium">Estado</th>
                   <th className="px-6 py-4 font-medium text-right">Acciones</th>
@@ -191,13 +262,28 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
                     <td className="px-6 py-4 text-gray-600 whitespace-nowrap">
                       {getLeadSourceLabel(lead.leadSource)}
                     </td>
+                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">
+                      {getPracticeAreaLabel(lead.practiceArea)}
+                    </td>
+                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">
+                      {getAssigneeLabel(lead.assignedToEmail)}
+                    </td>
                     <td className="px-6 py-4">
                       <div className="max-w-xs line-clamp-2 text-gray-600" title={lead.message || ''}>
                         {lead.message || <span className="italic text-gray-500">Sin descripción</span>}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <LeadStatusBadge status={lead.status} />
+                      <div className="flex flex-col gap-1">
+                        <LeadStatusBadge status={lead.status} />
+                        <LeadPriorityBadge priority={lead.priority} />
+                        {isLeadSlaBreached(lead) && (
+                          <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700">
+                            <AlertTriangle className="h-3 w-3" />
+                            SLA
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="inline-flex items-center gap-1">
@@ -237,7 +323,7 @@ export default function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) 
                           onClick={() => handleDelete(lead.id)}
                           disabled={loadingId === lead.id}
                           className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50"
-                          title="Eliminar caso"
+                          title="Archivar caso"
                         >
                           {loadingId === lead.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />

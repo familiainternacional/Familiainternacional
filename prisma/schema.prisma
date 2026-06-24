@@ -112,6 +112,11 @@ model Lead {
   leadSource        String    @default("web_form")
   cliengoContactId  String?
   internalNotes     String?
+  assignedToEmail   String?
+  practiceArea      String?
+  priority          String    @default("normal")
+  contactedAt       DateTime?
+  deletedAt         DateTime?
   landingPath       String?
   referrer          String?
   utmSource         String?
@@ -127,6 +132,24 @@ model Lead {
   @@index([utmCampaign, createdAt])
   @@index([propertyId])
   @@index([cliengoContactId])
+  @@index([assignedToEmail, createdAt])
+  @@index([practiceArea, createdAt])
+  @@index([deletedAt])
+}
+
+model AdminAuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actorEmail String
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId, createdAt])
+  @@index([createdAt])
+  @@index([actorEmail, createdAt])
 }
 
 model User {

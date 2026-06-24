@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 
 import ReCaptchaWrapper from './ReCaptchaWrapper';
 import { useOptionalExecuteRecaptcha } from '@/lib/security/use-optional-execute-recaptcha';
+import { getLeadAttributionFromBrowser } from '@/lib/leads/attribution';
 
 type EvaluaTuCasoFormVariant = 'default' | 'light';
 
@@ -62,6 +63,7 @@ function EvaluaTuCasoFormInner({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          ...getLeadAttributionFromBrowser(),
           leadSource: variant === 'light' ? 'home_hero_form' : 'evalua_tu_caso_form',
           recaptchaToken: token,
           recaptchaAction: 'evalua_tu_caso_submit',

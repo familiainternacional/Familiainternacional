@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Phone, Mail, MapPin, CheckCircle2, AlertCircle } from 'lucide-react';
 import ReCaptchaWrapper from '@/components/forms/ReCaptchaWrapper';
 import { useOptionalExecuteRecaptcha } from '@/lib/security/use-optional-execute-recaptcha';
+import { getLeadAttributionFromBrowser } from '@/lib/leads/attribution';
 import type { SiteSettingsAdminValues } from '@/app/admin/ajustes/actions';
 import { resolveSiteContact } from '@/lib/site-contact';
 import { HOME_SECTION_ANCHOR_CLASS, HOME_SECTION_TITLE_MUTED_CLASS } from '@/lib/layout';
@@ -51,6 +52,7 @@ function ReplicaContactFormInner() {
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
+          ...getLeadAttributionFromBrowser(),
           leadSource: 'home_contact_form',
           recaptchaToken: token,
           recaptchaAction: 'evalua_tu_caso_submit',

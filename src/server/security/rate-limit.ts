@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
@@ -160,4 +160,73 @@ export async function enforceRateLimit(request: NextRequest, options: RateLimitO
   );
 
   return buildRateLimitResponse(options, retryAfterSeconds);
+}
+
+type RateLimitProfile = {
+  limit: number;
+  windowSeconds: number;
+};
+
+function enforceInMemoryRateLimitByIdentifier(
+  identifier: string,
+  options: RateLimitOptions & RateLimitProfile,
+) {
+  warnInMemoryRateLimitOnce();
+
+  const now = Date.now();
+  const store = getStore();
+  const key = `${options.keyPrefix}:${identifier}`;
+  const existing = store.get(key);
+
+  if (!existing || existing.resetAt <= now) {
+    store.set(key, {
+      count: 1,
+      resetAt: now + options.windowSeconds * 1000,
+    });
+    return null;
+  }
+
+  existing.count += 1;
+
+  if (existing.count <= options.limit) {
+    return null;
+  }
+
+  return options.message ?? 'Demasiadas solicitudes. Intenta nuevamente en unos minutos.';
+}
+
+export async function enforceRateLimitByIdentifier(
+  identifier: string,
+  profile: RateLimitProfile,
+  keyPrefix: string,
+  message?: string,
+) {
+  const options: RateLimitOptions & RateLimitProfile = {
+    keyPrefix,
+    limit: profile.limit,
+    windowSeconds: profile.windowSeconds,
+    identifier,
+    message,
+  };
+
+  const limiter = getUpstashLimiter(options);
+
+  if (!limiter) {
+    return enforceInMemoryRateLimitByIdentifier(identifier, options);
+  }
+
+  const result = await limiter.limit(`${keyPrefix}:${identifier}`);
+
+  if (result.success) {
+    return null;
+  }
+
+  return message ?? 'Demasiadas solicitudes. Intenta nuevamente en unos minutos.';
+}
+
+export async function enforceRateLimitFromRequest(
+  request: Request,
+  options: RateLimitOptions,
+) {
+  return enforceRateLimit(new NextRequest(request.url, request), options);
 }

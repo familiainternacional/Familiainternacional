@@ -3,11 +3,23 @@ import { getPrismaClient } from '@/lib/db/prisma';
 import { createCliengoContact } from '@/lib/integrations/cliengo-crm';
 import { sendLeadNotification } from '@/lib/email/lead-notification';
 import { verifyRecaptchaToken } from '@/lib/security/recaptcha';
+import { parseLeadAttribution } from '@/lib/leads/attribution';
+import { enforceRateLimitFromRequest, RATE_LIMITS } from '@/server/security/rate-limit';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
   try {
+    const rateLimited = await enforceRateLimitFromRequest(request, {
+      keyPrefix: 'leads',
+      ...RATE_LIMITS.leads,
+      message: 'Demasiados envíos desde esta IP. Intenta nuevamente en unos minutos.',
+    });
+
+    if (rateLimited) {
+      return rateLimited;
+    }
+
     const body = await request.json();
     const name = String(body.name ?? '').trim();
     const email = String(body.email ?? '').trim();
@@ -16,6 +28,7 @@ export async function POST(request: Request) {
     const leadSource = typeof body.leadSource === 'string' ? body.leadSource.trim() : null;
     const recaptchaToken = typeof body.recaptchaToken === 'string' ? body.recaptchaToken : null;
     const recaptchaAction = typeof body.recaptchaAction === 'string' ? body.recaptchaAction : undefined;
+    const attribution = parseLeadAttribution(body);
 
     if (!name || !email) {
       return NextResponse.json(
@@ -43,6 +56,7 @@ export async function POST(request: Request) {
         message,
         status: 'nuevo',
         leadSource: leadSource || 'evalua_tu_caso_form',
+        ...attribution,
       },
     });
 

@@ -7,6 +7,7 @@ import { useI18n } from '@/lib/i18n/I18nProvider';
 import { buildGoogleMapsEmbedFromCoordinates } from '@/lib/maps/google-maps-embed';
 import ReCaptchaWrapper from '../forms/ReCaptchaWrapper';
 import { useOptionalExecuteRecaptcha } from '@/lib/security/use-optional-execute-recaptcha';
+import { getLeadAttributionFromBrowser } from '@/lib/leads/attribution';
 
 const OFFICE_LAT = -33.41628375;
 const OFFICE_LNG = -70.5920947147805;
@@ -67,6 +68,7 @@ function OfficeMapSectionInner({ showPageHeader = true }: { showPageHeader?: boo
           email: formData.email,
           phone: formData.phone,
           message: finalMessage,
+          ...getLeadAttributionFromBrowser(),
           leadSource: 'home_contact_form',
           recaptchaToken: token,
           recaptchaAction: 'home_contact_form_submit',

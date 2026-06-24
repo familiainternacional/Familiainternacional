@@ -1,8 +1,10 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { hasAdminRole } from '@/lib/supabase/auth';
+import { enforceRateLimitByIdentifier, RATE_LIMITS } from '@/server/security/rate-limit';
 
 export type LoginActionState = {
   error?: string;
@@ -21,6 +23,23 @@ export async function loginAdmin(
 
   if (!email || !password) {
     return { error: 'Ingresa correo y contraseña.' };
+  }
+
+  const requestHeaders = await headers();
+  const clientIp =
+    requestHeaders.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    requestHeaders.get('x-real-ip') ||
+    'unknown';
+
+  const rateLimited = await enforceRateLimitByIdentifier(
+    clientIp,
+    RATE_LIMITS.auth,
+    'admin-login',
+    'Demasiados intentos de acceso. Espera unos minutos e intenta de nuevo.',
+  );
+
+  if (rateLimited) {
+    return { error: rateLimited };
   }
 
   let supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>;

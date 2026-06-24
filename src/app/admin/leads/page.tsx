@@ -1,4 +1,6 @@
 import { getPrismaClient } from '@/lib/db/prisma';
+import { ACTIVE_LEADS_WHERE } from '@/lib/leads/query';
+import { getLeadAssignees } from '@/config/lead-assignees';
 import LeadsClient from './LeadsClient';
 
 export const dynamic = 'force-dynamic';
@@ -6,7 +8,8 @@ export const dynamic = 'force-dynamic';
 export default async function AdminLeadsPage() {
   const prisma = getPrismaClient();
   const leads = await prisma.lead.findMany({
-    orderBy: { createdAt: 'desc' }
+    where: ACTIVE_LEADS_WHERE,
+    orderBy: { createdAt: 'desc' },
   });
 
   return (
@@ -24,7 +27,7 @@ export default async function AdminLeadsPage() {
         </div>
       </div>
 
-      <LeadsClient initialLeads={leads} />
+      <LeadsClient initialLeads={leads} assignees={getLeadAssignees()} />
     </div>
   );
 }
