@@ -68,7 +68,7 @@ export default async function HomePage() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <GoogleReviewsSection limit={3} compact showViewAllLink />
+          <GoogleReviewsSection limit={3} compact />
         </ScrollReveal>
 
         <ScrollReveal>
