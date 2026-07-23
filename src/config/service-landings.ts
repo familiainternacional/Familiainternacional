@@ -54,7 +54,7 @@ export const serviceLandings = [
       'Coordinación con red internacional de abogados de familia cuando corresponde.',
     ],
     includes: [
-      'Demandas de divorcio con cónyuge en el exterior.',
+      'Demandas de divorcio en Chile con cónyuge en el exterior.',
       'Asesoría sobre divorcios extranjeros y sus efectos en Chile.',
       'Negociación de acuerdos transfronterizos.',
       'Coordinación con abogados en otros países.',
@@ -73,111 +73,13 @@ export const serviceLandings = [
     ],
   },
   {
-    slug: 'cuidado-sustraccion',
-    title: 'Cuidado, Visitas y Sustracción Internacional',
-    shortTitle: 'Cuidado',
-    seoTitle: 'Abogados sustracción internacional de menores Chile',
-    seoDescription:
-      'Convenio de La Haya, visitas transfronterizas, relocalización y autorizaciones para salir del país. Familia Internacional, cientos de casos tramitados.',
-    eyebrow: 'Área 02',
-    heroTitle: 'Protección de menores cuando cruzan fronteras',
-    heroSubtitle:
-      'Defensa y demandas bajo el Convenio de La Haya de 1980, visitas internacionales y autorizaciones judiciales para viajar o relocalizar.',
-    image: '/hero-defensa.png',
-    includeImages: ['/services/include-scales.png', '/services/include-doc.png', '/services/include-gavel.png', '/services/include-handshake.png'],
-    ctaTitle: 'Actúe con urgencia si hay riesgo de sustracción',
-    ctaDescription:
-      'En estos casos el tiempo es crítico. Evaluamos medidas cautelares, Autoridad Central y vías en Chile y en el extranjero.',
-    ctaLabel: 'Evaluar caso de cuidado',
-    intro:
-      'La sustracción internacional de menores y los conflictos de custodia transfronteriza son materias técnicas y urgentes. Familia Internacional cuenta con experiencia directa en el Convenio de La Haya, coordinación con autoridades centrales y litigación en tribunales chilenos y extranjeros.',
-    problems: [
-      'Traslado o retención de un menor en otro país sin autorización.',
-      'Negativa a cumplir régimen de visitas acordado o judicial.',
-      'Solicitud de autorización para salir del país con el hijo.',
-      'Relocalización internacional con oposición del otro progenitor.',
-    ],
-    approach: [
-      'Evaluación inmediata de urgencia, país receptor y convenios aplicables.',
-      'Activación de vías bajo La Haya o acciones locales según el escenario.',
-      'Seguimiento procesal y comunicación clara con la familia en cada etapa.',
-    ],
-    includes: [
-      'Demandas y defensas por sustracción internacional (La Haya).',
-      'Visitas transfronterizas y cumplimiento de resoluciones.',
-      'Autorizaciones judiciales para salir del país.',
-      'Coordinación con abogados y autoridades en el exterior.',
-    ],
-    faqs: [
-      {
-        question: '¿Qué es el Convenio de La Haya y cuándo aplica?',
-        answer:
-          'Es un tratado internacional que regula la sustracción de menores y visitas transfronterizas. Aplica cuando los padres viven en distintos Estados o el menor fue trasladado sin autorización.',
-      },
-      {
-        question: '¿Qué debo hacer si creo que me quitarán a mi hijo del país?',
-        answer:
-          'Contacte de inmediato a un abogado especializado. Existen medidas cautelares y alertas que pueden activarse con rapidez según el caso.',
-      },
-    ],
-  },
-  {
-    slug: 'filiacion-alimentos',
-    title: 'Filiación y Alimentos Internacionales',
-    shortTitle: 'Alimentos',
-    seoTitle: 'Pensión de alimentos internacional y filiación Chile',
-    seoDescription:
-      'Demandas de paternidad internacional, cobro de alimentos bajo el Convenio de Nueva York y reconocimiento transfronterizo. Familia Internacional.',
-    eyebrow: 'Área 03',
-    heroTitle: 'Filiación y alimentos más allá de las fronteras',
-    heroSubtitle:
-      'Representación en paternidad internacional y cobro de pensión de alimentos cuando las partes o activos están en distintos países.',
-    image: '/services/hero-filiacion.png',
-    includeImages: ['/services/include-handshake.png', '/services/include-scales.png', '/services/include-doc.png', '/services/include-gavel.png'],
-    ctaTitle: 'Evalúe su caso de alimentos o filiación',
-    ctaDescription:
-      'Revisamos país de residencia del deudor, convenios aplicables y vías de cobro o reconocimiento en Chile.',
-    ctaLabel: 'Evaluar filiación o alimentos',
-    intro:
-      'Obtener o hacer cumplir una pensión de alimentos cuando el obligado vive en otro país exige conocer convenios internacionales, competencia y mecanismos de cooperación. Familia Internacional tramita demandas de filiación y alimentos con enfoque transfronterizo.',
-    problems: [
-      'Progenitor residente en el extranjero que no paga alimentos.',
-      'Reconocimiento de paternidad con partes en distintos países.',
-      'Fijación o modificación de pensión con ingresos en el exterior.',
-      'Cobro de deuda alimentaria internacional.',
-    ],
-    approach: [
-      'Identificación de convenios aplicables (Nueva York u otros).',
-      'Estrategia de demanda, ejecución o cooperación internacional.',
-      'Seguimiento hasta obtención de resolución y cumplimiento.',
-    ],
-    includes: [
-      'Demandas de filiación internacional.',
-      'Fijación y modificación de alimentos.',
-      'Cobro bajo Convenio de Nueva York.',
-      'Coordinación con autoridades y abogados extranjeros.',
-    ],
-    faqs: [
-      {
-        question: '¿Puedo cobrar alimentos si el padre o madre vive fuera de Chile?',
-        answer:
-          'Sí, en muchos casos mediante convenios internacionales y acciones judiciales coordinadas. Evaluamos el país de residencia y la vía más eficiente.',
-      },
-      {
-        question: '¿Qué es el Convenio de Nueva York en alimentos?',
-        answer:
-          'Es un tratado multilateral para el reconocimiento y ejecución de decisiones sobre obligaciones alimentarias entre Estados parte.',
-      },
-    ],
-  },
-  {
     slug: 'exequatur',
     title: 'Exequátur (Validación de Sentencias)',
     shortTitle: 'Exequátur',
     seoTitle: 'Exequátur de sentencias extranjeras en Chile',
     seoDescription:
       'Validación ante la Corte Suprema de sentencias de divorcio, nulidad, adopción y cuidado personal dictadas en el extranjero.',
-    eyebrow: 'Área 04',
+    eyebrow: 'Área 02',
     heroTitle: 'Reconozca en Chile una sentencia extranjera',
     heroSubtitle:
       'Tramitamos exequátur ante la Corte Suprema para que resoluciones de familia dictadas en el exterior produzcan efectos en Chile.',
@@ -220,13 +122,159 @@ export const serviceLandings = [
     ],
   },
   {
+    slug: 'cuidado-sustraccion',
+    title: 'Sustracción Internacional de niños, cuidado y visitas transfronterizas',
+    shortTitle: 'Cuidado',
+    seoTitle: 'Abogados sustracción internacional de menores Chile',
+    seoDescription:
+      'Convenio de La Haya, visitas transfronterizas, relocalización y autorizaciones para salir del país. Familia Internacional, cientos de casos tramitados.',
+    eyebrow: 'Área 03',
+    heroTitle: 'Protección de menores cuando cruzan fronteras',
+    heroSubtitle:
+      'Defensa y demandas bajo el Convenio de La Haya de 1980, visitas internacionales y autorizaciones judiciales para viajar o relocalizar.',
+    image: '/hero-defensa.png',
+    includeImages: ['/services/include-scales.png', '/services/include-doc.png', '/services/include-gavel.png', '/services/include-handshake.png'],
+    ctaTitle: 'Actúe con urgencia si hay riesgo de sustracción',
+    ctaDescription:
+      'En estos casos el tiempo es crítico. Evaluamos medidas cautelares, Autoridad Central y vías en Chile y en el extranjero.',
+    ctaLabel: 'Evaluar caso de cuidado',
+    intro:
+      'La sustracción internacional de menores y los conflictos de custodia transfronteriza son materias técnicas y urgentes. Familia Internacional cuenta con experiencia directa en el Convenio de La Haya, coordinación con autoridades centrales y litigación en tribunales chilenos y extranjeros.',
+    problems: [
+      'Traslado o retención de un menor en otro país sin autorización.',
+      'Negativa a cumplir régimen de visitas acordado o judicial.',
+      'Solicitud de autorización para salir del país con el hijo.',
+      'Relocalización internacional con oposición del otro progenitor.',
+    ],
+    approach: [
+      'Evaluación inmediata de urgencia, país receptor y convenios aplicables.',
+      'Activación de vías bajo La Haya o acciones locales según el escenario.',
+      'Seguimiento procesal y comunicación clara con la familia en cada etapa.',
+    ],
+    includes: [
+      'Demandas y defensas por sustracción internacional (La Haya).',
+      'Visitas transfronterizas y cumplimiento de resoluciones.',
+      'Coordinación con abogados y autoridades en el exterior.',
+    ],
+    faqs: [
+      {
+        question: '¿Qué es el Convenio de La Haya y cuándo aplica?',
+        answer:
+          'Es un tratado internacional que regula la sustracción de menores y visitas transfronterizas. Aplica cuando los padres viven en distintos Estados o el menor fue trasladado sin autorización.',
+      },
+      {
+        question: '¿Qué debo hacer si creo que me quitarán a mi hijo del país?',
+        answer:
+          'Contacte de inmediato a un abogado especializado. Existen medidas cautelares y alertas que pueden activarse con rapidez según el caso.',
+      },
+    ],
+  },
+  {
+    slug: 'autorizaciones-salida-pais',
+    title: 'Autorizaciones para Salir del País',
+    shortTitle: 'Salida del país',
+    seoTitle: 'Autorización judicial para salir del país con menores Chile',
+    seoDescription:
+      'Tramitamos autorizaciones judiciales para que menores salgan del país, por viajes temporales o relocalización definitiva. Familia Internacional.',
+    eyebrow: 'Área 04',
+    heroTitle: 'Autorización judicial para viajar o relocalizar con su hijo',
+    heroSubtitle:
+      'Patrocinamos solicitudes ante tribunales de familia para salidas temporales del país o cambios de residencia internacional de menores.',
+    image: '/hero-santiago.png',
+    ctaTitle: 'Evalúe su solicitud de autorización',
+    ctaDescription:
+      'Revisamos plazos, destino, oposición del otro progenitor y documentación necesaria antes de presentar la demanda.',
+    ctaLabel: 'Evaluar autorización de salida',
+    intro:
+      'Cuando un progenitor necesita viajar al extranjero con su hijo o relocalizarse de forma definitiva, suele requerirse autorización judicial si no existe acuerdo. Familia Internacional tramita estas solicitudes con foco en la protección del menor y en los plazos del viaje o mudanza.',
+    problems: [
+      'Negativa del otro padre o madre a firmar el permiso de salida.',
+      'Viaje escolar, familiar o de urgencia con fecha cercana.',
+      'Relocalización internacional con oposición del otro progenitor.',
+      'Renovación o ampliación de una autorización previa.',
+    ],
+    approach: [
+      'Análisis de acuerdos vigentes, sentencias y régimen de cuidado personal.',
+      'Preparación de demanda o solicitud con fundamentos y documentación.',
+      'Negociación judicial o extrajudicial cuando es viable.',
+      'Seguimiento hasta la resolución y orientación para el viaje.',
+    ],
+    includes: [
+      'Autorizaciones para salidas temporales del país.',
+      'Relocalización o residencia permanente en el extranjero.',
+      'Defensa ante oposición del otro progenitor.',
+      'Coordinación con casos de visitas o Convenio de La Haya vinculados.',
+    ],
+    faqs: [
+      {
+        question: '¿Siempre se necesita autorización judicial para salir del país con un menor?',
+        answer:
+          'No en todos los casos, pero cuando no hay acuerdo o existe oposición, el tribunal de familia debe autorizar la salida. Evaluamos su situación concreta antes de viajar.',
+      },
+      {
+        question: '¿Cuánto demora una autorización de salida?',
+        answer:
+          'Depende del tribunal, la urgencia y si hay oposición. En viajes con plazo corto conviene actuar con la mayor anticipación posible.',
+      },
+    ],
+  },
+  {
+    slug: 'filiacion-alimentos',
+    title: 'Filiación y Alimentos Internacionales',
+    shortTitle: 'Alimentos',
+    seoTitle: 'Pensión de alimentos internacional y filiación Chile',
+    seoDescription:
+      'Demandas de paternidad internacional, cobro de alimentos bajo el Convenio de Nueva York y reconocimiento transfronterizo. Familia Internacional.',
+    eyebrow: 'Área 05',
+    heroTitle: 'Filiación y alimentos más allá de las fronteras',
+    heroSubtitle:
+      'Representación en paternidad internacional y cobro de pensión de alimentos cuando las partes o activos están en distintos países.',
+    image: '/services/hero-filiacion.png',
+    includeImages: ['/services/include-handshake.png', '/services/include-scales.png', '/services/include-doc.png', '/services/include-gavel.png'],
+    ctaTitle: 'Evalúe su caso de alimentos o filiación',
+    ctaDescription:
+      'Revisamos país de residencia del deudor, convenios aplicables y vías de cobro o reconocimiento en Chile.',
+    ctaLabel: 'Evaluar filiación o alimentos',
+    intro:
+      'Obtener o hacer cumplir una pensión de alimentos cuando el obligado vive en otro país exige conocer convenios internacionales, competencia y mecanismos de cooperación. Familia Internacional tramita demandas de filiación y alimentos con enfoque transfronterizo.',
+    problems: [
+      'Progenitor residente en el extranjero que no paga alimentos.',
+      'Reconocimiento de paternidad con partes en distintos países.',
+      'Fijación o modificación de pensión con ingresos en el exterior.',
+      'Cobro de deuda alimentaria internacional.',
+    ],
+    approach: [
+      'Identificación de convenios aplicables (Nueva York u otros).',
+      'Estrategia de demanda, ejecución o cooperación internacional.',
+      'Seguimiento hasta obtención de resolución y cumplimiento.',
+    ],
+    includes: [
+      'Demandas de filiación internacional.',
+      'Fijación y modificación de alimentos.',
+      'Cobro bajo Convenio de Nueva York.',
+      'Coordinación con autoridades y abogados extranjeros.',
+    ],
+    faqs: [
+      {
+        question: '¿Puedo cobrar alimentos si el padre o madre vive fuera de Chile?',
+        answer:
+          'Sí, en muchos casos mediante convenios internacionales y acciones judiciales coordinadas. Evaluamos el país de residencia y la vía más eficiente.',
+      },
+      {
+        question: '¿Qué es el Convenio de Nueva York en alimentos?',
+        answer:
+          'Es un tratado multilateral para el reconocimiento y ejecución de decisiones sobre obligaciones alimentarias entre Estados parte.',
+      },
+    ],
+  },
+  {
     slug: 'herencias-internacionales',
-    title: 'Herencias y Posesiones Internacionales',
+    title: 'Herencias y Posesiones Efectivas Internacionales',
     shortTitle: 'Herencias',
     seoTitle: 'Herencias internacionales y posesión efectiva Chile',
     seoDescription:
       'Posesión efectiva y adjudicación de bienes hereditarios con causantes o herederos en Chile y en el extranjero.',
-    eyebrow: 'Área 05',
+    eyebrow: 'Área 06',
     heroTitle: 'Herencias con bienes en Chile y en el exterior',
     heroSubtitle:
       'Gestión de posesión efectiva, adjudicación y trámites sucesorios cuando el causante o los bienes están en más de un país.',
@@ -275,7 +323,7 @@ export const serviceLandings = [
     seoTitle: 'Mandatos consulares y representación en tribunales de familia',
     seoDescription:
       'Poderes para consulados chilenos, escrituras en el extranjero y representación judicial para quienes residen fuera de Chile.',
-    eyebrow: 'Área 06',
+    eyebrow: 'Área 07',
     heroTitle: 'Actúe en Chile desde cualquier país',
     heroSubtitle:
       'Confección de mandatos, escrituras y poderes para consulados chilenos, con representación integral en tribunales de familia.',
@@ -316,56 +364,7 @@ export const serviceLandings = [
           'Sí. Con mandato válido podemos patrocinar su caso y mantenerlo informado en cada etapa del proceso.',
       },
     ],
-  },
-  {
-    slug: 'autorizaciones-salida-pais',
-    title: 'Autorizaciones para Salir del País',
-    shortTitle: 'Salida del país',
-    seoTitle: 'Autorización judicial para salir del país con menores Chile',
-    seoDescription:
-      'Tramitamos autorizaciones judiciales para que menores salgan del país, por viajes temporales o relocalización definitiva. Familia Internacional.',
-    eyebrow: 'Área 07',
-    heroTitle: 'Autorización judicial para viajar o relocalizar con su hijo',
-    heroSubtitle:
-      'Patrocinamos solicitudes ante tribunales de familia para salidas temporales del país o cambios de residencia internacional de menores.',
-    image: '/hero-santiago.png',
-    ctaTitle: 'Evalúe su solicitud de autorización',
-    ctaDescription:
-      'Revisamos plazos, destino, oposición del otro progenitor y documentación necesaria antes de presentar la demanda.',
-    ctaLabel: 'Evaluar autorización de salida',
-    intro:
-      'Cuando un progenitor necesita viajar al extranjero con su hijo o relocalizarse de forma definitiva, suele requerirse autorización judicial si no existe acuerdo. Familia Internacional tramita estas solicitudes con foco en la protección del menor y en los plazos del viaje o mudanza.',
-    problems: [
-      'Negativa del otro padre o madre a firmar el permiso de salida.',
-      'Viaje escolar, familiar o de urgencia con fecha cercana.',
-      'Relocalización internacional con oposición del otro progenitor.',
-      'Renovación o ampliación de una autorización previa.',
-    ],
-    approach: [
-      'Análisis de acuerdos vigentes, sentencias y régimen de cuidado personal.',
-      'Preparación de demanda o solicitud con fundamentos y documentación.',
-      'Negociación judicial o extrajudicial cuando es viable.',
-      'Seguimiento hasta la resolución y orientación para el viaje.',
-    ],
-    includes: [
-      'Autorizaciones para salidas temporales del país.',
-      'Relocalización o residencia permanente en el extranjero.',
-      'Defensa ante oposición del otro progenitor.',
-      'Coordinación con casos de visitas o Convenio de La Haya vinculados.',
-    ],
-    faqs: [
-      {
-        question: '¿Siempre se necesita autorización judicial para salir del país con un menor?',
-        answer:
-          'No en todos los casos, pero cuando no hay acuerdo o existe oposición, el tribunal de familia debe autorizar la salida. Evaluamos su situación concreta antes de viajar.',
-      },
-      {
-        question: '¿Cuánto demora una autorización de salida?',
-        answer:
-          'Depende del tribunal, la urgencia y si hay oposición. En viajes con plazo corto conviene actuar con la mayor anticipación posible.',
-      },
-    ],
-  },
+  }
 ] as const satisfies ServiceLanding[];
 
 export type ServiceSlug = (typeof serviceLandings)[number]['slug'];

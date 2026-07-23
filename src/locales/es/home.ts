@@ -50,9 +50,6 @@ export const home = {
   cta: {
     title: '¿Necesitas asesoría legal experta?',
     body: 'Asesoría en derecho de familia nacional e internacional. Agenda tu hora online con nuestros abogados y protege lo que más importa.',
-    featuredPrefix: 'Consultados por ',
-    featuredSuffix: ' en casos de sustracción internacional.',
-    outletName: 'Las Últimas Noticias',
   },
   media: {
     title: 'Menciones en Medios y Publicaciones',

@@ -49,9 +49,6 @@ export const home = {
   cta: {
     title: 'Need expert legal guidance?',
     body: 'National and international family law advice. Book your online consultation with our lawyers and protect what matters most.',
-    featuredPrefix: 'Featured in ',
-    featuredSuffix: ' on international child abduction cases.',
-    outletName: 'Las Últimas Noticias',
   },
   media: {
     title: 'Media Mentions and Publications',

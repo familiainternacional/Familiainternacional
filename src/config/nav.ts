@@ -13,7 +13,6 @@ export const HOME_NAV_SECTIONS: NavSection[] = [
   'home',
   'services',
   'about',
-  'metodologia',
   'prensa',
   'contact',
 ];
@@ -64,7 +63,7 @@ export function getMainNavItems(locale: Locale): NavMenuLink[] {
     {
       type: 'link',
       label: nav.methodology,
-      href: homeSectionHref('metodologia'),
+      href: '/metodologia',
       section: 'metodologia',
     },
     {

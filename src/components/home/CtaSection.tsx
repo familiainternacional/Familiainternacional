@@ -36,21 +36,6 @@ export default function CtaSection() {
             <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 xl:max-w-2xl">
               {cta.body}
             </p>
-
-            <div className="flex items-center justify-center lg:justify-start gap-4">
-              <div className="h-[1px] w-8 sm:w-12 bg-white/20" />
-              <p className="text-white/60 text-xs sm:text-sm">
-                {cta.featuredPrefix}
-                <span className="lg:hidden text-white font-medium">{cta.outletName}</span>
-                <Link
-                  href="/prensa"
-                  className={`${OFF_PAGE_LINK_DESKTOP_ONLY_CLASS} text-white font-medium hover:text-white/80 transition-colors underline underline-offset-4 decoration-white/30`}
-                >
-                  {cta.outletName}
-                </Link>
-                {cta.featuredSuffix}
-              </p>
-            </div>
           </div>
 
           <div className="relative z-10 flex shrink-0 flex-col items-center gap-3 sm:flex-row lg:flex-col">

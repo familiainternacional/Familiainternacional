@@ -29,7 +29,7 @@ export const enServiceLandings = {
       'Coordination with our international network of family law attorneys when appropriate.',
     ],
     includes: [
-      'Divorce claims with a spouse abroad.',
+      'Divorce claims in Chile with a spouse abroad.',
       'Advice on foreign divorces and their effects in Chile.',
       'Negotiation of cross-border agreements.',
       'Coordination with lawyers in other countries.',
@@ -48,12 +48,12 @@ export const enServiceLandings = {
     ],
   },
   'cuidado-sustraccion': {
-    title: 'Custody, Visitation, and International Child Abduction',
+    title: 'International child abduction, cross-border custody and visitation',
     shortTitle: 'Custody',
     seoTitle: 'International child abduction lawyers in Chile',
     seoDescription:
       'Hague Convention, cross-border visitation, relocation, and authorizations to leave the country. Familia Internacional, hundreds of cases handled.',
-    eyebrow: 'Area 02',
+    eyebrow: 'Area 03',
     heroTitle: 'Protecting children when borders are crossed',
     heroSubtitle:
       'Defense and claims under the 1980 Hague Convention, international visitation, and judicial authorizations to travel or relocate.',
@@ -77,7 +77,6 @@ export const enServiceLandings = {
     includes: [
       'Claims and defenses for international child abduction (Hague Convention).',
       'Cross-border visitation and enforcement of court orders.',
-      'Judicial authorizations to leave the country.',
       'Coordination with lawyers and authorities abroad.',
     ],
     faqs: [
@@ -99,7 +98,7 @@ export const enServiceLandings = {
     seoTitle: 'International child support and paternity in Chile',
     seoDescription:
       'International paternity claims, child support enforcement under the New York Convention, and cross-border recognition. Familia Internacional.',
-    eyebrow: 'Area 03',
+    eyebrow: 'Area 05',
     heroTitle: 'Filiation and child support beyond borders',
     heroSubtitle:
       'Representation in international paternity matters and child support collection when the parties or assets are in different countries.',
@@ -145,7 +144,7 @@ export const enServiceLandings = {
     seoTitle: 'Exequatur of foreign judgments in Chile',
     seoDescription:
       'Validation before the Supreme Court of foreign divorce, nullity, adoption, and custody judgments.',
-    eyebrow: 'Area 04',
+    eyebrow: 'Area 02',
     heroTitle: 'Recognize a foreign judgment in Chile',
     heroSubtitle:
       'We handle exequatur proceedings before the Supreme Court so that family law judgments issued abroad produce effects in Chile.',
@@ -186,12 +185,12 @@ export const enServiceLandings = {
     ],
   },
   'herencias-internacionales': {
-    title: 'International Inheritance and Succession',
+    title: 'International Inheritance and Effective Possession',
     shortTitle: 'Inheritance',
     seoTitle: 'International inheritance and probate in Chile',
     seoDescription:
       'Probate and distribution of inherited assets when the deceased or heirs are in Chile and abroad.',
-    eyebrow: 'Area 05',
+    eyebrow: 'Area 06',
     heroTitle: 'Estates with assets in Chile and abroad',
     heroSubtitle:
       'Management of probate, distribution, and succession proceedings when the deceased or assets are in more than one country.',
@@ -237,7 +236,7 @@ export const enServiceLandings = {
     seoTitle: 'Consular powers of attorney and representation in family courts',
     seoDescription:
       'Powers for Chilean consulates, deeds executed abroad, and judicial representation for those residing outside Chile.',
-    eyebrow: 'Area 06',
+    eyebrow: 'Area 07',
     heroTitle: 'Act in Chile from any country',
     heroSubtitle:
       'Preparation of mandates, deeds, and powers of attorney for Chilean consulates, with full representation in family courts.',
@@ -283,7 +282,7 @@ export const enServiceLandings = {
     seoTitle: 'Judicial authorization to leave Chile with minors',
     seoDescription:
       'We process judicial authorizations for minors to leave the country, for temporary travel or permanent relocation. Familia Internacional.',
-    eyebrow: 'Area 07',
+    eyebrow: 'Area 04',
     heroTitle: 'Judicial authorization to travel or relocate with your child',
     heroSubtitle:
       'We represent clients in applications to family courts for temporary departures from the country or international relocation of minors.',

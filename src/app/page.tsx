@@ -2,7 +2,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Navbar from '@/components/home/Navbar';
 import ReplicaHero from '@/components/ReplicaHero';
-import GuideProcessSection from '@/components/home/GuideProcessSection';
 import ServicesHomePreview from '@/components/home/ServicesHomePreview';
 import AboutSection from '@/components/home/AboutSection';
 import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
@@ -58,10 +57,6 @@ export default async function HomePage() {
 
         <ScrollReveal>
           <PaymentMethodsBanner />
-        </ScrollReveal>
-
-        <ScrollReveal>
-          <GuideProcessSection />
         </ScrollReveal>
 
         <ScrollReveal>
