@@ -169,7 +169,7 @@ export default function Footer({ adminValues }: { adminValues?: SiteSettingsAdmi
         <p className="text-small">
           {t('common.developedBy')}{' '}
           <a
-            href="https://airconsulting-ten.vercel.app/"
+            href="https://www.irigoyendev.com"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-white transition-colors hover:text-brand-bright lg:hover:text-white"
