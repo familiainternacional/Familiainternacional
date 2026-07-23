@@ -61,13 +61,11 @@ export const teamMembers: TeamMember[] = [
       es: [
         'Cientos de juicios tramitados en Derecho Internacional de Familia.',
         'Ex Autoridad Central de la Corporación de Asistencia Judicial para los Convenios de La Haya y Nueva York.',
-        'Consultado por Las Últimas Noticias y otros medios nacionales en casos de sustracción internacional.',
         'Integrante de una extensa red internacional de abogados dedicados al derecho de familia.',
       ],
       en: [
         'Hundreds of successfully handled cases in International Family Law.',
         'Former Central Authority attorney at Chile’s Legal Aid Corporation for the Hague and New York Conventions.',
-        'Quoted by Las Últimas Noticias and other national media on international child abduction cases.',
         'Member of an extensive international network of family law attorneys.',
       ],
     },

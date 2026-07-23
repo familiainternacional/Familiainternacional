@@ -28,7 +28,6 @@ export const team = {
     experience: [
       'Cientos de juicios tramitados en Derecho Internacional de Familia.',
       'Ex abogado de la Oficina Internacional de la Corporación de Asistencia Judicial, Autoridad Central para los Convenios de La Haya y Nueva York.',
-      'Consultado por Las Últimas Noticias y otros medios nacionales en casos de sustracción internacional y custodia transfronteriza.',
       'Integrante de una extensa red internacional de abogados dedicados al derecho de familia.',
     ],
     imageAlt: 'Jaime Soto Silva - Familia Internacional',

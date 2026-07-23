@@ -10,11 +10,12 @@ const OFFICE_LNG = -70.5920947147805;
 
 const practiceAreas = [
   'Divorcios Internacionales',
-  'Sustracción Internacional de Menores',
-  'Exequátur de Sentencias Extranjeras',
-  'Visitas Internacionales',
-  'Alimentos Internacionales',
+  'Exequátur (Validación de Sentencias)',
+  'Sustracción Internacional de niños, cuidado y visitas transfronterizas',
   'Autorizaciones para Salir del País',
+  'Filiación y Alimentos Internacionales',
+  'Herencias y Posesiones Efectivas Internacionales',
+  'Trámites Consulares y Representación en el Extranjero',
 ];
 
 function absoluteUrl(path = '/') {

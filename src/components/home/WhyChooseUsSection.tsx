@@ -113,8 +113,8 @@ export default function WhyChooseUsSection() {
                 <span className="font-bold text-white block mb-2">{isSpanish ? 'Comunicación clara.' : 'Clear communication.'}</span>
                 <span className="text-body font-normal text-gray-400">
                   {isSpanish
-                    ? 'Traducimos escenarios jurídicos complejos a alternativas claras. Consultados por medios como Las Últimas Noticias en casos de sustracción internacional.'
-                    : 'We translate complex legal scenarios into clear options. Quoted by media including Las Últimas Noticias on international abduction cases.'}
+                    ? 'Traducimos escenarios jurídicos complejos a alternativas claras.'
+                    : 'We translate complex legal scenarios into clear options.'}
                 </span>
               </h3>
             </div>

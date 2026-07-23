@@ -28,7 +28,6 @@ export const team = {
     experience: [
       'Hundreds of cases handled in International Family Law.',
       'Former attorney at the International Office of Chile’s Legal Aid Corporation, Central Authority for the Hague and New York Conventions.',
-      'Consulted by Las Últimas Noticias and other national media on international child abduction and cross-border custody cases.',
       'Member of an extensive international network of family law attorneys.',
     ],
     imageAlt: 'Jaime Soto Silva - Familia Internacional',
