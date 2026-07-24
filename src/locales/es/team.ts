@@ -21,7 +21,7 @@ export const team = {
       'Su trayectoria combina litigación en tribunales de familia, coordinación con autoridades centrales y asesoría a familias en conflictos transfronterizos de alta complejidad.',
     tags: ['Convenio de La Haya', 'Sustracción Internacional', 'Exequátur', 'Alimentos Internacionales'],
     education: [
-      'Abogado, Magíster en Derecho de Familia.',
+      'Abogado, Magíster.',
       'Profesor Universitario en Derecho de Familia y Práctica Profesional.',
       'Formación especializada en Convenio de La Haya (1980) y Convenio de Nueva York (1956).',
     ],

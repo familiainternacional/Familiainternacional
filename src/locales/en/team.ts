@@ -21,7 +21,7 @@ export const team = {
       'His career combines family court litigation, coordination with central authorities, and advisory work for families facing complex cross-border disputes.',
     tags: ['Hague Convention', 'International Child Abduction', 'Exequatur', 'International Child Support'],
     education: [
-      'Attorney, Master’s in Family Law.',
+      'Attorney, Master’s.',
       'University Professor in Family Law and Professional Practice.',
       'Specialized training in the Hague Convention (1980) and the New York Convention (1956).',
     ],

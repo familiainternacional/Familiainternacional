@@ -10,7 +10,7 @@ export function getDefaultCanonicalBaseUrl(): string {
     `https://${CANONICAL_BRAND_HOST}`,
   ].find((candidate) => {
     const value = candidate?.trim();
-    return value && !isLocalCanonicalUrl(value);
+    return value && !isNonBrandCanonicalUrl(value);
   }) ?? `https://${CANONICAL_BRAND_HOST}`;
 
   return normalizeCanonicalBaseUrl(raw);
@@ -26,17 +26,33 @@ function isLocalCanonicalUrl(url: string): boolean {
   }
 }
 
+/** Localhost and Vercel preview/production aliases must never become the public canonical. */
+function isNonBrandCanonicalUrl(url: string): boolean {
+  if (isLocalCanonicalUrl(url)) return true;
+
+  try {
+    const withProtocol = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+    const hostname = new URL(withProtocol).hostname.toLowerCase();
+    return hostname === 'vercel.app' || hostname.endsWith('.vercel.app');
+  } catch {
+    return true;
+  }
+}
+
 /** Corrige typos conocidos y normaliza a origin sin barra final. */
 export function normalizeCanonicalBaseUrl(url: string): string {
   const trimmed = url.trim();
-  if (!trimmed) return getDefaultCanonicalBaseUrl();
+  if (!trimmed) return `https://${CANONICAL_BRAND_HOST}`;
 
   try {
     const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
     const parsed = new URL(withProtocol);
+    if (isNonBrandCanonicalUrl(parsed.origin)) {
+      return `https://${CANONICAL_BRAND_HOST}`;
+    }
     return parsed.origin;
   } catch {
-    return getDefaultCanonicalBaseUrl();
+    return `https://${CANONICAL_BRAND_HOST}`;
   }
 }
 

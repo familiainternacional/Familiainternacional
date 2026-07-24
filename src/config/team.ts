@@ -47,12 +47,12 @@ export const teamMembers: TeamMember[] = [
     },
     formacion: {
       es: [
-        'Abogado, Magíster en Derecho de Familia.',
+        'Abogado, Magíster.',
         'Profesor Universitario en Derecho de Familia y Práctica Profesional.',
         'Formación especializada en Convenio de La Haya (1980) y Convenio de Nueva York (1956).',
       ],
       en: [
-        'Attorney, Master’s in Family Law.',
+        'Attorney, Master’s.',
         'University Professor in Family Law and Professional Practice.',
         'Specialized training in the Hague Convention (1980) and New York Convention (1956).',
       ],
