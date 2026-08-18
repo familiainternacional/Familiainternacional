@@ -22,9 +22,11 @@ const LIGHT_FIELD_CLASS =
 function EvaluaTuCasoFormInner({
   variant = 'default',
   fillHeight = false,
+  leadSource,
 }: {
   variant?: EvaluaTuCasoFormVariant;
   fillHeight?: boolean;
+  leadSource?: string;
 }) {
   const { dictionary } = useI18n();
   const evalua = dictionary.forms.evalua;
@@ -64,7 +66,9 @@ function EvaluaTuCasoFormInner({
         body: JSON.stringify({
           ...formData,
           ...getLeadAttributionFromBrowser(),
-          leadSource: variant === 'light' ? 'home_hero_form' : 'evalua_tu_caso_form',
+          leadSource:
+            leadSource ||
+            (variant === 'light' ? 'home_hero_form' : 'evalua_tu_caso_form'),
           recaptchaToken: token,
           recaptchaAction: 'evalua_tu_caso_submit',
         })
@@ -216,14 +220,21 @@ export default function EvaluaTuCasoForm({
   variant = 'default',
   fillHeight = false,
   lazyRecaptcha = true,
+  leadSource,
 }: {
   variant?: EvaluaTuCasoFormVariant;
   fillHeight?: boolean;
   lazyRecaptcha?: boolean;
+  /** Fuente de atribución en CRM (ej. landing de campaña). */
+  leadSource?: string;
 }) {
   return (
     <ReCaptchaWrapper lazy={lazyRecaptcha} forceActive={!lazyRecaptcha}>
-      <EvaluaTuCasoFormInner variant={variant} fillHeight={fillHeight} />
+      <EvaluaTuCasoFormInner
+        variant={variant}
+        fillHeight={fillHeight}
+        leadSource={leadSource}
+      />
     </ReCaptchaWrapper>
   );
 }

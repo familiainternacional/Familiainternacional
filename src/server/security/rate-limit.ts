@@ -54,6 +54,10 @@ export const RATE_LIMITS = {
     limit: getEnvNumber('RATE_LIMIT_UPLOADS', 120),
     windowSeconds: getEnvNumber('RATE_LIMIT_UPLOADS_WINDOW_SECONDS', 10 * 60),
   },
+  ai: {
+    limit: getEnvNumber('RATE_LIMIT_AI', 30),
+    windowSeconds: getEnvNumber('RATE_LIMIT_AI_WINDOW_SECONDS', 10 * 60),
+  },
 } as const;
 
 const upstashRedisUrl = process.env.UPSTASH_REDIS_REST_URL?.trim();

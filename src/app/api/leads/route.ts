@@ -8,6 +8,10 @@ import { enforceRateLimitFromRequest, RATE_LIMITS } from '@/server/security/rate
 
 export const runtime = 'nodejs';
 
+function isValidEmail(email: string) {
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 export async function POST(request: Request) {
   try {
     const rateLimited = await enforceRateLimitFromRequest(request, {
@@ -37,6 +41,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        { error: 'Correo electrónico inválido.' },
+        { status: 400 },
+      );
+    }
+
     const recaptcha = await verifyRecaptchaToken(recaptchaToken, {
       expectedAction: recaptchaAction,
       remoteIp: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null,
@@ -60,7 +71,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const [notification, cliengo] = await Promise.all([
+    const [, cliengo] = await Promise.all([
       sendLeadNotification({
         id: lead.id,
         name: lead.name,
@@ -89,15 +100,7 @@ export async function POST(request: Request) {
       });
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        lead: { ...lead, cliengoContactId: cliengo.contactId ?? lead.cliengoContactId },
-        notification,
-        cliengo,
-      },
-      { status: 201 },
-    );
+    return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error('Error creating lead:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

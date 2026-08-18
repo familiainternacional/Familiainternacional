@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from './server';
 
 export type AdminClaims = {
@@ -69,6 +70,16 @@ export async function requireAdminSession() {
 
   if (!admin) {
     redirect('/admin/login');
+  }
+
+  return admin;
+}
+
+export async function requireAdminApiSession(): Promise<AdminClaims | NextResponse> {
+  const admin = await getAdminClaims();
+
+  if (!admin) {
+    return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
   }
 
   return admin;

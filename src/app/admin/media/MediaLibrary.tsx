@@ -96,7 +96,7 @@ export default function MediaLibrary() {
             ref={fileInputRef}
             onChange={handleFileUpload}
             className="hidden"
-            accept="image/png, image/jpeg, image/webp, image/svg+xml"
+            accept="image/png, image/jpeg, image/webp, image/avif"
           />
           <button
             onClick={() => fileInputRef.current?.click()}

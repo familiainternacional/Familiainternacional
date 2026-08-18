@@ -24,7 +24,8 @@ export async function verifyRecaptchaToken(
 ): Promise<RecaptchaVerificationResult> {
   if (!isRecaptchaConfigured()) {
     if (process.env.NODE_ENV === 'production') {
-      console.warn('[recaptcha] Keys no configuradas en producción; verificación omitida.');
+      console.error('[recaptcha] Keys no configuradas en producción.');
+      return { ok: false, error: 'Verificación anti-spam no disponible. Intenta más tarde.' };
     }
     return { ok: true, skipped: true };
   }

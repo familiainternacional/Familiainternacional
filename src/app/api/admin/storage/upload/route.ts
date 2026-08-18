@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server';
-import { requireAdminSession } from '@/lib/supabase/auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAdminApiSession } from '@/lib/supabase/auth';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { SUPABASE_SITE_ASSET_BUCKET } from '@/lib/supabase/env';
+import { validateImageUpload } from '@/lib/security/validate-image';
+import { enforceRateLimitFromRequest, RATE_LIMITS } from '@/server/security/rate-limit';
 
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
-const ALLOWED_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']);
 
 function sanitizeFileName(fileName: string) {
   return fileName
@@ -15,8 +16,22 @@ function sanitizeFileName(fileName: string) {
     .toLowerCase();
 }
 
-export async function POST(request: Request) {
-  await requireAdminSession();
+export async function POST(request: NextRequest) {
+  const auth = await requireAdminApiSession();
+  if (auth instanceof NextResponse) {
+    return auth;
+  }
+
+  const rateLimited = await enforceRateLimitFromRequest(request, {
+    keyPrefix: 'uploads',
+    ...RATE_LIMITS.uploads,
+    identifier: auth.email || auth.id,
+    message: 'Demasiadas cargas de archivos. Intenta nuevamente en unos minutos.',
+  });
+
+  if (rateLimited) {
+    return rateLimited;
+  }
 
   const formData = await request.formData();
   const file = formData.get('file');
@@ -26,24 +41,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Archivo requerido.' }, { status: 400 });
   }
 
-  if (!ALLOWED_TYPES.has(file.type)) {
-    return NextResponse.json({ error: 'Tipo de archivo no permitido.' }, { status: 400 });
-  }
-
   if (file.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ error: 'El archivo supera 5 MB.' }, { status: 400 });
   }
 
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const validation = validateImageUpload(bytes, file.type);
+
+  if (!validation.ok) {
+    return NextResponse.json({ error: validation.error }, { status: 400 });
+  }
+
   const supabase = createSupabaseAdminClient();
-  const safeName = sanitizeFileName(file.name);
+  const safeName = sanitizeFileName(file.name).replace(/\.[^.]+$/, '') + validation.extension;
   const path = `${directory}/${Date.now()}-${safeName}`;
 
   const { error } = await supabase.storage
     .from(SUPABASE_SITE_ASSET_BUCKET)
-    .upload(path, file, {
+    .upload(path, bytes, {
       cacheControl: '31536000',
       upsert: false,
-      contentType: file.type,
+      contentType: validation.mime,
     });
 
   if (error) {
