@@ -123,7 +123,7 @@ export default async function RootLayout({
           </LenisProvider>
         </I18nProvider>
         <GoogleAnalytics gaId="G-GSG9KGPXX3" />
-       <GoogleTagManager gtmId="GTM-PXTTJKZ" />
+     
         <CliengoWidget />
       </body>
     </html>
