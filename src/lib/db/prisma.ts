@@ -46,7 +46,7 @@ function createPrismaClient() {
     max: getPoolNumber('DATABASE_POOL_MAX', 3),
     idleTimeoutMillis: getPoolNumber('DATABASE_IDLE_TIMEOUT_MS', 10_000),
     connectionTimeoutMillis: getPoolNumber('DATABASE_CONNECTION_TIMEOUT_MS', 5_000),
-    ssl: requiresSsl(dbUrl) ? { rejectUnauthorized: false } : undefined,
+    ssl: requiresSsl(dbUrl) ? { rejectUnauthorized: true } : undefined,
   });
 
   const adapter = new PrismaPg(pool);
