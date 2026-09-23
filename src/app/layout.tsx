@@ -6,7 +6,7 @@ import { I18nProvider } from '@/lib/i18n/I18nProvider';
 import { getServerCurrency, getServerLocale } from '@/lib/i18n/server';
 import { siteConfig } from '@/config/site';
 import { getDefaultCanonicalBaseUrl } from '@/config/seo-url';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import CliengoWidget from '@/components/integrations/CliengoWidget';
 import MobileTabBar from '@/components/home/MobileTabBar';
 import { getSiteSettings } from '@/lib/cms/site-settings';
