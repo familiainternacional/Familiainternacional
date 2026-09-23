@@ -39,8 +39,11 @@ export const viewport: Viewport = {
 export async function generateMetadata(): Promise<Metadata> {
   const seoSettings = await getSiteSeoSettings().catch(() => null);
   const seoTitle = resolveSiteSeoTitle(seoSettings?.defaultTitleEs);
-  const defaultDescription = resolveSiteSeoDescription(seoSettings?.defaultDescriptionEs);
-  const defaultOgImage = seoSettings?.defaultOgImage?.trim() || DEFAULT_OG_IMAGE_PATH;
+  const defaultDescription = resolveSiteSeoDescription(
+    seoSettings?.defaultDescriptionEs
+  );
+  const defaultOgImage =
+    seoSettings?.defaultOgImage?.trim() || DEFAULT_OG_IMAGE_PATH;
   const ogImages = resolveOgImages(defaultOgImage);
 
   return {
@@ -110,20 +113,30 @@ export default async function RootLayout({
     getServerLocale(),
     getServerCurrency(),
   ]);
+
   const fontVariables = montserrat.variable;
 
   return (
-    <html lang={initialLocale} className={fontVariables} suppressHydrationWarning>
+    <html
+      lang={initialLocale}
+      className={fontVariables}
+      suppressHydrationWarning
+    >
       <body suppressHydrationWarning>
-        <I18nProvider initialLocale={initialLocale} initialCurrency={initialCurrency}>
+        <I18nProvider
+          initialLocale={initialLocale}
+          initialCurrency={initialCurrency}
+        >
           <LenisProvider>
             <HomeReturnScroll />
             {children}
             <MobileTabBar whatsappNumber={siteSettings?.whatsappNumber} />
           </LenisProvider>
         </I18nProvider>
+
+        <GoogleTagManager gtmId="GTM-PXTTJKZ" />
         <GoogleAnalytics gaId="G-GSG9KGPXX3" />
-           <GoogleAnalytics gaId="G-GSG9KGPXX3" />
+
         <CliengoWidget />
       </body>
     </html>
