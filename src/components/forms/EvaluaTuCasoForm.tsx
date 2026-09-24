@@ -101,9 +101,14 @@ function EvaluaTuCasoFormInner({
         <p className={`mb-8 max-w-[65ch] text-body ${isLight ? 'text-[#4b5563]' : 'text-gray-400'}`}>
           {evalua.successDesc}
         </p>
-        <button 
+        <button
+          type="button"
           onClick={() => setStatus('idle')}
-          className={`${isLight ? 'border-black/10 bg-black/[0.03] text-[#111827] hover:bg-black/[0.06]' : 'border-white/10 bg-white/5 text-white hover:bg-white/10'} rounded-card border px-8 py-3 text-small font-medium transition-colors`}
+          className={`${
+            isLight
+              ? 'border-[#07234c]/25 bg-[#07234c]/[0.06] text-[#07234c] hover:bg-[#07234c]/[0.12]'
+              : 'border-white/40 bg-white/10 text-white hover:bg-white/20'
+          } rounded-full border-2 px-8 py-3 text-small font-semibold transition-colors`}
         >
           {evalua.sendAnother}
         </button>
