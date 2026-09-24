@@ -1,11 +1,35 @@
-import { getLeadAnalyticsSnapshot } from '@/lib/admin/lead-analytics';
+import { getLeadAnalyticsSnapshot, type LeadAnalyticsSnapshot } from '@/lib/admin/lead-analytics';
 import { getLeadStatusLabel } from '@/lib/leads/status';
 import Link from 'next/link';
-import { ArrowLeft, BarChart3 } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, BarChart3 } from 'lucide-react';
 
 export const metadata = {
   title: 'Analytics CRM | Panel de Control',
 };
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : 'Error desconocido al cargar los datos.';
+}
+
+function AdminAnalyticsErrorState({ message }: { message: string }) {
+  return (
+    <div className="rounded-card border border-red-200 bg-red-50 p-6 text-red-950">
+      <div className="flex items-start gap-3">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-700" aria-hidden />
+        <div>
+          <h1 className="text-xl font-bold">No se pudo cargar Analytics CRM</h1>
+          <p className="mt-2 max-w-[70ch] text-sm leading-relaxed text-red-900">
+            La sesion admin esta activa, pero el panel no logro consultar la base de datos.
+            Revisa DATABASE_URL, la configuracion SSL y el pooler de Supabase en produccion.
+          </p>
+          <p className="mt-4 rounded-lg bg-white/70 p-3 text-xs font-medium text-red-900">
+            Detalle tecnico: {message}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function MetricCard({ label, value, hint }: { label: string; value: number; hint?: string }) {
   return (
@@ -59,8 +83,19 @@ function DistributionTable({
   );
 }
 
+async function getAdminAnalytics(): Promise<LeadAnalyticsSnapshot> {
+  return getLeadAnalyticsSnapshot();
+}
+
 export default async function AdminAnalyticsPage() {
-  const analytics = await getLeadAnalyticsSnapshot();
+  let analytics: LeadAnalyticsSnapshot;
+
+  try {
+    analytics = await getAdminAnalytics();
+  } catch (error) {
+    console.error('[admin-analytics] No se pudo cargar Analytics CRM.', error);
+    return <AdminAnalyticsErrorState message={getErrorMessage(error)} />;
+  }
 
   return (
     <div className="space-y-8">

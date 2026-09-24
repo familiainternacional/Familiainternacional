@@ -1,18 +1,51 @@
 import React from 'react';
 import Link from 'next/link';
+import type { Lead } from '@prisma/client';
 import { getPrismaClient } from '@/lib/db/prisma';
 import { Inbox, FileText, MessageSquare, Edit3, ArrowRight, TrendingUp, AlertTriangle, BarChart3 } from 'lucide-react';
 import LeadStatusBadge from './leads/LeadStatusBadge';
 import { ACTIVE_LEADS_WHERE } from '@/lib/leads/query';
-import { getLeadAnalyticsSnapshot } from '@/lib/admin/lead-analytics';
+import { getLeadAnalyticsSnapshot, type LeadAnalyticsSnapshot } from '@/lib/admin/lead-analytics';
 
 export const metadata = {
   title: 'Dashboard | Panel de Control',
 };
 
-export default async function AdminIndexPage() {
-  const prisma = getPrismaClient();
+type AdminDashboardData = {
+  pendingLeadsCount: number;
+  totalLeadsCount: number;
+  publishedPostsCount: number;
+  publishedTestimonialsCount: number;
+  analytics: LeadAnalyticsSnapshot;
+  recentLeads: Lead[];
+};
 
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : 'Error desconocido al cargar los datos.';
+}
+
+function AdminDataErrorState({ message }: { message: string }) {
+  return (
+    <div className="rounded-card border border-red-200 bg-red-50 p-6 text-red-950">
+      <div className="flex items-start gap-3">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-700" aria-hidden />
+        <div>
+          <h1 className="text-xl font-bold">No se pudo cargar el dashboard</h1>
+          <p className="mt-2 max-w-[70ch] text-sm leading-relaxed text-red-900">
+            La sesion admin esta activa, pero el panel no logro consultar la base de datos.
+            Revisa DATABASE_URL, la configuracion SSL y el pooler de Supabase en produccion.
+          </p>
+          <p className="mt-4 rounded-lg bg-white/70 p-3 text-xs font-medium text-red-900">
+            Detalle tecnico: {message}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+async function getAdminDashboardData(): Promise<AdminDashboardData> {
+  const prisma = getPrismaClient();
   const [
     pendingLeadsCount,
     totalLeadsCount,
@@ -34,6 +67,35 @@ export default async function AdminIndexPage() {
       orderBy: { createdAt: 'desc' },
     }),
   ]);
+
+  return {
+    pendingLeadsCount,
+    totalLeadsCount,
+    publishedPostsCount,
+    publishedTestimonialsCount,
+    analytics,
+    recentLeads,
+  };
+}
+
+export default async function AdminIndexPage() {
+  let data: AdminDashboardData;
+
+  try {
+    data = await getAdminDashboardData();
+  } catch (error) {
+    console.error('[admin-dashboard] No se pudo cargar el dashboard.', error);
+    return <AdminDataErrorState message={getErrorMessage(error)} />;
+  }
+
+  const {
+    pendingLeadsCount,
+    totalLeadsCount,
+    publishedPostsCount,
+    publishedTestimonialsCount,
+    analytics,
+    recentLeads,
+  } = data;
 
   return (
     <div className="space-y-8">

@@ -1,4 +1,5 @@
 import { AlertTriangle } from 'lucide-react';
+import type { Lead } from '@prisma/client';
 import { getPrismaClient } from '@/lib/db/prisma';
 import { ACTIVE_LEADS_WHERE } from '@/lib/leads/query';
 import { getLeadAssignees } from '@/config/lead-assignees';
@@ -31,34 +32,40 @@ function AdminLeadsErrorState({ message }: { message: string }) {
   );
 }
 
+async function getAdminLeads(): Promise<Lead[]> {
+  const prisma = getPrismaClient();
+  return prisma.lead.findMany({
+    where: ACTIVE_LEADS_WHERE,
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
 export default async function AdminLeadsPage() {
+  let leads: Lead[];
+
   try {
-    const prisma = getPrismaClient();
-    const leads = await prisma.lead.findMany({
-      where: ACTIVE_LEADS_WHERE,
-      orderBy: { createdAt: 'desc' },
-    });
-
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Bandeja de Casos</h1>
-            <p className="text-gray-600 mt-1">
-              Gestione las solicitudes de evaluación de casos recibidas desde el sitio web.
-            </p>
-          </div>
-          <div className="bg-white border border-[#07234c]/10 px-4 py-2 rounded-lg">
-            <span className="text-gray-600 text-sm mr-2">Total recibidos:</span>
-            <span className="font-bold text-[var(--color-primary)]">{leads.length}</span>
-          </div>
-        </div>
-
-        <LeadsClient initialLeads={leads} assignees={getLeadAssignees()} />
-      </div>
-    );
+    leads = await getAdminLeads();
   } catch (error) {
     console.error('[admin-leads] No se pudo cargar la bandeja de casos.', error);
     return <AdminLeadsErrorState message={getErrorMessage(error)} />;
   }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Bandeja de Casos</h1>
+          <p className="text-gray-600 mt-1">
+            Gestione las solicitudes de evaluación de casos recibidas desde el sitio web.
+          </p>
+        </div>
+        <div className="bg-white border border-[#07234c]/10 px-4 py-2 rounded-lg">
+          <span className="text-gray-600 text-sm mr-2">Total recibidos:</span>
+          <span className="font-bold text-[var(--color-primary)]">{leads.length}</span>
+        </div>
+      </div>
+
+      <LeadsClient initialLeads={leads} assignees={getLeadAssignees()} />
+    </div>
+  );
 }
