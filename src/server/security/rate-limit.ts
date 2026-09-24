@@ -152,18 +152,23 @@ export async function enforceRateLimit(request: NextRequest, options: RateLimitO
     return enforceInMemoryRateLimit(request, options);
   }
 
-  const result = await limiter.limit(`${options.keyPrefix}:${identifier}`);
+  try {
+    const result = await limiter.limit(`${options.keyPrefix}:${identifier}`);
 
-  if (result.success) {
-    return null;
+    if (result.success) {
+      return null;
+    }
+
+    const retryAfterSeconds = Math.max(
+      1,
+      Math.ceil((result.reset - Date.now()) / 1000),
+    );
+
+    return buildRateLimitResponse(options, retryAfterSeconds);
+  } catch (error) {
+    console.error('[rate-limit] Upstash no disponible; usando limite en memoria.', error);
+    return enforceInMemoryRateLimit(request, options);
   }
-
-  const retryAfterSeconds = Math.max(
-    1,
-    Math.ceil((result.reset - Date.now()) / 1000),
-  );
-
-  return buildRateLimitResponse(options, retryAfterSeconds);
 }
 
 type RateLimitProfile = {
@@ -219,13 +224,18 @@ export async function enforceRateLimitByIdentifier(
     return enforceInMemoryRateLimitByIdentifier(identifier, options);
   }
 
-  const result = await limiter.limit(`${keyPrefix}:${identifier}`);
+  try {
+    const result = await limiter.limit(`${keyPrefix}:${identifier}`);
 
-  if (result.success) {
-    return null;
+    if (result.success) {
+      return null;
+    }
+
+    return message ?? 'Demasiadas solicitudes. Intenta nuevamente en unos minutos.';
+  } catch (error) {
+    console.error('[rate-limit] Upstash no disponible; usando limite en memoria.', error);
+    return enforceInMemoryRateLimitByIdentifier(identifier, options);
   }
-
-  return message ?? 'Demasiadas solicitudes. Intenta nuevamente en unos minutos.';
 }
 
 export async function enforceRateLimitFromRequest(
