@@ -1,9 +1,11 @@
 import {
   getRecaptchaSecretKey,
+  getRecaptchaSiteKey,
   isRecaptchaConfigured,
   RECAPTCHA_MIN_SCORE,
   RECAPTCHA_VERIFY_URL,
 } from './recaptcha-config';
+import { isRecaptchaFeatureEnabled } from '@/config/features';
 
 export type RecaptchaVerificationResult =
   | { ok: true; skipped?: boolean; score?: number }
@@ -22,9 +24,24 @@ export async function verifyRecaptchaToken(
   token: string | null | undefined,
   options?: { expectedAction?: string; remoteIp?: string | null },
 ): Promise<RecaptchaVerificationResult> {
+  // Feature off → allow form submissions (no captcha required).
+  if (!isRecaptchaFeatureEnabled()) {
+    return { ok: true, skipped: true };
+  }
+
+  // Feature on but keys missing: fail closed in production, skip in development.
   if (!isRecaptchaConfigured()) {
     if (process.env.NODE_ENV === 'production') {
-      console.error('[recaptcha] Keys no configuradas en producción.');
+      console.error('[recaptcha] Feature activa pero keys no configuradas en producción.');
+      return { ok: false, error: 'Verificación anti-spam no disponible. Intenta más tarde.' };
+    }
+    console.warn('[recaptcha] Feature activa sin keys; verificación omitida en desarrollo.');
+    return { ok: true, skipped: true };
+  }
+
+  // Defensive: configured flag and key getters should agree.
+  if (!getRecaptchaSiteKey() || !getRecaptchaSecretKey()) {
+    if (process.env.NODE_ENV === 'production') {
       return { ok: false, error: 'Verificación anti-spam no disponible. Intenta más tarde.' };
     }
     return { ok: true, skipped: true };
