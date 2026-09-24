@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { Pool, type ConnectionOptions } from 'pg';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -24,6 +24,29 @@ function requiresSsl(databaseUrl: string): boolean {
   return process.env.NODE_ENV === 'production' || databaseUrl.includes('supabase.com');
 }
 
+/**
+ * Supabase Transaction Pooler often surfaces a chain that Node rejects as
+ * "self-signed certificate in certificate chain" even though traffic is encrypted.
+ * Keep TLS on; only enforce CA verification when explicitly requested.
+ *
+ * DATABASE_SSL_REJECT_UNAUTHORIZED=true  → strict CA verification
+ * unset / false                          → encrypted TLS without CA enforcement (default for Supabase)
+ */
+function shouldRejectUnauthorized(): boolean {
+  const raw = process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.trim().toLowerCase();
+  return raw === 'true' || raw === '1' || raw === 'yes';
+}
+
+function resolveSslConfig(databaseUrl: string): boolean | ConnectionOptions | undefined {
+  if (!requiresSsl(databaseUrl)) {
+    return undefined;
+  }
+
+  return {
+    rejectUnauthorized: shouldRejectUnauthorized(),
+  };
+}
+
 function getPoolNumber(name: string, fallback: number): number {
   const value = Number(process.env[name]);
   return Number.isFinite(value) && value > 0 ? value : fallback;
@@ -35,6 +58,7 @@ function createPrismaClient() {
 
   try {
     const parsedUrl = new URL(dbUrl);
+    // Legacy Prisma/pg flag; SSL is handled explicitly below.
     parsedUrl.searchParams.delete('sslaccept');
     cleanConnectionString = parsedUrl.toString();
   } catch (e) {
@@ -46,7 +70,7 @@ function createPrismaClient() {
     max: getPoolNumber('DATABASE_POOL_MAX', 3),
     idleTimeoutMillis: getPoolNumber('DATABASE_IDLE_TIMEOUT_MS', 10_000),
     connectionTimeoutMillis: getPoolNumber('DATABASE_CONNECTION_TIMEOUT_MS', 5_000),
-    ssl: requiresSsl(dbUrl) ? { rejectUnauthorized: true } : undefined,
+    ssl: resolveSslConfig(dbUrl),
   });
 
   const adapter = new PrismaPg(pool);
