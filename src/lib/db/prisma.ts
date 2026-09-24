@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool, type ConnectionOptions } from 'pg';
+import { SUPABASE_PROD_CA_2021 } from '@/lib/db/supabase-ca';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -20,21 +21,28 @@ function getDatabaseUrl(): string {
   return databaseUrl;
 }
 
+function isSupabaseUrl(databaseUrl: string): boolean {
+  return databaseUrl.includes('supabase.com');
+}
+
 function requiresSsl(databaseUrl: string): boolean {
-  return process.env.NODE_ENV === 'production' || databaseUrl.includes('supabase.com');
+  return process.env.NODE_ENV === 'production' || isSupabaseUrl(databaseUrl);
 }
 
 /**
- * Supabase Transaction Pooler often surfaces a chain that Node rejects as
- * "self-signed certificate in certificate chain" even though traffic is encrypted.
- * Keep TLS on; only enforce CA verification when explicitly requested.
- *
- * DATABASE_SSL_REJECT_UNAUTHORIZED=true  → strict CA verification
- * unset / false                          → encrypted TLS without CA enforcement (default for Supabase)
+ * Prefer the Supabase Root CA for verification.
+ * Override with DATABASE_SSL_REJECT_UNAUTHORIZED=false only if a proxy breaks chain validation.
  */
-function shouldRejectUnauthorized(): boolean {
+function shouldRejectUnauthorized(databaseUrl: string): boolean {
   const raw = process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.trim().toLowerCase();
-  return raw === 'true' || raw === '1' || raw === 'yes';
+  if (raw === 'false' || raw === '0' || raw === 'no') {
+    return false;
+  }
+  if (raw === 'true' || raw === '1' || raw === 'yes') {
+    return true;
+  }
+  // Default: verify with Supabase CA when talking to Supabase / production.
+  return requiresSsl(databaseUrl);
 }
 
 function resolveSslConfig(databaseUrl: string): boolean | ConnectionOptions | undefined {
@@ -42,8 +50,16 @@ function resolveSslConfig(databaseUrl: string): boolean | ConnectionOptions | un
     return undefined;
   }
 
+  const rejectUnauthorized = shouldRejectUnauthorized(databaseUrl);
+
+  if (!rejectUnauthorized) {
+    return { rejectUnauthorized: false };
+  }
+
   return {
-    rejectUnauthorized: shouldRejectUnauthorized(),
+    rejectUnauthorized: true,
+    // Use Supabase Root CA so Node trusts the pooler chain.
+    ca: SUPABASE_PROD_CA_2021,
   };
 }
 
@@ -52,18 +68,23 @@ function getPoolNumber(name: string, fallback: number): number {
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
-function createPrismaClient() {
-  const dbUrl = getDatabaseUrl();
-  let cleanConnectionString = dbUrl;
-
+function sanitizeDatabaseUrl(databaseUrl: string): string {
   try {
-    const parsedUrl = new URL(dbUrl);
-    // Legacy Prisma/pg flag; SSL is handled explicitly below.
+    const parsedUrl = new URL(databaseUrl);
+    // SSL is configured explicitly on the Pool; strip conflicting URL flags.
     parsedUrl.searchParams.delete('sslaccept');
-    cleanConnectionString = parsedUrl.toString();
+    parsedUrl.searchParams.delete('sslmode');
+    parsedUrl.searchParams.delete('sslrootcert');
+    return parsedUrl.toString();
   } catch (e) {
     console.error('Failed to parse DATABASE_URL with URL constructor, using raw string.', e);
+    return databaseUrl;
   }
+}
+
+function createPrismaClient() {
+  const dbUrl = getDatabaseUrl();
+  const cleanConnectionString = sanitizeDatabaseUrl(dbUrl);
 
   const pool = new Pool({
     connectionString: cleanConnectionString,
