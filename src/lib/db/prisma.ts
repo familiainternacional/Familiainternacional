@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool, type ConnectionOptions } from 'pg';
+import { Pool } from 'pg';
+import type { ConnectionOptions } from 'tls';
 import { SUPABASE_PROD_CA_2021 } from '@/lib/db/supabase-ca';
 
 const globalForPrisma = globalThis as unknown as {
